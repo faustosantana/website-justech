@@ -20,7 +20,7 @@ export default function HomePage() {
     <main id="contenido">
       <section className="cine-hero">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="cine-photo" src={withBase("/visual/city-mesh.webp")} alt="" />
+        <img className="cine-photo" src={withBase("/visual/city-mesh.webp")} alt="" width={1920} height={1080} fetchPriority="high" />
         <TechScene scene="hero" className="cine-overlay" />
         <div className="cine-copy container">
           <p className="eyebrow">Justech · Santo Domingo · Desde 2018</p>

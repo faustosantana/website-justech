@@ -180,15 +180,15 @@ export function Header() {
     <header className="site-header">
       <div className="container">
         <div className="header-utility">
-          <Link href="/" className="flex items-center gap-2 no-underline">
+          <Link href="/" className="brand-lockup" aria-label="Justech, inicio">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={withBase("/brand/justech-logo.png")}
-              alt="Justech"
-              width={150}
-              height={36}
-              className="h-9 w-auto"
+              src={withBase("/brand/justech-mark-white.png")}
+              alt=""
+              width={48}
+              height={32}
             />
+            <span>Justech</span>
           </Link>
 
           <div className="header-actions">
@@ -250,10 +250,10 @@ export function Header() {
             <MobileGroup title="Industrias" href="/industrias/" items={industryLinks} onNavigate={() => setOpen(false)} />
             <MobileGroup title="Recursos" href="/recursos/" items={recursosLinks} onNavigate={() => setOpen(false)} />
             <MobileGroup title="Nosotros" href="/nosotros/" items={aboutLinks} onNavigate={() => setOpen(false)} />
-            <Link href="/contacto/" className="min-h-11 py-3 font-semibold text-navy no-underline" onClick={() => setOpen(false)}>
+            <Link href="/contacto/" className="min-h-11 py-3 font-semibold no-underline" onClick={() => setOpen(false)}>
               Solicitar asesoría
             </Link>
-            <a href={company.supportUrl} className="min-h-11 py-3 text-teal no-underline">
+            <a href={company.supportUrl} className="min-h-11 py-3 no-underline">
               Portal de soporte
             </a>
           </nav>
@@ -275,16 +275,16 @@ function MobileGroup({
   onNavigate: () => void;
 }) {
   return (
-    <details className="border-b border-line py-2">
-      <summary className="cursor-pointer py-2 font-medium text-navy">{title}</summary>
-      <Link href={href} className="block min-h-11 py-2 text-sm text-teal no-underline" onClick={onNavigate}>
+    <details className="border-b border-white/10 py-2">
+      <summary className="cursor-pointer py-2 font-medium">{title}</summary>
+      <Link href={href} className="block min-h-11 py-2 text-sm no-underline" onClick={onNavigate}>
         Ver índice
       </Link>
       {items.map((item) => (
         <Link
           key={item.href}
           href={item.href}
-          className="flex min-h-11 items-center py-2 text-sm text-navy no-underline"
+          className="flex min-h-11 items-center py-2 text-sm no-underline"
           onClick={onNavigate}
         >
           {item.label}

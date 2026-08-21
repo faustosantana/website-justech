@@ -33,7 +33,7 @@ export function Flagship({
       <header className="cine-hero">
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img className="cine-photo" src={withBase(photo)} alt={photoAlt ?? ""} />
+          <img className="cine-photo" src={withBase(photo)} alt={photoAlt ?? ""} width={1600} height={900} fetchPriority="high" />
         ) : null}
         <TechScene scene={scene} className="cine-overlay" />
         <div className="cine-copy container">

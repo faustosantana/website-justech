@@ -160,9 +160,27 @@ h3,
   position: sticky;
   top: 0;
   z-index: 50;
-  background: color-mix(in srgb, var(--foam) 92%, white);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--navy) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(1.2);
+  border-bottom: 1px solid rgba(186, 198, 208, 0.16);
+  color: #e8eef3;
+}
+
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  color: #f3eee4;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-size: 1.15rem;
+}
+
+.brand-lockup img {
+  height: 28px;
+  width: auto;
 }
 
 .header-utility {
@@ -184,7 +202,7 @@ h3,
   align-items: stretch;
   flex-wrap: wrap;
   gap: 0.1rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(186, 198, 208, 0.14);
   padding: 0.15rem 0 0.35rem;
 }
 
@@ -194,9 +212,9 @@ h3,
   justify-content: center;
   min-height: 48px;
   padding: 0.55rem 1rem;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(232, 238, 243, 0.28);
   background: transparent;
-  color: var(--navy);
+  color: #f3eee4;
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -204,10 +222,15 @@ h3,
 
 .nav-mobile-panel {
   display: block;
-  border-top: 1px solid var(--line);
-  background: white;
+  border-top: 1px solid rgba(186, 198, 208, 0.14);
+  background: #07111d;
+  color: #e8eef3;
   max-height: min(78vh, 640px);
   overflow: auto;
+}
+
+.nav-mobile-panel a {
+  color: #e8eef3;
 }
 
 @media (min-width: 1024px) {
@@ -229,29 +252,29 @@ h3,
   font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none;
-  color: var(--navy);
+  color: #d5dee6;
 }
 
 .nav-link:hover,
 .nav-link[aria-current="page"] {
-  color: var(--teal);
+  color: var(--signal);
 }
 
 .nav-link-strong {
-  border: 1px solid var(--navy);
+  border: 1px solid transparent;
   padding-inline: 0.95rem;
-  background: var(--navy);
+  background: var(--teal);
   color: white;
 }
 
 .nav-link-strong:hover {
-  background: var(--teal);
-  border-color: var(--teal);
+  background: #0e7c88;
+  border-color: #0e7c88;
   color: white;
 }
 
 .nav-link-support {
-  color: var(--teal);
+  color: var(--teal-bright);
 }
 
 .nav-chevron {
@@ -259,7 +282,7 @@ h3,
   min-width: 28px;
   border: 0;
   background: transparent;
-  color: var(--navy);
+  color: #9eb0bb;
   cursor: pointer;
   font-size: 0.65rem;
 }
