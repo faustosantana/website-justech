@@ -38,7 +38,19 @@ Staging: export estático en `site/out`. Preview por túnel/Pages cuando el owne
 - Un foco dominante por viewport (beats, paquete de red, ticket, ciclo MSP).
 - Sin Three.js, sin video de fondo, sin partículas genéricas.
 
-## Autocrítica / pendientes reales
+## QA de laboratorio (este corte)
+
+| | Desktop home (`--preset=desktop`) | Mobile home (emulación Lighthouse) |
+| --- | --- | --- |
+| Performance | 100 | ~90 (LCP foto hero) |
+| Accessibility | 100 | 100 |
+| Best practices | 100 | — |
+| SEO | 69 (`noindex`, correcto) | 69 |
+| LCP | 0.7 s | ~3.3 s render delay de `city-mesh.webp` |
+| CLS | 0 | 0 |
+
+- Playwright **11/11**. axe AA serious = 0. Staging 146 HTML, banner, robots Disallow.
+- First Load JS home: **136 kB**. Canvas 2D; cero WebGL.
 
 - El long-tail `[slug]` sigue siendo ficha. No se expandieron rutas nuevas.
 - LCP móvil de laboratorio puede seguir por encima de 2.5 s por `city-mesh.webp`.
