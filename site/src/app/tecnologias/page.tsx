@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { Interior } from "@/components/Interior";
-import { technologyLinks } from "@/content/site";
+import { technologyCaps } from "@/content/capabilities";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
-  "Tecnologías empresariales",
-  "Plataformas de software e infraestructura con las que Justech licencia, implementa y da soporte.",
+  "Ecosistema tecnológico",
+  "Fabricantes y plataformas con las que Justech puede licenciar, suministrar o implementar. Sin partnership afirmado sin documentos.",
   "/tecnologias/",
 );
 
@@ -13,23 +13,20 @@ export default function Page() {
   return (
     <Interior
       eyebrow="Tecnologías"
-      title="Plataformas de uso empresarial"
-      lead="Licenciamiento, implementación y soporte sobre tecnologías que las organizaciones ya utilizan."
+      title="Nombres de fabricante, no sellos de alianza"
+      lead="Esta biblioteca queda lista para activar niveles de partnership cuando existan documentos. Mientras tanto, el trabajo se describe como suministro, licenciamiento, implementación o soporte."
       path="/tecnologias/"
-      crumbs={[
-        { href: "/", label: "Inicio" },
-        { href: "/tecnologias/", label: "Tecnologías" },
-      ]}
     >
-      <ul className="m-0 list-none p-0">
-        {technologyLinks.map((l) => (
-          <li key={l.href} className="border-b border-line py-3">
-            <Link href={l.href} className="text-lg text-navy no-underline">
-              {l.label}
-            </Link>
+      <ul className="ecosystem mt-0">
+        {technologyCaps.map((l) => (
+          <li key={l.href}>
+            <Link href={l.href}>{l.title}</Link>
           </li>
         ))}
       </ul>
+      <p className="text-sm text-muted">
+        Diferenciamos fabricante, distribuidor, reseller y alianza formal. Vender un producto no convierte a Justech en “partner oficial”.
+      </p>
     </Interior>
   );
 }

@@ -3,20 +3,19 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
   "Sistema de diseño",
-  "Tokens y componentes del preview de Justech. Página interna de staging.",
+  "Tokens y componentes v2 del preview de Justech.",
   "/sistema-de-diseno/",
 );
 
 const tokens = [
-  ["Navy", "#071525", "Hero, footer, banner"],
-  ["Navy 2", "#0c2340", "Degradado hero"],
-  ["Teal", "#0a5c64", "CTA y enlaces"],
-  ["Teal bright", "#3ec4d0", "Acento sobre navy"],
-  ["Paper", "#f6f3ec", "Fondos de sección"],
-  ["Foam", "#fbfaf7", "Fondo de página"],
-  ["Ink", "#1a2430", "Texto"],
-  ["Muted", "#4b5563", "Secundario"],
-  ["Line", "#d9d3c7", "Bordes"],
+  ["Navy", "#050d18", "Hero, footer, profundidad"],
+  ["Navy mid", "#0c2340", "Barra de confianza"],
+  ["Teal", "#0a5c64", "CTA sobre papel"],
+  ["Signal", "#5eead4", "Trazas sobre navy"],
+  ["Teal bright", "#3ec4d0", "Acento secundario"],
+  ["Paper", "#f3eee4", "Bandas de lectura"],
+  ["Foam", "#f7f4ee", "Fondo"],
+  ["Ink", "#121820", "Texto"],
 ];
 
 export default function Page() {
@@ -24,11 +23,11 @@ export default function Page() {
     <main id="contenido">
       <header className="page-hero">
         <div className="container">
-          <p className="eyebrow text-teal-bright">Fase C</p>
-          <h1>Sistema de diseño (staging)</h1>
+          <p className="eyebrow">Dirección v2</p>
+          <h1>La red que sostiene el negocio</h1>
           <p className="m-0 max-w-2xl text-[#c5d0d8]">
-            Referencia visual: IBM Plex Sans, navy, teal y papel. Escala tipográfica, radios
-            mínimos, sombras suaves y motion reducido.
+            IBM Plex Serif en titulares, Sans en cuerpo. Header de dos filas. Motion en
+            transform/opacity. Sin plantilla de tarjetas como unidad básica.
           </p>
         </div>
       </header>
@@ -54,17 +53,12 @@ export default function Page() {
             Ghost
           </a>
         </div>
-        <h2 className="mt-12">Tarjeta</h2>
-        <article className="card max-w-sm">
-          <h3>Licenciamiento</h3>
-          <p>Texto de apoyo en muted. Sin iconos decorativos obligatorios.</p>
-          <Link className="more" href="/soluciones/">
-            Ver oferta
-          </Link>
-        </article>
         <p className="mt-8 text-sm text-muted">
-          Espaciado: container 1160px. Botones min-height 48px. Mega menú desde 1024px.
-          Motion: 400ms; se anula con prefers-reduced-motion.
+          Container 1240px. Nav completa desde 1024px (el control Menú usa .nav-toggle).
+          Header de dos filas. Reduced motion anula canvas y revelados.
+        </p>
+        <p>
+          <Link href="/">Ver home</Link>
         </p>
       </div>
     </main>

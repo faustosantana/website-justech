@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-21 (dirección creativa v2)
+
+- Concepto “La red que sostiene el negocio”: navy `#050d18`, signal, Plex Serif.
+- Hero canvas 2D (infra/nube/usuarios/datos/seguridad/soporte) con SVG y reduced-motion.
+- Home narrativa completa (problemas, pestañas, ecosistema, catálogo, cableado, MSP, industrias, contacto).
+- IA: soluciones, servicios, productos, infraestructura física, industrias, 7 formularios, landings SEM.
+- Páginas de capacidad con problema, señales, alcance, proceso, FAQ y CTA. Sin partnership inventado.
+- Staging: noindex, robots Disallow, analítica apagada, forms simulados. No se toca www.
+
 ## 2026-08-21 (presentación enterprise)
 
 - UI pública sin `PENDIENTE_VALIDACION` ni tono defensivo.

@@ -1,23 +1,22 @@
 import { notFound } from "next/navigation";
 import { CapabilityPage } from "@/components/CapabilityPage";
-import { industryAliases, industryCaps, resolveIndustry } from "@/content/capabilities";
+import { findCap, productCaps } from "@/content/capabilities";
 import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
-  const slugs = new Set([...industryCaps.map((s) => s.slug), ...Object.keys(industryAliases)]);
-  return [...slugs].map((slug) => ({ slug }));
+  return productCaps.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const { cap } = resolveIndustry(slug);
+  const cap = findCap(productCaps, slug);
   if (!cap) return {};
   return pageMeta(cap.title, cap.seoDesc, cap.href);
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const { cap } = resolveIndustry(slug);
+  const cap = findCap(productCaps, slug);
   if (!cap) notFound();
   return <CapabilityPage cap={cap} />;
 }

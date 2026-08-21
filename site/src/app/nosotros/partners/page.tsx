@@ -17,8 +17,9 @@ export default function Page() {
       path="/nosotros/partners/"
     >
       <p>
-        Consulte el directorio de <Link href="/tecnologias/">tecnologías</Link> para ver las
-        plataformas con las que trabajamos en licenciamiento, implementación y soporte.
+        Consulte el directorio de <Link href="/tecnologias/">tecnologías</Link>. Allí se distingue
+        fabricante, canal y alianza formal. No se publican logos ni niveles de partnership sin
+        documento vigente.
       </p>
     </Interior>
   );

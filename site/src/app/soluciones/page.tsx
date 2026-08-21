@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { Interior } from "@/components/Interior";
-import { published, solutionCopy, solutions } from "@/content/site";
+import { solutionCaps } from "@/content/capabilities";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
   "Soluciones tecnológicas empresariales",
-  "Licenciamiento y equipamiento empresarial con Justech SRL en República Dominicana.",
+  "Modernización, continuidad, seguridad, colaboración, sucursales y proyectos llave en mano. Justech SRL, República Dominicana.",
   "/soluciones/",
 );
 
@@ -13,25 +13,27 @@ export default function Page() {
   return (
     <Interior
       eyebrow="Soluciones"
-      title="Tecnología al servicio de un resultado de negocio"
-      lead="Publicamos las líneas que ya operamos con organizaciones: software, licenciamiento y equipamiento empresarial."
+      title="Problemas de negocio, resueltos con tecnología operable"
+      lead="Cada solución describe un resultado —no un estante de productos. El suministro y el cableado entran cuando el diseño lo exige."
       path="/soluciones/"
       crumbs={[
         { href: "/", label: "Inicio" },
         { href: "/soluciones/", label: "Soluciones" },
       ]}
     >
-      <ul className="grid-cards list-none p-0">
-        {published(solutions).map((s) => (
-          <li key={s.href} className="card">
-            <h2>{s.label}</h2>
-            <p>{solutionCopy[s.href]}</p>
-            <Link className="more" href={s.href}>
-              Conocer más
-            </Link>
+      <ol className="m-0 list-none p-0">
+        {solutionCaps.map((s, i) => (
+          <li key={s.href} className="border-b border-line py-6">
+            <p className="eyebrow m-0">{String(i + 1).padStart(2, "0")}</p>
+            <h2 className="mt-2 mb-2">
+              <Link href={s.href} className="text-navy no-underline">
+                {s.title}
+              </Link>
+            </h2>
+            <p className="mb-0 text-muted">{s.lead}</p>
           </li>
         ))}
-      </ul>
+      </ol>
     </Interior>
   );
 }

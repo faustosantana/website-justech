@@ -7,7 +7,10 @@ export type ConversionEvent =
   | "generate_lead"
   | "contact_submit"
   | "cta_specialist"
-  | "support_portal";
+  | "support_portal"
+  | "quote_request"
+  | "site_survey"
+  | "diagnosis_request";
 
 export function track(event: ConversionEvent, params?: Record<string, string>) {
   if (!ANALYTICS_ENABLED) return;

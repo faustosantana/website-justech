@@ -8,9 +8,9 @@ Fuente oficial: `faustosantana/website-justech`. Producción `www.justech.do` **
 | --- | --- | --- |
 | A | Auditoría de producción | Hecha — `docs/fase-a/` |
 | B | Estrategia, sitemap, SEO, staging | Hecha — `docs/fase-b/` |
-| C | Design system + preview | Base aprobada; refinada a tono enterprise |
-| D | Home y páginas públicas | Home premium + nav pública solo con oferta confirmada |
-| E | Calidad staging | Lighthouse a11y/perf 1.00 — `docs/fase-c/pruebas.md` |
+| C | Design system + preview | v2 — red operativa, no plantilla de tarjetas |
+| D | Home y páginas públicas | Home evolucionado + arquitectura comercial completa |
+| E | Calidad staging | Re-medir Lighthouse / a11y en esta iteración |
 | F | Cutover a www | **Bloqueado** |
 
 ## Preview
@@ -21,7 +21,9 @@ Capturas: `docs/fase-c/captures/`. Detalle: `docs/fase-c/preview.md`.
 
 ## Navegable (sin etiquetas internas)
 
-Home, Soluciones (licenciamiento, equipos), Servicios (soporte, implants, consultoría, implementación), Nosotros, FAQs, Contacto (simulado), Soporte, Tecnologías (sin logos ni partnership), Legal, landing `/l/consulta/`.
+Home v2, Soluciones, Servicios, Productos, Infraestructura física, Industrias, Tecnologías, Nosotros, FAQs, Contacto por intención, Soporte, Legal, landings `/l/*`.
+
+Detalle: `docs/fase-c/iteracion-v2.md`.
 
 ## Bloqueos reales
 

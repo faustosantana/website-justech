@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans } from "next/font/google";
+import { IBM_Plex_Sans, IBM_Plex_Serif } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { Footer } from "@/components/Footer";
 import { StagingBanner } from "@/components/Flags";
@@ -14,16 +14,23 @@ const ibmPlex = IBM_Plex_Sans({
   variable: "--font-ibm-plex",
 });
 
+const ibmSerif = IBM_Plex_Serif({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+  variable: "--font-ibm-serif",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4173",
   ),
   title: {
-    default: "Justech SRL · Tecnología empresarial en República Dominicana",
+    default: "Justech SRL · Integradora tecnológica en República Dominicana",
     template: "%s · Justech SRL",
   },
   description:
-    "Diseñamos, implementamos y gestionamos infraestructura, soporte, licenciamiento y equipos para organizaciones que no pueden detenerse.",
+    "Justech evalúa, diseña, suministra, implementa y opera infraestructura, software, cableado y soporte para organizaciones que no pueden detenerse.",
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
   openGraph: {
     locale: "es_DO",
@@ -32,9 +39,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Justech SRL · Tecnología empresarial en República Dominicana",
+    title: "Justech SRL · Integradora tecnológica en República Dominicana",
     description:
-      "Diseñamos, implementamos y gestionamos infraestructura, soporte, licenciamiento y equipos para organizaciones.",
+      "Infraestructura, software, cableado y soporte con un responsable de extremo a extremo.",
   },
 };
 
@@ -58,7 +65,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es-DO" className={ibmPlex.variable}>
+    <html lang="es-DO" className={`${ibmPlex.variable} ${ibmSerif.variable}`}>
       <body className="font-sans antialiased">
         <script
           type="application/ld+json"

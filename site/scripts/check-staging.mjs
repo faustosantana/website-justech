@@ -95,12 +95,16 @@ if (noindexCount < htmlCount) {
 const requiredRoutes = [
   "/index.html",
   "/contacto/index.html",
+  "/contacto/cotizacion/index.html",
   "/legal/index.html",
   "/soluciones/index.html",
   "/servicios/index.html",
+  "/productos/index.html",
+  "/infraestructura-fisica/index.html",
   "/nosotros/index.html",
   "/recursos/faqs/index.html",
   "/l/consulta/index.html",
+  "/l/cableado-estructurado/index.html",
   "/robots.txt",
 ];
 for (const route of requiredRoutes) {
