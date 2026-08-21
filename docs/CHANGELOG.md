@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-21 (presentación enterprise)
+
+- UI pública sin `PENDIENTE_VALIDACION` ni tono defensivo.
+- Hero con composición SVG, hechos confirmados, nav a11y y hamburger solo <1024px.
+- Home: resultados, capacidades, método, escenarios, plataformas, soporte.
+- Tecnologías (Microsoft, Huawei, Lenovo, Dell, HP, AWS, Cisco, Fortinet, Adobe, Action1, Google) sin logos ni partnership.
+- Landing SEM `/l/consulta/`, breadcrumbs, sitemap estático (no enviado a GSC).
+- TrustSlots desactivados. Capturas en `docs/fase-c/captures/`.
+
 ## 2026-08-21 (páginas D, tests, Pages)
 
 - Sitemap D: industrias, tecnologías, casos, equipo, partners, recursos.

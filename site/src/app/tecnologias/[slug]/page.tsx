@@ -2,7 +2,9 @@ import { Interior } from "@/components/Interior";
 import { technologyLinks } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
-const pages = Object.fromEntries(technologyLinks.map((l) => [l.href.split("/").filter(Boolean).pop()!, l]));
+const pages = Object.fromEntries(
+  technologyLinks.map((l) => [l.href.split("/").filter(Boolean).pop()!, l]),
+);
 
 export function generateStaticParams() {
   return Object.keys(pages).map((slug) => ({ slug }));
@@ -14,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!p) return {};
   return pageMeta(
     p.label,
-    `${p.label}: ficha de tecnología en validación. Justech no afirma partnership certificado en este preview.`,
+    `Licenciamiento e implementación de tecnologías ${p.label} para organizaciones, con Justech SRL.`,
     p.href,
   );
 }
@@ -27,12 +29,17 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     <Interior
       eyebrow="Tecnologías"
       title={p.label}
-      lead="Ficha reservada. Sin logo de fabricante, sin nivel Gold/Silver y sin cifra de proyectos."
-      pending
+      lead={`Acompañamos la adopción, renovación y operación de tecnologías ${p.label} según el requerimiento de cada organización.`}
+      path={p.href}
+      crumbs={[
+        { href: "/", label: "Inicio" },
+        { href: "/tecnologias/", label: "Tecnologías" },
+        { href: p.href, label: p.label },
+      ]}
     >
       <p>
-        Cuando comercial entregue designation vigente y permiso de marca, esta página describirá
-        el alcance real (licenciamiento, implementación o soporte).
+        El trabajo típico incluye licenciamiento, puesta en marcha y soporte. El alcance se
+        define caso a caso, con responsables y un plan que la operación pueda sostener.
       </p>
     </Interior>
   );

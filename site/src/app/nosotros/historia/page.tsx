@@ -12,12 +12,13 @@ export default function Page() {
     <Interior
       eyebrow="Nosotros"
       title="Historia y propósito"
-      lead="2018, Santo Domingo. Un equipo que había enfrentado los mismos retos de las empresas a las que sirve."
+      lead="Desde 2018 en Santo Domingo, Justech conecta el requerimiento tecnológico con una solución que la operación puede sostener."
+      path="/nosotros/historia/"
     >
       <p>
-        Misión publicada: ser su aliado estratégico en materia de tecnología. Visión
-        publicada: ser primera opción nacional cuando hay un requerimiento tecnológico —
-        ambición, no un ranking verificado.
+        La misión de la empresa es ser aliado estratégico en materia de tecnología. La visión
+        es ser la primera opción cuando una organización necesita ejecutar un requerimiento
+        tecnológico con cercanía y rigor.
       </p>
     </Interior>
   );

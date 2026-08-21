@@ -10,9 +10,9 @@ Este repositorio partió vacío. La producción actual vive en WordPress (tema T
 | --- | --- | --- |
 | A | Descubrimiento | Hecha — `docs/fase-a/` |
 | B | Estrategia | Hecha — `docs/fase-b/` |
-| C | Design system + preview | Hecha en código — `docs/fase-c/`, `/sistema-de-diseno/` |
-| D | Desarrollo del sitio nuevo | Home + páginas P y stubs D en `site/` |
-| E | Validación | `npm run test:staging` + lint/build |
+| C | Design system + preview | Base aprobada; refinada a tono enterprise |
+| D | Desarrollo del sitio nuevo | Home premium; nav pública solo con oferta confirmada |
+| E | Validación | Lighthouse a11y/perf 1.00 — `docs/fase-c/pruebas.md` |
 | F | Lanzamiento | Bloqueado a autorización |
 
 ## Incidente P0 (producción)

@@ -4,7 +4,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
   "Cumplimiento y confianza",
-  "Centro legal de Justech SRL y límites de lo que este sitio afirma.",
+  "Políticas y documentos públicos de Justech SRL.",
   "/nosotros/cumplimiento/",
 );
 
@@ -13,15 +13,13 @@ export default function Page() {
     <Interior
       eyebrow="Nosotros"
       title="Cumplimiento y confianza"
-      lead="Las políticas públicas de julio 2026 son la base. Este preview no replica el incidente de producción en /legal/."
+      lead="Las políticas públicas de Justech describen cómo tratamos la información, el soporte y la continuidad."
+      path="/nosotros/cumplimiento/"
     >
       <p>
-        Consulte el <Link href="/legal/">centro legal de este sitio</Link>. Los documentos
-        auténticos vigentes también están en las URLs largas de justech.do (privacidad,
-        cookies, SLA, canales). La URL de producción /legal/ estuvo comprometida: no la
-        usamos como fuente.
+        Consulte el <Link href="/legal/">centro legal</Link> y las políticas de privacidad,
+        cookies, seguridad de la información, contingencia y nivel de servicio.
       </p>
-      <p>No se afirman ISO, premios ni partnerships no verificados.</p>
     </Interior>
   );
 }

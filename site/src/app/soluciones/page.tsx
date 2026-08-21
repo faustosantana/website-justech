@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { Interior } from "@/components/Interior";
-import { Pending } from "@/components/Flags";
-import { solutions } from "@/content/site";
+import { published, solutionCopy, solutions } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
-  "Soluciones",
-  "Licenciamiento, equipos y capacidades en validación para empresas en República Dominicana.",
+  "Soluciones tecnológicas empresariales",
+  "Licenciamiento y equipamiento empresarial con Justech SRL en República Dominicana.",
   "/soluciones/",
 );
 
@@ -15,15 +14,20 @@ export default function Page() {
     <Interior
       eyebrow="Soluciones"
       title="Tecnología al servicio de un resultado de negocio"
-      lead="Publicamos primero lo que el sitio actual ya ofrece. El resto aparece como pendiente de validación, no como catálogo inventado."
+      lead="Publicamos las líneas que ya operamos con organizaciones: software, licenciamiento y equipamiento empresarial."
+      path="/soluciones/"
+      crumbs={[
+        { href: "/", label: "Inicio" },
+        { href: "/soluciones/", label: "Soluciones" },
+      ]}
     >
       <ul className="grid-cards list-none p-0">
-        {solutions.map((s) => (
+        {published(solutions).map((s) => (
           <li key={s.href} className="card">
             <h2>{s.label}</h2>
-            {s.pending ? <Pending>oferta</Pending> : <p>Oferta activa en este preview.</p>}
+            <p>{solutionCopy[s.href]}</p>
             <Link className="more" href={s.href}>
-              Abrir
+              Conocer más
             </Link>
           </li>
         ))}

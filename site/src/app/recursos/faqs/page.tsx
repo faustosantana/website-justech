@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
   "Preguntas frecuentes",
-  "Respuestas operativas de Justech SRL, sin relleno.",
+  "Soporte, horarios, cotizaciones y canales de Justech SRL.",
   "/recursos/faqs/",
 );
 
@@ -12,22 +12,35 @@ export default function Page() {
     <Interior
       eyebrow="Recursos"
       title="Preguntas frecuentes"
-      lead="Extraídas de los documentos públicos de julio 2026 y de la operación visible. Nada de FAQ inventado para Google."
+      lead="Respuestas operativas para quien evalúa o ya trabaja con Justech."
+      path="/recursos/faqs/"
+      crumbs={[
+        { href: "/", label: "Inicio" },
+        { href: "/recursos/", label: "Recursos" },
+        { href: "/recursos/faqs/", label: "Preguntas frecuentes" },
+      ]}
     >
       <h2>¿Cómo abro un caso de soporte?</h2>
       <p>
-        Portal soporte.justech.do, correo de soporte o teléfono publicado. Incluya impacto,
-        hora de inicio y evidencias.
+        Desde el portal soporte.justech.do, por correo de soporte o por el teléfono publicado.
+        Incluya impacto, hora de inicio y evidencias.
       </p>
-      <h2>¿El soporte es 24/7?</h2>
+      <h2>¿Cuál es el horario de atención?</h2>
       <p>
-        El horario público es laboral, lunes a viernes. Fuera de horario se registra para el
-        siguiente día hábil, salvo emergencia contractual.
+        Lunes a viernes, de 8:00 a 17:30, hora de República Dominicana. Fuera de ese horario el
+        caso queda registrado para el siguiente día hábil, salvo que el contrato contemple
+        otra cobertura.
       </p>
-      <h2>¿Justech es partner Gold de Microsoft o Fortinet?</h2>
-      <p>No lo afirmamos en este sitio hasta tener designation vigente.</p>
       <h2>¿Puedo comprar en línea?</h2>
-      <p>No. Las cotizaciones son B2B, no hay carrito.</p>
+      <p>
+        Las cotizaciones son B2B. Un especialista arma la propuesta según inventario, plazos y
+        usuarios.
+      </p>
+      <h2>¿El soporte y las ventas usan el mismo canal?</h2>
+      <p>
+        No. Los clientes actuales usan el portal de soporte. Los requerimientos nuevos entran
+        por contacto comercial.
+      </p>
     </Interior>
   );
 }

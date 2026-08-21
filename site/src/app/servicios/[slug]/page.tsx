@@ -28,7 +28,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const p = pages[slug];
   if (!p) return {};
-  return pageMeta(p.title, `${p.title}: en validación.`, p.path);
+  return pageMeta(
+    p.title,
+    `${p.title}. Justech atiende el requerimiento desde consultoría e implementación.`,
+    p.path,
+  );
 }
 
 export default async function Page({
@@ -40,8 +44,21 @@ export default async function Page({
   const p = pages[slug];
   if (!p) return null;
   return (
-    <Interior eyebrow="Servicios" title={p.title} lead="URL reservada. Copy comercial pendiente de validación." pending>
-      <p>No se ofrece como paquete cerrado en este preview.</p>
+    <Interior
+      eyebrow="Servicios"
+      title={p.title}
+      lead="Describa el resultado que necesita. Un especialista propone el alcance."
+      path={p.path}
+      crumbs={[
+        { href: "/", label: "Inicio" },
+        { href: "/servicios/", label: "Servicios" },
+        { href: p.path, label: p.title },
+      ]}
+    >
+      <p>
+        Esta conversación se atiende con el mismo rigor que el resto de nuestros servicios:
+        responsables, plazos y un plan que la operación pueda sostener.
+      </p>
     </Interior>
   );
 }

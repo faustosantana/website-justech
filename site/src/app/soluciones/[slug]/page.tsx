@@ -36,7 +36,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const p = pages[slug];
   if (!p) return {};
-  return pageMeta(p.title, `${p.title}: contenido en validación comercial.`, p.path);
+  return pageMeta(
+    p.title,
+    `${p.title} para organizaciones. Justech evalúa el alcance con consultoría e implementación.`,
+    p.path,
+  );
 }
 
 export default async function Page({
@@ -51,12 +55,17 @@ export default async function Page({
     <Interior
       eyebrow="Soluciones"
       title={p.title}
-      lead="Esta línea aparece en credenciales internas. No se vende aquí como partnership ni como oferta cerrada hasta validación."
-      pending
+      lead="Cuéntenos el requerimiento. Evaluamos el alcance junto a consultoría e implementación."
+      path={p.path}
+      crumbs={[
+        { href: "/", label: "Inicio" },
+        { href: "/soluciones/", label: "Soluciones" },
+        { href: p.path, label: p.title },
+      ]}
     >
       <p>
-        Si su requerimiento encaja, escríbanos: lo trataremos por consultoría o
-        implementación, sin inventar un catálogo.
+        Cada organización llega con un contexto distinto. Un especialista de Justech le ayuda a
+        definir el camino más apropiado, sin un paquete rígido.
       </p>
     </Interior>
   );

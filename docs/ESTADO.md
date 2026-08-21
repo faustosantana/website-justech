@@ -1,6 +1,6 @@
 # Estado del proyecto — Justech web nueva
 
-Fuente oficial: `faustosantana/website-justech`. Producción `www.justech.do` **no se modifica** desde este trabajo.
+Fuente oficial: `faustosantana/website-justech`. Producción `www.justech.do` **no se modifica**.
 
 ## Fases
 
@@ -8,37 +8,25 @@ Fuente oficial: `faustosantana/website-justech`. Producción `www.justech.do` **
 | --- | --- | --- |
 | A | Auditoría de producción | Hecha — `docs/fase-a/` |
 | B | Estrategia, sitemap, SEO, staging | Hecha — `docs/fase-b/` |
-| C | Design system + wireframes + preview | Hecha en código — `docs/fase-c/`, `/sistema-de-diseno/` |
-| D | Home, nav, páginas P y stubs D | Hecha en `site/` (copy provisional) |
-| E | SEO técnico staging, a11y, rendimiento, seguridad, analítica off, forms simulados, pruebas | Checks OK — `docs/fase-c/pruebas.md` |
-| F | Cutover a www | **Bloqueado** — requiere su autorización |
+| C | Design system + preview | Base aprobada; refinada a tono enterprise |
+| D | Home y páginas públicas | Home premium + nav pública solo con oferta confirmada |
+| E | Calidad staging | Lighthouse a11y/perf 1.00 — `docs/fase-c/pruebas.md` |
+| F | Cutover a www | **Bloqueado** |
 
 ## Preview
 
-Ver URL vigente en `docs/fase-c/preview.md`. El túnel Cloudflare es temporal. GitHub Pages / Vercel son la vía durable (repo público, sin tocar DNS de justech.do).
+https://buf-courage-glossary-designation.trycloudflare.com/
 
-## Qué hay navegable
+Capturas: `docs/fase-c/captures/`. Detalle: `docs/fase-c/preview.md`.
 
-- Home responsive, hero, metodología, valores, CTA.
-- Soluciones y servicios (oferta actual + fichas `PENDIENTE_VALIDACION`).
-- Nosotros (historia, metodología, cumplimiento; equipo/partners vacíos a propósito).
-- Recursos (FAQs reales; blog/guías reservados).
-- Industrias y tecnologías: arquitectura SEO, sin logos ni especialidades inventadas.
-- Casos: índice vacío.
-- Contacto: formulario **simulado**.
-- Centro legal limpio (no clona el spam de producción `/legal/`).
-- Banner de staging, `noindex`, `robots.txt` Disallow:/, sin GA/GTM/Pixel.
+## Navegable (sin etiquetas internas)
 
-## Contenido que no se publica todavía
+Home, Soluciones (licenciamiento, equipos), Servicios (soporte, implants, consultoría, implementación), Nosotros, FAQs, Contacto (simulado), Soporte, Tecnologías (sin logos ni partnership), Legal, landing `/l/consulta/`.
 
-Todo lo marcado `PENDIENTE_VALIDACION` y la lista `docs/PENDIENTES_CONTENIDO.md` (C03–C16, C19, C22, etc.).
+## Bloqueos reales
 
-## Bloqueos que sí requieren a una persona
-
-1. Importar el repo en **Vercel** (un clic; usa `vercel.json` de la raíz) **o** en GitHub: Settings → Pages → Source = GitHub Actions. Sin token de PaaS no puedo crear el proyecto Vercel ni activar Pages yo mismo. El túnel actual sirve mientras este preview viva.
-2. Rotar la clave FTPS que circuló en el chat y enjaular esa cuenta.
-3. Autorizar el plan de limpieza de `/legal/` **con backup**, si va a tocar producción.
-4. Validar copy, logos, partners, cifras, correo canónico, WhatsApp, RNC y dirección.
+1. Vercel import o GitHub Pages (Settings → Pages → Actions). Actions no puede crear Pages (403).
+2. Rotar FTPS y enjaular la cuenta.
+3. Limpieza de `/legal/` en producción, con backup y autorización.
+4. Validar logos, partners, cifras, correo comercial, WhatsApp, RNC, dirección, testimonios.
 5. Cutover DNS / sustituir www.
-
-Nada de lo anterior detiene el desarrollo en Git.

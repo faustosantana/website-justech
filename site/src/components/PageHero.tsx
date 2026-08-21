@@ -1,28 +1,20 @@
 import Link from "next/link";
-import { Pending } from "./Flags";
 
 export function PageHero({
   eyebrow,
   title,
   lead,
-  pending,
 }: {
   eyebrow?: string;
   title: string;
   lead: string;
-  pending?: boolean;
 }) {
   return (
     <header className="page-hero">
       <div className="container">
-        {eyebrow ? <p className="eyebrow text-teal-bright">{eyebrow}</p> : null}
+        {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
         <h1>{title}</h1>
-        <p className="prose m-0 text-[1.05rem] text-[#c5d0d8]">{lead}</p>
-        {pending ? (
-          <p className="mt-4">
-            <Pending>copy y alcance</Pending>
-          </p>
-        ) : null}
+        <p className="lead m-0 max-w-2xl">{lead}</p>
       </div>
     </header>
   );
@@ -30,12 +22,12 @@ export function PageHero({
 
 export function CtaBand() {
   return (
-    <section className="mt-16 bg-navy py-14 text-white">
-      <div className="container flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+    <section className="cta-band">
+      <div className="container flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
         <div>
-          <p className="eyebrow text-teal-bright">Siguiente paso</p>
-          <h2 className="mt-2 mb-0 text-2xl tracking-tight">
-            Cuéntenos el requerimiento. Nosotros armamos el camino.
+          <p className="eyebrow">Siguiente conversación</p>
+          <h2 className="mt-3 mb-0 max-w-xl text-3xl tracking-tight">
+            Cuéntenos el requerimiento. Construimos el camino con claridad.
           </h2>
         </div>
         <div className="flex flex-wrap gap-3">

@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { Interior } from "@/components/Interior";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
-  "Partners",
-  "Justech no publica partnerships hasta inventario de vigencia y autorización de logo.",
+  "Alianzas tecnológicas",
+  "Justech trabaja con las plataformas que su organización necesita. Santo Domingo.",
   "/nosotros/partners/",
 );
 
@@ -11,13 +12,13 @@ export default function Page() {
   return (
     <Interior
       eyebrow="Nosotros"
-      title="Partners y fabricantes"
-      lead="Comercializar una marca no es lo mismo que ser partner certificado. Esta página permanece vacía a propósito."
-      pending
+      title="Plataformas y fabricantes"
+      lead="Implementamos y licenciamos tecnologías empresariales según el requerimiento."
+      path="/nosotros/partners/"
     >
       <p>
-        El muro de logos del WordPress actual no se copia. Ver también Tecnologías: fichas sin
-        badges.
+        Consulte el directorio de <Link href="/tecnologias/">tecnologías</Link> para ver las
+        plataformas con las que trabajamos en licenciamiento, implementación y soporte.
       </p>
     </Interior>
   );

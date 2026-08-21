@@ -4,7 +4,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
   "Soporte",
-  "Portal de soporte Justech separado de ventas.",
+  "Portal de soporte de Justech SRL para clientes actuales.",
   "/soporte/",
 );
 
@@ -12,8 +12,9 @@ export default function Page() {
   return (
     <Interior
       eyebrow="Soporte"
-      title="Clientes actuales: usen el portal"
-      lead="El soporte no es un formulario de marketing. Los tickets viven en el portal de Justech."
+      title="Portal para clientes actuales"
+      lead="Los tickets se gestionan en el portal de Justech, separado del contacto comercial."
+      path="/soporte/"
     >
       <p>
         <a className="btn btn-primary" href={company.supportUrl}>
@@ -21,9 +22,8 @@ export default function Page() {
         </a>
       </p>
       <p>
-        Canales y horario: véase{" "}
-        <a href="/canales-de-asistencia/">Canales de asistencia</a>. El selector de bases
-        Odoo no forma parte de esta experiencia y no se enlaza a propósito.
+        Horario: {company.hours}. Canales adicionales en{" "}
+        <a href="/canales-de-asistencia/">Canales de asistencia</a>.
       </p>
     </Interior>
   );

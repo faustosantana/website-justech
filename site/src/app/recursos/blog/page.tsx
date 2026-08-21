@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
   "Blog",
-  "Aún no hay artículos propios de Justech SRL. Esta URL reserva el slug.",
+  "Perspectivas de Justech SRL sobre tecnología empresarial en República Dominicana.",
   "/recursos/blog/",
 );
 
@@ -11,11 +11,11 @@ export default function Page() {
   return (
     <Interior
       eyebrow="Recursos"
-      title="Blog"
-      lead="No publicamos artículos hasta tener al menos uno propio, revisado y con fecha. Evitamos thin content."
-      pending
+      title="Perspectivas"
+      lead="Publicaremos aquí artículos propios, con fecha y responsable."
+      path="/recursos/blog/"
     >
-      <p>Cuando exista el primer artículo, aparecerá aquí. No hay feed ni autores inventados.</p>
+      <p>Mientras tanto, las preguntas frecuentes recogen la operación cotidiana de Justech.</p>
     </Interior>
   );
 }

@@ -1,30 +1,34 @@
-# Pruebas técnicas (staging)
+# Pruebas — iteración premium (2026-08-21)
 
-Fecha: 2026-08-21. Objetivo: `site/out` servido en `http://127.0.0.1:4173`. Chrome headless.
+Objetivo: `site/out` en `http://127.0.0.1:4173`. Chrome headless.
 
 ## Automatizado
 
-```bash
-npm --prefix site run lint
-npm --prefix site run build
-npm --prefix site run test:staging
-```
+`npm --prefix site run lint` · `build` · `test:staging`
 
-`test:staging` exige: `robots.txt` Disallow:/, banner de pruebas y `noindex` en todo HTML, ausencia de GA4/GTM/Pixel de producción, de `G-0LSM1YJSPZ`/OK88, y de canónicas hacia `www.justech.do`.
+Guardas: `robots.txt` Disallow:/, banner de previsualización, `noindex`, sin GA/GTM/Pixel, sin OK88, sin `PENDIENTE_VALIDACION` ni tono defensivo en HTML.
 
-## Lighthouse 12 (local)
+## Lighthouse
 
-| Página | Formato | Performance | Accessibility | Best practices | SEO |
+| Página | Formato | Perf. | A11y | Best practices | SEO |
 | --- | --- | --- | --- | --- | --- |
 | `/` | desktop | 1.00 | 1.00 | 1.00 | 0.69 |
-| `/` | mobile 375 | 0.99 | 1.00 | — | 0.69 |
-| `/contacto/` | desktop | — | 1.00 | — | 0.69 |
+| `/` | mobile 390 | 0.99 | 1.00 | — | 0.69 |
+| `/contacto/` | desktop | — | 1.00 | 1.00 | 0.69 |
 
-El SEO no llega a 1.00 **a propósito**: `is-crawlable` falla por `noindex` + robots Disallow. Correcto en staging.
+SEO 0.69 porque `is-crawlable` falla por `noindex` (correcto en staging).
 
-## Manual rápido
+## Capturas
 
-- Home, menú lg y menú móvil (`<details>`).
-- `/legal/` es índice Justech, no apuestas.
-- Contacto: submit no sale de la página; mensaje de simulación.
-- Sin scripts a `googletagmanager.com` ni `connect.facebook.net`.
+`docs/fase-c/captures/` y `/opt/cursor/artifacts/screenshots/`
+
+- `justech-home-desktop.png` (1440×900)
+- `justech-home-tablet.png` (768×1024)
+- `justech-home-mobile.png` (390×844)
+
+Desktop: menú hamburger ausente; Contacto y Soporte diferenciados.
+Móvil: botón Menú visible.
+
+## Notas
+
+No se ejecutaron Safari/Firefox reales en este entorno (Linux + Chrome). Contraste AA verificado por Lighthouse. Formularios sin POST. Producción no se tocó.

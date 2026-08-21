@@ -1,7 +1,8 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { Pending } from "./Flags";
+import { company } from "@/content/site";
+import { track } from "@/lib/events";
 
 const motives = [
   "Soporte técnico",
@@ -13,31 +14,31 @@ const motives = [
   "Otro",
 ];
 
-export function ContactForm() {
+export function ContactForm({ landing = "/contacto/" }: { landing?: string }) {
   const [sent, setSent] = useState(false);
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    track("contact_submit", { landing });
     setSent(true);
   }
 
   if (sent) {
     return (
       <div className="notice" role="status">
-        <p className="mt-0 font-semibold">Simulación registrada en este navegador.</p>
-        <p>
-          En staging no se envía correo ni se crea oportunidad en CRM. Cuando producción
-          esté autorizada, este flujo irá a {`info@justech.do`} / Odoo.
+        <p className="mt-0 font-semibold">Mensaje registrado en este entorno de prueba.</p>
+        <p className="mb-0">
+          En el sitio público, un especialista responderá a {company.email}. Aquí no se envía
+          correo ni se crea un caso.
         </p>
-        <Pending>formulario de prueba</Pending>
       </div>
     );
   }
 
   return (
-    <form className="form-grid" onSubmit={onSubmit} noValidate={false}>
+    <form className="form-grid" onSubmit={onSubmit}>
       <p className="notice m-0 text-sm">
-        <Pending /> Este formulario no transmite datos. Es una prueba de interfaz.
+        Formulario de demostración: los datos permanecen en su navegador.
       </p>
       <label>
         Nombre
@@ -73,16 +74,16 @@ export function ContactForm() {
       <input type="hidden" name="utm_source" defaultValue="" />
       <input type="hidden" name="utm_medium" defaultValue="" />
       <input type="hidden" name="utm_campaign" defaultValue="" />
-      <input type="hidden" name="landing" defaultValue="/contacto/" />
+      <input type="hidden" name="landing" defaultValue={landing} />
       <label className="flex items-start gap-2 font-normal">
-        <input type="checkbox" required className="mt-1" />
+        <input type="checkbox" required className="mt-1" name="consent" />
         <span>
-          Acepto el tratamiento de datos según la política de privacidad (simulado en
-          staging).
+          Acepto el tratamiento de datos según la{" "}
+          <a href="/politica-de-privacidad/">política de privacidad</a>.
         </span>
       </label>
       <button className="btn btn-primary max-w-xs" type="submit">
-        Enviar (simulado)
+        Enviar mensaje
       </button>
     </form>
   );

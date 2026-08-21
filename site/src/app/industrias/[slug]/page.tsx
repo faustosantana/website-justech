@@ -2,7 +2,9 @@ import { Interior } from "@/components/Interior";
 import { industryLinks } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
-const pages = Object.fromEntries(industryLinks.map((l) => [l.href.split("/").filter(Boolean).pop()!, l]));
+const pages = Object.fromEntries(
+  industryLinks.map((l) => [l.href.split("/").filter(Boolean).pop()!, l]),
+);
 
 export function generateStaticParams() {
   return Object.keys(pages).map((slug) => ({ slug }));
@@ -12,7 +14,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const p = pages[slug];
   if (!p) return {};
-  return pageMeta(p.label, `${p.label}: vertical en validación. Justech no la afirma como especialidad publicada.`, p.href);
+  return pageMeta(
+    p.label,
+    `Tecnología empresarial para organizaciones de ${p.label.toLowerCase()}. Justech SRL, Santo Domingo.`,
+    p.href,
+  );
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -21,14 +27,19 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (!p) return null;
   return (
     <Interior
-      eyebrow="Industrias"
+      eyebrow="Escenarios"
       title={p.label}
-      lead="Página reservada en el sitemap. El copy comercial se escribe cuando exista evidencia de trabajo en este vertical."
-      pending
+      lead="Describa el requerimiento operativo. Evaluamos licenciamiento, equipos, implementación y soporte según su contexto."
+      path={p.href}
+      crumbs={[
+        { href: "/", label: "Inicio" },
+        { href: "/industrias/", label: "Industrias" },
+        { href: p.href, label: p.label },
+      ]}
     >
       <p>
-        Si su organización opera en este sector, escríbanos el requerimiento. No inventamos casos,
-        SLAs ni clientes de referencia.
+        Cada sector tiene restricciones distintas. Justech parte del resultado de negocio y
+        propone la tecnología que la operación puede sostener.
       </p>
     </Interior>
   );

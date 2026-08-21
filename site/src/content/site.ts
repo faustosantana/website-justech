@@ -1,5 +1,15 @@
 export const STAGE = "staging" as const;
 
+/** Gates internas. No renderizar bloques públicos hasta que pasen a true. */
+export const GATES = {
+  clients: false,
+  partners: false,
+  certifications: false,
+  metrics: false,
+  caseStudies: false,
+  testimonials: false,
+} as const;
+
 export const company = {
   legalName: "Justech SRL",
   shortName: "Justech",
@@ -9,15 +19,19 @@ export const company = {
   phoneDisplay: "+1 809 455 2372",
   phoneTel: "+18094552372",
   email: "info@justech.do",
-  emailSalesPending: "ventas@justech.do",
   supportUrl: "https://soporte.justech.do",
   supportEmail: "soporte@justech.do",
   facebook: "https://www.facebook.com/justechrd",
   instagram: "https://www.instagram.com/justechrd",
   production: "https://www.justech.do",
+  hours: "Lunes a viernes, 8:00–17:30 (hora de República Dominicana)",
 };
 
 export type NavChild = { href: string; label: string; pending?: boolean };
+
+export function published<T extends { pending?: boolean }>(items: T[]): T[] {
+  return items.filter((item) => !item.pending);
+}
 
 export const recursosLinks: NavChild[] = [
   { href: "/recursos/", label: "Centro de recursos" },
@@ -37,13 +51,17 @@ export const industryLinks: NavChild[] = [
 ];
 
 export const technologyLinks: NavChild[] = [
-  { href: "/tecnologias/microsoft/", label: "Microsoft", pending: true },
-  { href: "/tecnologias/google/", label: "Google", pending: true },
-  { href: "/tecnologias/huawei/", label: "Huawei", pending: true },
-  { href: "/tecnologias/aws/", label: "AWS", pending: true },
-  { href: "/tecnologias/cisco/", label: "Cisco", pending: true },
-  { href: "/tecnologias/fortinet/", label: "Fortinet", pending: true },
-  { href: "/tecnologias/action1/", label: "Action1", pending: true },
+  { href: "/tecnologias/microsoft/", label: "Microsoft" },
+  { href: "/tecnologias/google/", label: "Google" },
+  { href: "/tecnologias/huawei/", label: "Huawei" },
+  { href: "/tecnologias/lenovo/", label: "Lenovo" },
+  { href: "/tecnologias/dell/", label: "Dell" },
+  { href: "/tecnologias/hp/", label: "HP" },
+  { href: "/tecnologias/aws/", label: "AWS" },
+  { href: "/tecnologias/cisco/", label: "Cisco" },
+  { href: "/tecnologias/fortinet/", label: "Fortinet" },
+  { href: "/tecnologias/adobe/", label: "Adobe" },
+  { href: "/tecnologias/action1/", label: "Action1" },
 ];
 
 export const solutions: NavChild[] = [
@@ -88,24 +106,79 @@ export const legalLinks: NavChild[] = [
 ];
 
 export const values = [
+  { name: "Responsabilidad", body: "Honrar el requerimiento en calidad y en el tiempo acordado." },
+  { name: "Vocación de servicio", body: "Pensar con el cliente para sostener su operación." },
+  { name: "Pasión", body: "Compromiso con formar parte de la solución, no solo del diagnóstico." },
+  { name: "Honestidad", body: "Transparencia e integridad en cada compromiso." },
+  { name: "Sencillez", body: "La solución más apropiada, con la experiencia justa para ejecutarla." },
+];
+
+export const solutionCopy: Record<string, string> = {
+  "/soluciones/software-y-licenciamiento/":
+    "Renovación y aprovisionamiento de software empresarial, con acompañamiento para que la adopción sea ordenada.",
+  "/soluciones/equipamiento-empresarial/":
+    "Estaciones, servidores, redes y accesorios seleccionados según el requerimiento, con criterio de calidad y plazo.",
+};
+
+export const serviceCopy: Record<string, string> = {
+  "/servicios/soporte-tecnico/":
+    "Atención N1 a N3 para que las incidencias no detengan el negocio, con tickets en portal propio.",
+  "/servicios/outsourcing-e-implants/":
+    "Profesionales integrados a su operación, con responsable Justech y alcance definido.",
+  "/servicios/consultoria-tecnologica/":
+    "Diagnóstico y recomendaciones para decidir con claridad, antes de invertir.",
+  "/servicios/implementacion-y-migraciones/":
+    "Puesta en marcha y migraciones con plan, responsables y criterio de continuidad.",
+};
+
+export const outcomes = [
   {
-    name: "Responsabilidad",
-    body: "Honrar el requerimiento en calidad y tiempo.",
+    n: "01",
+    title: "Operar con continuidad",
+    body: "Soporte e implementación pensados para que la tecnología sostenga el día a día, no para interrumpirlo.",
   },
   {
-    name: "Vocación de servicio",
-    body: "Pensar con el cliente, no solo para el cliente.",
+    n: "02",
+    title: "Decidir con claridad",
+    body: "Consultoría que traduce el requerimiento de negocio en un camino técnico ejecutable.",
   },
   {
-    name: "Pasión",
-    body: "Satisfacción de formar parte de la solución.",
+    n: "03",
+    title: "Aprovisionar con orden",
+    body: "Licencias y equipos con trazabilidad, plazos y acompañamiento de adopción.",
   },
   {
-    name: "Honestidad",
-    body: "Transparencia e integridad; sin prácticas injustas ni promesas infladas.",
+    n: "04",
+    title: "Evolucionar con medida",
+    body: "Mejoras sobre lo que ya funciona, alineadas al resultado y a la capacidad de operación.",
+  },
+];
+
+export const method = [
+  ["01", "Estrategia", "Comprender el negocio, el riesgo operativo y el resultado esperado."],
+  ["02", "Aprovisionamiento", "Software y equipos con trazabilidad y responsables claros."],
+  ["03", "Implementación", "Puesta en marcha con un plan que la operación puede sostener."],
+  ["04", "Operación", "Soporte N1–N3 y seguimiento de casos en el portal de Justech."],
+  ["05", "Mejora", "Ajustar lo que ya corre, con evidencia y prioridad de negocio."],
+];
+
+export const scenarios = [
+  {
+    title: "Cuando la operación no puede detenerse",
+    body: "Incidencias, cambios y mantenimiento con un canal de tickets y un responsable visible.",
   },
   {
-    name: "Sencillez",
-    body: "Experiencia al servicio de la solución más apropiada, no de la más aparatosa.",
+    title: "Cuando hay que renovar el parque tecnológico",
+    body: "Licenciamiento y equipos definidos según el uso real de su organización.",
   },
+  {
+    title: "Cuando la decisión requiere criterio",
+    body: "Consultoría e implementación para pasar de la evaluación a un entorno en producción.",
+  },
+];
+
+export const facts = [
+  { k: "2018", v: "Año de fundación" },
+  { k: "Santo Domingo", v: "Base de operación" },
+  { k: "N1–N3", v: "Soporte técnico" },
 ];

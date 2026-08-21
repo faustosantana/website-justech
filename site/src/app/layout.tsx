@@ -30,6 +30,12 @@ export const metadata: Metadata = {
     siteName: company.legalName,
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Justech SRL · Tecnología empresarial en República Dominicana",
+    description:
+      "Diseñamos, implementamos y gestionamos infraestructura, soporte, licenciamiento y equipos para organizaciones.",
+  },
 };
 
 const jsonLd = {

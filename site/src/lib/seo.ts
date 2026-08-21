@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { company } from "@/content/site";
 
 const TITLE_BASE = "Justech SRL";
 
@@ -18,7 +19,12 @@ export function pageMeta(
       description,
       locale: "es_DO",
       type: "website",
-      siteName: "Justech SRL",
+      siteName: company.legalName,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: full,
+      description,
     },
   };
 }

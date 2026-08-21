@@ -10,7 +10,7 @@ export const metadata = pageMeta(
 const tokens = [
   ["Navy", "#071525", "Hero, footer, banner"],
   ["Navy 2", "#0c2340", "Degradado hero"],
-  ["Teal", "#0e7c88", "CTA y enlaces"],
+  ["Teal", "#0a5c64", "CTA y enlaces"],
   ["Teal bright", "#3ec4d0", "Acento sobre navy"],
   ["Paper", "#f6f3ec", "Fondos de sección"],
   ["Foam", "#fbfaf7", "Fondo de página"],
@@ -27,8 +27,8 @@ export default function Page() {
           <p className="eyebrow text-teal-bright">Fase C</p>
           <h1>Sistema de diseño (staging)</h1>
           <p className="m-0 max-w-2xl text-[#c5d0d8]">
-            Referencia visual del sitio nuevo. IBM Plex Sans, editorial, sin sliders. No es un
-            tema WordPress.
+            Referencia visual: IBM Plex Sans, navy, teal y papel. Escala tipográfica, radios
+            mínimos, sombras suaves y motion reducido.
           </p>
         </div>
       </header>
@@ -63,8 +63,8 @@ export default function Page() {
           </Link>
         </article>
         <p className="mt-8 text-sm text-muted">
-          Espaciado: container 1120px. Botones min-height 48px. Mega menú desde breakpoint lg.
-          Motion reducido se respeta en CSS.
+          Espaciado: container 1160px. Botones min-height 48px. Mega menú desde 1024px.
+          Motion: 400ms; se anula con prefers-reduced-motion.
         </p>
       </div>
     </main>

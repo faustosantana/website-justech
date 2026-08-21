@@ -46,6 +46,10 @@ const forbidden = [
   "connect.facebook.net",
   "googleads",
   "doubleclick.net",
+  "PENDIENTE_VALIDACION",
+  "Capacidades en validación",
+  "catálogo de humo",
+  "cifras infladas",
 ];
 
 const hrefLegalProd = /href=["']https:\/\/www\.justech\.do\/legal/i;
@@ -69,7 +73,7 @@ for (const file of files) {
   }
   if (extname(file) === ".html") {
     htmlCount += 1;
-    if (text.includes("Entorno de pruebas Justech")) bannerCount += 1;
+    if (text.includes("Entorno de previsualización Justech")) bannerCount += 1;
     if (/noindex/i.test(text)) noindexCount += 1;
     if (/<form[^>]+action=["']https?:\/\//i.test(text)) {
       fail(`${rel} tiene formulario con action absoluto (riesgo de leads reales).`);
@@ -96,6 +100,7 @@ const requiredRoutes = [
   "/servicios/index.html",
   "/nosotros/index.html",
   "/recursos/faqs/index.html",
+  "/l/consulta/index.html",
   "/robots.txt",
 ];
 for (const route of requiredRoutes) {

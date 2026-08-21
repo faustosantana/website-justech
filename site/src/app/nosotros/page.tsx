@@ -13,13 +13,17 @@ export default function Page() {
   return (
     <Interior
       eyebrow="Nosotros"
-      title="El puente entre el requerimiento y una solución ejecutada"
+      title="El puente entre el requerimiento y una solución en operación"
       lead="Justech es una empresa de servicios y soluciones tecnológicas fundada en 2018, con sede en Santo Domingo, República Dominicana."
+      path="/nosotros/"
+      crumbs={[
+        { href: "/", label: "Inicio" },
+        { href: "/nosotros/", label: "Nosotros" },
+      ]}
     >
       <p>
-        La finalidad es ser el aliado que las organizaciones necesitan en materia de
-        tecnología: cercanía, agilidad e integración, sin el teatro de una multinacional de
-        catálogo.
+        Acompañamos a las organizaciones con cercanía, agilidad e integración: de la decisión
+        técnica a la operación cotidiana.
       </p>
       <h2>Valores</h2>
       {values.map((v) => (

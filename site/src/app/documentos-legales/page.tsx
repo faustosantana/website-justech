@@ -4,7 +4,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
   "Documentos legales",
-  "Índice de PDFs legales de Justech SRL.",
+  "Índice de políticas y documentos públicos de Justech SRL.",
   "/documentos-legales/",
 );
 
@@ -13,11 +13,13 @@ export default function Page() {
     <Interior
       eyebrow="Legal"
       title="Documentos legales"
-      lead="Los PDF firmados permanecen en el origen de producción. Este índice no apunta a la /legal/ comprometida."
+      lead="Políticas públicas de Justech SRL. Los PDF firmados permanecen en justech.do."
+      path="/documentos-legales/"
     >
       <p>
-        Use el <Link href="/legal/">centro legal de este preview</Link> o las URLs de
-        políticas en www.justech.do (excepto /legal/ hasta que se restaure).
+        Use el <Link href="/legal/">centro legal</Link> de este sitio para navegar las
+        políticas. Los originales publicados el 13 de julio de 2026 están en las URLs
+        correspondientes de justech.do.
       </p>
     </Interior>
   );

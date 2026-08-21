@@ -3,21 +3,21 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
   "Casos",
-  "Justech no publica casos de éxito con cifras o logos hasta autorización escrita.",
+  "Conversemos sobre el resultado que su organización necesita. Justech SRL, Santo Domingo.",
   "/casos/",
 );
 
 export default function Page() {
   return (
     <Interior
-      eyebrow="Casos"
-      title="Historias de clientes"
-      lead="El sitio actual muestra logos y testimonios. Este preview no los republica hasta permiso y clasificación de la relación."
-      pending
+      eyebrow="Resultados"
+      title="De un requerimiento a una operación en marcha"
+      lead="Cada organización llega con un contexto distinto. Un especialista le ayuda a definir el alcance y el siguiente paso."
+      path="/casos/"
     >
       <p>
-        Un testimonio de Leja Car Rental aparece en el home marcado como pendiente de
-        autorización. No hay galería de logos ni métricas de ahorro.
+        Si desea explorar un proyecto de soporte, licenciamiento, equipos o implementación,
+        escríbanos. Documentaremos el caso con el rigor que su operación exige.
       </p>
     </Interior>
   );

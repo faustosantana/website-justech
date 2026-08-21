@@ -19,21 +19,18 @@ export function LegalArticle({
         <div className="container">
           <p className="eyebrow text-teal-bright">Centro legal · {code}</p>
           <h1>{title}</h1>
-          <p className="m-0 text-[#c5d0d8]">
-            Justech SRL · República Dominicana · Documento público. Staging no sustituye el
-            PDF firmado.
-          </p>
+          <p className="m-0 text-[#c5d0d8]">Justech SRL · República Dominicana · Documento público.</p>
         </div>
       </header>
       <div className="container prose py-12">
         {productionPath ? (
           <p className="notice">
-            Texto de referencia para este preview. Versión publicada el 13 jul 2026:{" "}
+            Versión publicada el 13 de julio de 2026:{" "}
             <a href={`${company.production}${productionPath}`}>
               {company.production}
               {productionPath}
             </a>
-            . No enlazamos la /legal/ de producción mientras permanezca comprometida.
+            .
           </p>
         ) : null}
         {children}
