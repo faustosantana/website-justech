@@ -68,8 +68,9 @@
   font-weight: 600;
 }
 
-.v6-film .v6-kicker {
-  color: #9fb0bc;
+.v6-film .v6-kicker,
+.v6-story .v6-kicker {
+  color: #c5d0d8;
 }
 
 .v6-live {
@@ -123,11 +124,8 @@
   max-width: 34ch;
 }
 
-.v6-beats h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 3vw, 2.1rem);
-  color: #fff;
-  margin: 0.35rem 0 0.7rem;
+.v6-beats p {
+  color: #d5dee6;
 }
 
 .v6-caption {
