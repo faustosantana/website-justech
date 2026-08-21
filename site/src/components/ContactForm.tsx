@@ -70,6 +70,10 @@ export function ContactForm() {
         Mensaje
         <textarea name="message" required />
       </label>
+      <input type="hidden" name="utm_source" defaultValue="" />
+      <input type="hidden" name="utm_medium" defaultValue="" />
+      <input type="hidden" name="utm_campaign" defaultValue="" />
+      <input type="hidden" name="landing" defaultValue="/contacto/" />
       <label className="flex items-start gap-2 font-normal">
         <input type="checkbox" required className="mt-1" />
         <span>

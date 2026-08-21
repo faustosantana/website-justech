@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
+import { Analytics } from "@/components/Analytics";
 import { Footer } from "@/components/Footer";
 import { StagingBanner } from "@/components/Flags";
 import { Header } from "@/components/Header";
@@ -14,7 +15,9 @@ const ibmPlex = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.justech.do"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4173",
+  ),
   title: {
     default: "Justech SRL · Tecnología empresarial en República Dominicana",
     template: "%s · Justech SRL",
@@ -58,6 +61,7 @@ export default function RootLayout({
         <a className="skip-link" href="#contenido">
           Saltar al contenido
         </a>
+        <Analytics />
         <StagingBanner />
         <Header />
         {children}

@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "name": "website-justech",
+  "scripts": {
+    "build": "npm run build --prefix site",
+    "lint": "npm run lint --prefix site",
+    "test:staging": "npm run test:staging --prefix site"
+  }
+}

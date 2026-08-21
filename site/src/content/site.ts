@@ -19,6 +19,33 @@ export const company = {
 
 export type NavChild = { href: string; label: string; pending?: boolean };
 
+export const recursosLinks: NavChild[] = [
+  { href: "/recursos/", label: "Centro de recursos" },
+  { href: "/recursos/faqs/", label: "Preguntas frecuentes" },
+  { href: "/recursos/blog/", label: "Blog", pending: true },
+  { href: "/recursos/guias/", label: "Guías", pending: true },
+];
+
+export const industryLinks: NavChild[] = [
+  { href: "/industrias/gobierno/", label: "Gobierno", pending: true },
+  { href: "/industrias/banca-finanzas-seguros/", label: "Banca, finanzas y seguros", pending: true },
+  { href: "/industrias/salud/", label: "Salud", pending: true },
+  { href: "/industrias/educacion/", label: "Educación", pending: true },
+  { href: "/industrias/retail-y-servicios/", label: "Retail y servicios", pending: true },
+  { href: "/industrias/hoteleria-y-turismo/", label: "Hotelería y turismo", pending: true },
+  { href: "/industrias/industria-construccion-logistica/", label: "Industria, construcción y logística", pending: true },
+];
+
+export const technologyLinks: NavChild[] = [
+  { href: "/tecnologias/microsoft/", label: "Microsoft", pending: true },
+  { href: "/tecnologias/google/", label: "Google", pending: true },
+  { href: "/tecnologias/huawei/", label: "Huawei", pending: true },
+  { href: "/tecnologias/aws/", label: "AWS", pending: true },
+  { href: "/tecnologias/cisco/", label: "Cisco", pending: true },
+  { href: "/tecnologias/fortinet/", label: "Fortinet", pending: true },
+  { href: "/tecnologias/action1/", label: "Action1", pending: true },
+];
+
 export const solutions: NavChild[] = [
   { href: "/soluciones/software-y-licenciamiento/", label: "Software y licenciamiento" },
   { href: "/soluciones/equipamiento-empresarial/", label: "Equipamiento empresarial" },
@@ -44,6 +71,8 @@ export const aboutLinks: NavChild[] = [
   { href: "/nosotros/", label: "Quiénes somos" },
   { href: "/nosotros/historia/", label: "Historia y propósito" },
   { href: "/nosotros/metodologia/", label: "Metodología" },
+  { href: "/nosotros/equipo/", label: "Equipo", pending: true },
+  { href: "/nosotros/partners/", label: "Partners", pending: true },
   { href: "/nosotros/cumplimiento/", label: "Cumplimiento y confianza" },
 ];
 

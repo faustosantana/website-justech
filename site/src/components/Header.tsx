@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { aboutLinks, company, services, solutions } from "@/content/site";
+import {
+  aboutLinks,
+  company,
+  recursosLinks,
+  services,
+  solutions,
+} from "@/content/site";
+import { withBase } from "@/lib/paths";
 
 function Mega({
   id,
@@ -18,11 +25,12 @@ function Mega({
       <Link
         href={id}
         className="inline-flex min-h-11 items-center px-2 text-[0.95rem] font-medium text-navy hover:text-teal"
+        aria-haspopup="true"
       >
         {label}
       </Link>
       <div className="invisible absolute left-0 top-full z-40 min-w-[18rem] border border-line bg-white p-3 opacity-0 shadow-[var(--shadow)] transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-        <ul className="m-0 list-none p-0">
+        <ul className="m-0 list-none p-0" role="list">
           {items.map((item) => (
             <li key={item.href}>
               <Link
@@ -30,9 +38,7 @@ function Mega({
                 className="flex items-center justify-between gap-3 px-2 py-2 text-sm text-ink hover:bg-paper"
               >
                 <span>{item.label}</span>
-                {item.pending ? (
-                  <span className="pending-flag">Pendiente</span>
-                ) : null}
+                {item.pending ? <span className="pending-flag">Pendiente</span> : null}
               </Link>
             </li>
           ))}
@@ -51,7 +57,7 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2 no-underline">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/brand/justech-logo.png"
+            src={withBase("/brand/justech-logo.png")}
             alt="Justech"
             width={150}
             height={36}
@@ -63,12 +69,7 @@ export function Header() {
           <Mega id="/soluciones/" label="Soluciones" items={solutions} />
           <Mega id="/servicios/" label="Servicios" items={services} />
           <Mega id="/nosotros/" label="Nosotros" items={aboutLinks} />
-          <Link
-            href="/recursos/faqs/"
-            className="inline-flex min-h-11 items-center px-2 text-[0.95rem] font-medium text-navy hover:text-teal"
-          >
-            Recursos
-          </Link>
+          <Mega id="/recursos/" label="Recursos" items={recursosLinks} />
           <Link
             href="/contacto/"
             className="inline-flex min-h-11 items-center px-2 text-[0.95rem] font-medium text-navy hover:text-teal"
@@ -84,9 +85,9 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <a className="btn btn-primary" href="/contacto/">
+          <Link className="btn btn-primary" href="/contacto/">
             Hablar con un especialista
-          </a>
+          </Link>
         </div>
 
         <button
@@ -103,21 +104,17 @@ export function Header() {
       {open ? (
         <div id="mobile-nav" className="border-t border-line bg-white lg:hidden">
           <nav aria-label="Móvil" className="container flex flex-col py-3">
-            {[...solutions.slice(0, 2), ...services.slice(0, 4)].map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="py-3 text-navy no-underline"
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Link href="/nosotros/" className="py-3 text-navy no-underline" onClick={() => setOpen(false)}>
-              Nosotros
+            <MobileGroup title="Soluciones" href="/soluciones/" items={solutions} onNavigate={() => setOpen(false)} />
+            <MobileGroup title="Servicios" href="/servicios/" items={services} onNavigate={() => setOpen(false)} />
+            <MobileGroup title="Nosotros" href="/nosotros/" items={aboutLinks} onNavigate={() => setOpen(false)} />
+            <Link href="/recursos/faqs/" className="py-3 text-navy no-underline" onClick={() => setOpen(false)}>
+              Preguntas frecuentes
             </Link>
-            <Link href="/contacto/" className="py-3 text-navy no-underline" onClick={() => setOpen(false)}>
+            <Link href="/contacto/" className="py-3 font-semibold text-navy no-underline" onClick={() => setOpen(false)}>
               Contacto
+            </Link>
+            <Link href="/legal/" className="py-3 text-navy no-underline" onClick={() => setOpen(false)}>
+              Centro legal
             </Link>
             <a href={company.supportUrl} className="py-3 text-navy no-underline">
               Portal de soporte
@@ -126,5 +123,37 @@ export function Header() {
         </div>
       ) : null}
     </header>
+  );
+}
+
+function MobileGroup({
+  title,
+  href,
+  items,
+  onNavigate,
+}: {
+  title: string;
+  href: string;
+  items: { href: string; label: string; pending?: boolean }[];
+  onNavigate: () => void;
+}) {
+  return (
+    <details className="border-b border-line py-2">
+      <summary className="cursor-pointer py-2 font-medium text-navy">{title}</summary>
+      <Link href={href} className="block py-2 text-sm text-teal no-underline" onClick={onNavigate}>
+        Ver índice
+      </Link>
+      {items.map((item) => (
+        <Link
+          key={item.href}
+          href={item.href}
+          className="flex items-center justify-between py-2 text-sm text-navy no-underline"
+          onClick={onNavigate}
+        >
+          <span>{item.label}</span>
+          {item.pending ? <span className="pending-flag">Pendiente</span> : null}
+        </Link>
+      ))}
+    </details>
   );
 }

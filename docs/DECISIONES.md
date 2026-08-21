@@ -27,6 +27,7 @@ Toda decisión irreversible espera aprobación. Los supuestos se marcan como tal
 | D06 | CMS: contenido versionado en repo (TypeScript en `site/src/content`) en v1 de staging | WordPress headless | WP comprometido |
 | D07 | Preview: Next.js 15 static export en `site/`, IBM Plex Sans, tokens editoriales. Hosting de preview: Vercel/CF cuando haya token; mientras, Actions + túnel si hace falta | Seguir en Teba | Mandato de rebuild |
 | D08 | FTPS actual no se usa para deploy (cuenta ve `public_html`) | Subir a `/staging.justech.do/` | Autorizado crear carpeta, no pisar prod; DNS de staging no existe |
+| D09 | Preview durable vía Vercel o GitHub Pages del repo público; túnel solo como puente | Esperar DNS `staging.justech.do` o escribir por FTPS | No hay token PaaS; Pages no mueve DNS de justech.do |
 
 ## Fuera de alcance hasta nueva aprobación
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { company, legalLinks, services, solutions } from "@/content/site";
+import { withBase } from "@/lib/paths";
 
 export function Footer() {
   return (
@@ -8,7 +9,7 @@ export function Footer() {
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/brand/justech-mark-white.png"
+            src={withBase("/brand/justech-mark-white.png")}
             alt=""
             width={72}
             height={48}

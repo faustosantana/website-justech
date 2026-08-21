@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-21 (páginas D, tests, Pages)
+
+- Sitemap D: industrias, tecnologías, casos, equipo, partners, recursos.
+- Sistema de diseño navegable (`/sistema-de-diseno/`).
+- `npm run test:staging` (noindex, robots, sin tags de prod, sin OK88).
+- Workflow GitHub Pages + `vercel.json` de raíz corregido.
+- Menú móvil con grupos; `basePath` opcional para Pages.
+
 ## 2026-08-21 (sitio nuevo + preview)
 
 - App Next.js 15.5.23 en `site/` (export estático, noindex, formularios simulados).
