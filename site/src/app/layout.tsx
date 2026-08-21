@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Red_Hat_Display } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, Outfit } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { Footer } from "@/components/Footer";
 import { StagingBanner } from "@/components/Flags";
@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { company } from "@/content/site";
 import "./globals.css";
 import "./v5.css";
+import "./v6.css";
 
 const ibmPlex = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -15,7 +16,7 @@ const ibmPlex = IBM_Plex_Sans({
   variable: "--font-ibm-plex",
 });
 
-const display = Red_Hat_Display({
+const display = Outfit({
   subsets: ["latin"],
   weight: ["500", "600", "700"],
   display: "swap",

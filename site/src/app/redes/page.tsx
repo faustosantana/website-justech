@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Topology } from "@/components/v5/Topology";
+import { Campus } from "@/components/v6/Campus";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
@@ -10,12 +10,10 @@ export const metadata = pageMeta(
 
 export default function Page() {
   return (
-    <main id="contenido" className="v5">
-      <div className="v5-frame split">
+    <main id="contenido" className="v6">
+      <div className="v6-frame split">
         <div>
-          <p className="v5-kicker" style={{ color: "#0a5c64" }}>
-            Redes
-          </p>
+          <p className="v6-kicker">Redes</p>
           <h1>Redes diseñadas para crecer.</h1>
           <p className="lead-copy">
             Sede, sucursales y usuarios en una topología que se puede documentar y operar.
@@ -26,7 +24,7 @@ export default function Page() {
             </Link>
           </p>
         </div>
-        <Topology />
+        <Campus />
       </div>
     </main>
   );

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Studio } from "@/components/v5/Studio";
+import { Device } from "@/components/v6/Device";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
@@ -10,12 +10,10 @@ export const metadata = pageMeta(
 
 export default function Page() {
   return (
-    <main id="contenido" className="v5">
-      <div className="v5-frame split">
+    <main id="contenido" className="v6">
+      <div className="v6-frame split">
         <div>
-          <p className="v5-kicker" style={{ color: "#0a5c64" }}>
-            Equipos
-          </p>
+          <p className="v6-kicker">Equipos</p>
           <h1>Equipos preparados para cada puesto.</h1>
           <p className="lead-copy">
             Selección, imagen, entrega y garantía. Un especialista cierra la especificación.
@@ -26,7 +24,7 @@ export default function Page() {
             </Link>
           </p>
         </div>
-        <Studio />
+        <Device />
       </div>
     </main>
   );

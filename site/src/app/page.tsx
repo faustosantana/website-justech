@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
-import { Chapters } from "@/components/v5/Chapters";
-import { FilmHero } from "@/components/v5/FilmHero";
+import { World } from "@/components/v6/World";
 import { company } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
@@ -13,21 +12,10 @@ export const metadata = pageMeta(
 
 export default function HomePage() {
   return (
-    <main id="contenido" className="v5">
-      <FilmHero
-        kicker="Justech · Santo Domingo · Desde 2018"
-        title="La capa que mantiene el negocio en movimiento."
-        lead="Infraestructura, software y soporte, operados como un sistema."
-        ctaHref="/contacto/diagnostico/"
-        ctaLabel="Solicitar diagnóstico"
-        photo="/visual/v5/home-still.jpg"
-        photoAlt=""
-      />
-      <Chapters />
-      <section className="v5-end">
-        <p className="v5-kicker" style={{ color: "#0a5c64" }}>
-          Conversación
-        </p>
+    <main id="contenido">
+      <World />
+      <section className="v6-end v6">
+        <p className="v6-kicker">Conversación</p>
         <h2 className="section-title">Un diagnóstico ordena el alcance.</h2>
         <p>
           {company.phoneDisplay} · {company.email}

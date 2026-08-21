@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CaseFile } from "@/components/v5/CaseFile";
+import { Incident } from "@/components/v6/Incident";
 import { company } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
@@ -11,15 +11,13 @@ export const metadata = pageMeta(
 
 export default function Page() {
   return (
-    <main id="contenido" className="v5">
-      <div className="v5-frame split">
+    <main id="contenido" className="v6">
+      <div className="v6-frame split">
         <div>
-          <p className="v5-kicker" style={{ color: "#0a5c64" }}>
-            Soporte
-          </p>
+          <p className="v6-kicker">Soporte</p>
           <h1>Soporte con trazabilidad de principio a fin.</h1>
           <p className="lead-copy">
-            Un usuario de sucursal pierde conectividad. El portal registra. Hay responsable y cierre.
+            Un usuario de sucursal pierde conectividad. La red pasa a respaldo. El portal registra.
           </p>
           <p className="hero-actions">
             <a className="btn btn-primary" href={company.supportUrl}>
@@ -30,7 +28,7 @@ export default function Page() {
             </Link>
           </p>
         </div>
-        <CaseFile />
+        <Incident />
       </div>
     </main>
   );

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Tenant } from "@/components/v5/Tenant";
+import { Assign } from "@/components/v6/Assign";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
@@ -10,12 +10,10 @@ export const metadata = pageMeta(
 
 export default function Page() {
   return (
-    <main id="contenido" className="v5">
-      <div className="v5-frame split">
+    <main id="contenido" className="v6">
+      <div className="v6-frame split">
         <div>
-          <p className="v5-kicker" style={{ color: "#0a5c64" }}>
-            Licenciamiento
-          </p>
+          <p className="v6-kicker">Licenciamiento</p>
           <h1>Control sobre cada licencia.</h1>
           <p className="lead-copy">
             Identidad, asignaciones y aplicaciones en un tenant que se puede gobernar.
@@ -26,7 +24,7 @@ export default function Page() {
             </Link>
           </p>
         </div>
-        <Tenant />
+        <Assign />
       </div>
     </main>
   );

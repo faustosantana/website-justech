@@ -1,42 +1,53 @@
+import { Live } from "@/components/v6/Live";
 import { pageMeta } from "@/lib/seo";
 import { withBase } from "@/lib/paths";
 
 export const metadata = pageMeta(
-  "Prototipos visuales v5",
-  "Stills aislados de rack, seguridad, nube y cableado. No son páginas de producto. Justech SRL.",
+  "Explorar cómo funciona",
+  "Recorrido educativo de rack, seguridad, nube y cableado. No es un laboratorio comercial. Justech SRL.",
   "/prototipos/",
 );
 
-const items = [
-  { src: "/visual/v5/rack.jpg", t: "Rack", d: "Patch, switching, cómputo, energía. Sin marcas." },
-  { src: "/visual/v5/security.jpg", t: "Seguridad", d: "Operación normal. Capas, no alarma permanente." },
-  { src: "/visual/v5/cloud.jpg", t: "Nube", d: "Local, identidad, destino. Sin nubes flotantes." },
-  { src: "/visual/v5/cabling.jpg", t: "Cableado", d: "Planta terminada: rutas, panel, prueba." },
-];
-
 export default function Page() {
   return (
-    <main id="contenido" className="v5">
-      <div className="v5-frame">
+    <main id="contenido" className="v6">
+      <div className="v6-frame">
         <div>
-          <p className="v5-kicker" style={{ color: "#0a5c64" }}>
-            Laboratorio
-          </p>
-          <h1>Prototipos. Aún no se propagan.</h1>
+          <p className="v6-kicker">Explorar cómo funciona</p>
+          <h1>Prototipos vivos. Aún no se propagan.</h1>
           <p className="lead-copy">
-            Rack, seguridad, nube y cableado en stills. El estándar se cierra en las cinco maestras.
+            Rack, seguridad, nube y cableado. Experiencia educativa dentro del sitio, no un laboratorio comercial.
           </p>
         </div>
-        <div className="v5-proto-grid">
-          {items.map((item) => (
-            <figure key={item.t}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={withBase(item.src)} alt="" width={1600} height={1067} />
-              <figcaption>
-                <strong>{item.t}.</strong> {item.d}
-              </figcaption>
-            </figure>
-          ))}
+        <div className="v6-proto-grid">
+          <figure>
+            <Live scene="rack" />
+            <figcaption>
+              <strong>Rack.</strong> Ensamblado progresivo: energía, patch, switching, cómputo.
+            </figcaption>
+          </figure>
+          <figure>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={withBase("/visual/v5/security.jpg")} alt="" width={1600} height={1067} />
+            <Live scene="campus" view="seguridad" className="v6-ghost" />
+            <figcaption>
+              <strong>Seguridad.</strong> Operación normal. Capas, sin alarma permanente.
+            </figcaption>
+          </figure>
+          <figure>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={withBase("/visual/v5/cloud.jpg")} alt="" width={1600} height={1067} />
+            <figcaption>
+              <strong>Nube.</strong> Local, identidad, destino.
+            </figcaption>
+          </figure>
+          <figure>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={withBase("/visual/v5/cabling.jpg")} alt="" width={1600} height={1067} />
+            <figcaption>
+              <strong>Cableado.</strong> Planta: rutas, panel, prueba.
+            </figcaption>
+          </figure>
         </div>
       </div>
     </main>

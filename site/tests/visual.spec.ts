@@ -17,12 +17,12 @@ test("laptops keeps copy and laptop visual in separate regions", async ({ page }
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/productos/laptops/");
   const h1 = page.locator("h1");
-  const visual = page.locator(".v5-visual, .stage-visual").first();
+  const visual = page.locator(".v6-visual, .v5-visual, .stage-visual").first();
   await expect(h1).toBeVisible();
   await expect(visual).toBeVisible();
   const overlap = await page.evaluate(() => {
     const a = document.querySelector("h1")?.getBoundingClientRect();
-    const b = document.querySelector(".v5-visual, .stage-visual")?.getBoundingClientRect();
+      const b = document.querySelector(".v6-visual, .v5-visual, .stage-visual")?.getBoundingClientRect();
     if (!a || !b) return true;
     return a.right > b.left + 12 && a.left < b.right - 12 && a.bottom > b.top + 12 && a.top < b.bottom - 12;
   });
@@ -36,7 +36,7 @@ test("split heroes never overlay H1 with the visual", async ({ page }) => {
     await page.goto(path);
     const hit = await page.evaluate(() => {
       const a = document.querySelector("h1")?.getBoundingClientRect();
-      const b = document.querySelector(".v5-visual, [data-visual], .stage-visual")?.getBoundingClientRect();
+      const b = document.querySelector(".v6-visual, [data-visual], .v5-visual, .stage-visual")?.getBoundingClientRect();
       if (!a || !b) return true;
       return a.right > b.left + 12 && a.left < b.right - 12 && a.bottom > b.top + 12 && a.top < b.bottom - 12;
     });

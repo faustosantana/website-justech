@@ -44,6 +44,41 @@ const intents: { title: string; items: Item[] }[] = [
   },
 ];
 
+const caps: { title: string; items: Item[] }[] = [
+  {
+    title: "Productos",
+    items: [
+      { href: "/productos/laptops/", label: "Equipos" },
+      { href: "/productos/servidores/", label: "Servidores" },
+    ],
+  },
+  {
+    title: "Infraestructura",
+    items: [
+      { href: "/redes/", label: "Redes" },
+      { href: "/infraestructura-fisica/", label: "Cableado y planta" },
+    ],
+  },
+  {
+    title: "Software y nube",
+    items: [
+      { href: "/licenciamiento/", label: "Licenciamiento" },
+      { href: "/nube/", label: "Nube" },
+    ],
+  },
+  {
+    title: "Seguridad",
+    items: [{ href: "/seguridad/", label: "Capas de seguridad" }],
+  },
+  {
+    title: "Servicios",
+    items: [
+      { href: "/servicios/servicios-administrados/", label: "Servicios administrados" },
+      { href: "/soporte/", label: "Soporte" },
+    ],
+  },
+];
+
 const empresa: Item[] = [
   { href: "/nosotros/", label: "Nosotros" },
   { href: "/recursos/", label: "Recursos" },
@@ -150,9 +185,11 @@ export function Header() {
 
 function IntentMega() {
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<"need" | "cap">("need");
   const wrap = useRef<HTMLDivElement>(null);
   const panelId = useId();
   useDismiss(wrap, () => setOpen(false));
+  const groups = mode === "need" ? intents : caps;
   return (
     <div className="relative" ref={wrap} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
       <div className="nav-item">
@@ -171,8 +208,16 @@ function IntentMega() {
         </button>
       </div>
       <div id={panelId} hidden={!open} className="mega-panel wide">
+        <div className="mega-modes" role="tablist" aria-label="Modo de navegación">
+          <button type="button" role="tab" aria-selected={mode === "need"} className={mode === "need" ? "is-on" : ""} onClick={() => setMode("need")}>
+            Por necesidad
+          </button>
+          <button type="button" role="tab" aria-selected={mode === "cap"} className={mode === "cap" ? "is-on" : ""} onClick={() => setMode("cap")}>
+            Por capacidad
+          </button>
+        </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {intents.map((g) => (
+          {groups.map((g) => (
             <div key={g.title}>
               <p className="eyebrow m-0">{g.title}</p>
               <ul className="mt-2">
