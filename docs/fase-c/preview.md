@@ -20,7 +20,7 @@ Comprobado: home 200, `lang=es-DO`, banner de pruebas, `noindex`, `robots.txt` D
 2. **GitHub Pages**  
    Workflow `.github/workflows/pages.yml` despliega el export con `basePath=/website-justech`.  
    URL esperada: `https://faustosantana.github.io/website-justech/`  
-   Falta un clic si el token del workflow no puede crearla: [Settings → Pages](https://github.com/faustosantana/website-justech/settings/pages) → Source = **GitHub Actions**. No cambia DNS de justech.do.
+   Confirmado: el token de GitHub Actions recibe **403** al crear el sitio Pages. Hace falta un clic de propietario: [Settings → Pages](https://github.com/faustosantana/website-justech/settings/pages) → Source = **GitHub Actions**. No cambia DNS de justech.do. Hasta entonces el workflow construye el artefacto y omite el deploy para no dejar el PR en rojo.
 
 3. **Cloudflare Pages**  
    Root `site`, comando `npm run build`, output `out`. `wrangler.toml` de referencia en `site/`.
