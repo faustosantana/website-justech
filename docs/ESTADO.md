@@ -10,7 +10,7 @@ Fuente oficial: `faustosantana/website-justech`. Producción `www.justech.do` **
 | B | Estrategia, sitemap, SEO, staging | Hecha — `docs/fase-b/` |
 | C | Design system + wireframes + preview | Hecha en código — `docs/fase-c/`, `/sistema-de-diseno/` |
 | D | Home, nav, páginas P y stubs D | Hecha en `site/` (copy provisional) |
-| E | SEO técnico staging, a11y, rendimiento, seguridad, analítica off, forms simulados, pruebas | En curso / checks automáticos |
+| E | SEO técnico staging, a11y, rendimiento, seguridad, analítica off, forms simulados, pruebas | Checks OK — `docs/fase-c/pruebas.md` |
 | F | Cutover a www | **Bloqueado** — requiere su autorización |
 
 ## Preview

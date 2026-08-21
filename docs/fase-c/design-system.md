@@ -11,7 +11,7 @@ Integrador enterprise editorial: papel cálido (`#f6f3ec`), marino (`#071525`), 
 | Token | Valor | Uso |
 | --- | --- | --- |
 | Navy | `#071525` | Header bandas, footer, hero |
-| Teal | `#0e7c88` | CTA, enlaces (contraste sobre blanco) |
+| Teal | `#0a5c64` | CTA, enlaces, eyebrows sobre papel (≥4.5:1) |
 | Teal bright | `#3ec4d0` | Acentos sobre navy |
 | Paper / foam | `#f6f3ec` / `#fbfaf7` | Fondos |
 | Ink / muted | `#1a2430` / `#4b5563` | Texto |

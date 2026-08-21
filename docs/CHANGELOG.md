@@ -6,7 +6,8 @@
 - Sistema de diseño navegable (`/sistema-de-diseno/`).
 - `npm run test:staging` (noindex, robots, sin tags de prod, sin OK88).
 - Workflow GitHub Pages + `vercel.json` de raíz corregido.
-- Menú móvil con grupos; `basePath` opcional para Pages.
+- Lighthouse local (home desktop): performance 1.00, a11y 1.00; SEO 0.69 por `noindex` intencional.
+- Teal de texto `#0a5c64` para contraste AA sobre papel; eyebrows sobre navy usan teal bright.
 
 ## 2026-08-21 (sitio nuevo + preview)
 

@@ -8,7 +8,7 @@
   --paper: #f6f3ec;
   --foam: #fbfaf7;
   --line: #d9d3c7;
-  --teal: #0e7c88;
+  --teal: #0a5c64;
   --teal-bright: #3ec4d0;
   --danger: #8b1e2d;
   --focus: #0e7c88;
@@ -92,6 +92,11 @@ body {
   color: var(--teal);
 }
 
+.bg-navy .eyebrow,
+.page-hero .eyebrow {
+  color: var(--teal-bright);
+}
+
 .pending-flag {
   display: inline-flex;
   align-items: center;
@@ -127,7 +132,7 @@ body {
 }
 
 .btn-primary:hover {
-  background: #0b6a74;
+  background: #084850;
 }
 
 .btn-ghost {

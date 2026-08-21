@@ -57,15 +57,15 @@ export function Footer() {
             Contacto
           </h2>
           <p className="m-0 text-sm">
-            <a className="text-inherit" href={`tel:${company.phoneTel}`}>
+            <a className="inline-flex min-h-11 items-center text-inherit" href={`tel:${company.phoneTel}`}>
               {company.phoneDisplay}
             </a>
             <br />
-            <a className="text-inherit" href={`mailto:${company.email}`}>
+            <a className="inline-flex min-h-11 items-center text-inherit" href={`mailto:${company.email}`}>
               {company.email}
             </a>
             <br />
-            <a className="text-inherit" href={company.supportUrl}>
+            <a className="inline-flex min-h-11 items-center text-inherit" href={company.supportUrl}>
               Portal de soporte
             </a>
           </p>
