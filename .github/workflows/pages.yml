@@ -45,21 +45,23 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    continue-on-error: true
+    continue-on-error: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Enable GitHub Pages (Actions source)
+      - id: pages
+        name: Check whether GitHub Pages is enabled
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if gh api "repos/${GITHUB_REPOSITORY}/pages" >/dev/null 2>&1; then
-            echo "GitHub Pages already enabled"
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
           else
-            gh api --method POST "repos/${GITHUB_REPOSITORY}/pages" \
-              -H "Accept: application/vnd.github+json" \
-              -f build_type=workflow
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "Pages no está habilitado. Un clic: Settings → Pages → Source = GitHub Actions."
+            echo "El token de Actions no puede crear el sitio Pages (403)."
           fi
       - id: deployment
+        if: steps.pages.outputs.enabled == 'true'
         uses: actions/deploy-pages@v4
