@@ -105,6 +105,10 @@ const requiredRoutes = [
   "/recursos/faqs/index.html",
   "/l/consulta/index.html",
   "/l/cableado-estructurado/index.html",
+  "/redes/index.html",
+  "/seguridad/index.html",
+  "/licenciamiento/index.html",
+  "/resolver/index.html",
   "/robots.txt",
 ];
 for (const route of requiredRoutes) {

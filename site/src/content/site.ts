@@ -182,6 +182,8 @@ export const aboutLinks: NavChild[] = [
 export const recursosLinks: NavChild[] = [
   { href: "/recursos/", label: "Centro de recursos" },
   { href: "/recursos/faqs/", label: "Preguntas frecuentes" },
+  { href: "/recursos/guia-levantamiento/", label: "Guía de levantamiento" },
+  { href: "/resolver/", label: "¿Qué necesita resolver?" },
 ];
 
 export const legalLinks: NavChild[] = [

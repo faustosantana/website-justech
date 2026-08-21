@@ -1,22 +1,19 @@
-# Inventario de animaciones (v2)
+# Inventario de animaciones (v3)
 
-Todas usan `transform` / `opacity` o canvas 2D. `prefers-reduced-motion: reduce` las anula.
+Canvas 2D propio. Pausa fuera de viewport y en pestaña oculta. `prefers-reduced-motion` = fotograma completo, sin tránsito.
 
-| ID | Dónde | Qué hace | Fallback |
+| ID | Dónde | Gramática | Fallback |
 | --- | --- | --- | --- |
-| A1 | Hero canvas | Paquetes recorren aristas de la red (infra, nube, usuarios, datos, seguridad, operación, soporte) | SVG estático; canvas no se inicia |
-| A2 | Hero nodos | Pulso suave de radio/opacidad | Estático |
-| A3 | Scroll | `.reveal` aparece una vez al entrar en viewport | Visible de inmediato |
-| A4 | Botones | Traslación 1px al hover | Instantáneo |
-| A5 | Mega menú | Apertura/cierre (display + Escape) | N/A |
-| A6 | Pestañas de soluciones | Cambio de panel, flechas de teclado | Contenido estático del panel activo |
-| A7 | Ticket UI | Ninguna loop; es una interfaz simulada | Estático |
+| H1 | Hero home | Historia 5.2s: infra → red → software → seguridad → monitoreo | Escena estática |
+| H2 | Hero | Paralaje leve al puntero (≤10px) | Sin desplazamiento |
+| S1 | Sistema de capas | Cambio de escena al seleccionar | Panel de texto |
+| N1 | Redes | Tráfico entre sede/sucursales | Topología fija |
+| C1 | Seguridad | Capas + aislamiento de un evento | Anillos estáticos |
+| L1 | Licencias | Asignación depto → tenant | Diagrama fijo |
+| P1 | Soporte | Flujo Usuario→Cierre | Pasos estáticos |
+| K1 | Cableado | Construcción por 12 pasos | Plano + rack |
+| M1 | MSP | Barras de higiene | Tablero estático |
+| U1 | Nube | Sincronía local↔nube | Dos nodos fijos |
+| R1 | CTA | Hover 1px | Instantáneo |
 
-No hay parallax agresivo, cursor custom, vídeo autoplay ni Three.js.
-
-## Rendimiento
-
-- Canvas se pausa fuera de viewport (`IntersectionObserver`).
-- DPR limitado a 1.75.
-- Home First Load JS ~131 kB (build Next 15).
-- Escena no se carga si el usuario pide menos movimiento.
+No hay sonido. No hay cursor que reemplace al del sistema. No hay Three.js (peso y genericidad).

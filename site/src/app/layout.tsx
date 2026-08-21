@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Serif } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, Red_Hat_Display } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { Footer } from "@/components/Footer";
 import { StagingBanner } from "@/components/Flags";
@@ -14,34 +14,34 @@ const ibmPlex = IBM_Plex_Sans({
   variable: "--font-ibm-plex",
 });
 
-const ibmSerif = IBM_Plex_Serif({
+const display = Red_Hat_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["500", "600", "700"],
   display: "swap",
-  variable: "--font-ibm-serif",
+  variable: "--font-display-face",
+});
+
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-ibm-mono",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4173",
-  ),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4173"),
   title: {
-    default: "Justech SRL · Integradora tecnológica en República Dominicana",
+    default: "Justech SRL · La capa tecnológica que mantiene el negocio en movimiento",
     template: "%s · Justech SRL",
   },
   description:
-    "Justech evalúa, diseña, suministra, implementa y opera infraestructura, software, cableado y soporte para organizaciones que no pueden detenerse.",
+    "Justech conecta infraestructura, redes, software, seguridad y soporte para organizaciones que no pueden detenerse. Santo Domingo, desde 2018.",
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
-  openGraph: {
-    locale: "es_DO",
-    siteName: company.legalName,
-    type: "website",
-  },
+  openGraph: { locale: "es_DO", siteName: company.legalName, type: "website" },
   twitter: {
     card: "summary_large_image",
-    title: "Justech SRL · Integradora tecnológica en República Dominicana",
-    description:
-      "Infraestructura, software, cableado y soporte con un responsable de extremo a extremo.",
+    title: "Justech SRL · Integradora tecnológica",
+    description: "La capa tecnológica que mantiene el negocio en movimiento.",
   },
 };
 
@@ -51,26 +51,17 @@ const jsonLd = {
   name: company.legalName,
   url: company.production,
   foundingDate: String(company.founded),
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: company.city,
-    addressCountry: "DO",
-  },
+  address: { "@type": "PostalAddress", addressLocality: company.city, addressCountry: "DO" },
   telephone: company.phoneDisplay,
   email: company.email,
   sameAs: [company.facebook, company.instagram],
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es-DO" className={`${ibmPlex.variable} ${ibmSerif.variable}`}>
+    <html lang="es-DO" className={`${ibmPlex.variable} ${display.variable} ${mono.variable}`}>
       <body className="font-sans antialiased">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <a className="skip-link" href="#contenido">
           Saltar al contenido
         </a>

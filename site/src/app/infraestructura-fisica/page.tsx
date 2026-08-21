@@ -1,61 +1,49 @@
 import Link from "next/link";
+import { CablingStory } from "@/components/CablingStory";
+import { Flagship } from "@/components/Flagship";
 import { cablingCaps } from "@/content/capabilities";
-import { cablingProcess } from "@/content/site";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { CtaBand, PageHero } from "@/components/PageHero";
 import { pageMeta } from "@/lib/seo";
+import { withBase } from "@/lib/paths";
 
 export const metadata = pageMeta(
   "Cableado e infraestructura física",
-  "Cableado estructurado, fibra, certificación, racks, Wi-Fi y cuartos técnicos para empresas en República Dominicana. Justech SRL.",
+  "De plano a planta certificada: levantamiento, rutas, rack, etiquetas y documentos. Justech SRL.",
   "/infraestructura-fisica/",
 );
 
 export default function Page() {
   return (
-    <main id="contenido">
-      <PageHero
-        eyebrow="Infraestructura física"
-        title="La planta que sostiene redes, voz y datos"
-        lead="Un proceso visible: levantamiento, diseño, presupuesto, instalación, certificación, documentación y soporte. Sin CCTV ni control de acceso como oferta publicada."
-      />
-      <div className="container pt-6">
-        <Breadcrumbs
-          items={[
-            { href: "/", label: "Inicio" },
-            { href: "/infraestructura-fisica/", label: "Infraestructura física" },
-          ]}
-        />
+    <Flagship
+      kicker="Infraestructura física"
+      title="Ver la obra. No imaginarla."
+      lead="Doce pasos, de un sitio desordenado a una planta etiquetada y certificable."
+      scene="cabling"
+      photo="/visual/patch-panel.webp"
+      crumbs={[
+        { href: "/", label: "Inicio" },
+        { href: "/infraestructura-fisica/", label: "Infraestructura física" },
+      ]}
+      ctaHref="/contacto/levantamiento/"
+      ctaLabel="Solicitar levantamiento"
+    >
+      <div className="container section">
+        <h2 className="section-title">Avance el proceso.</h2>
+        <CablingStory />
       </div>
-      <div className="container py-12">
-        <ol className="rail">
-          {cablingProcess.map(([n, t, d]) => (
-            <li key={n}>
-              <p className="n m-0">{n}</p>
-              <h3>{t}</h3>
-              <p className="m-0 text-sm text-muted">{d}</p>
+      <section className="photo-band" aria-hidden>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={withBase("/visual/cabling-order.webp")} alt="" />
+      </section>
+      <div className="container py-16">
+        <h2>Capítulos de la planta</h2>
+        <ul className="chip-list">
+          {cablingCaps.map((c) => (
+            <li key={c.href}>
+              <Link href={c.href}>{c.title}</Link>
             </li>
           ))}
-        </ol>
-        <div className="mt-16 grid gap-8 lg:grid-cols-2">
-          {cablingCaps.map((c) => (
-            <article key={c.href} className="border-t-2 border-teal pt-4">
-              <h2 className="mt-0 mb-2 text-xl">
-                <Link href={c.href} className="text-navy no-underline">
-                  {c.title}
-                </Link>
-              </h2>
-              <p className="m-0 text-muted">{c.lead}</p>
-            </article>
-          ))}
-        </div>
-        <p className="mt-12">
-          <Link className="btn btn-primary" href="/contacto/levantamiento/">
-            Solicitar levantamiento
-          </Link>
-        </p>
+        </ul>
       </div>
-      <CtaBand />
-    </main>
+    </Flagship>
   );
 }

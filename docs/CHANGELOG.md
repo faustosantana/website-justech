@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-21 (experiencia v3 — mundos visuales)
+
+- Concepto: la capa que mantiene el negocio en movimiento.
+- Hero cinematográfico Canvas 2D (historia 5s, paralaje, reduced-motion).
+- Seis páginas insignia con gramáticas distintas (redes, seguridad, licencias, soporte, MSP, cableado).
+- `/resolver/`, laptops, multisucursal, guía de levantamiento.
+- Tipografía: Red Hat Display + Plex Sans/Mono. Assets WebP propios.
+- Playwright e2e. Staging: noindex, sin producción.
 ## 2026-08-21 (dirección creativa v2)
 
 - Concepto “La red que sostiene el negocio”: navy `#050d18`, signal, Plex Serif.
