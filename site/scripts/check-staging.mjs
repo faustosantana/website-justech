@@ -105,6 +105,7 @@ const requiredRoutes = [
   "/recursos/faqs/index.html",
   "/l/consulta/index.html",
   "/l/cableado-estructurado/index.html",
+  "/concepto-v7/index.html",
   "/redes/index.html",
   "/seguridad/index.html",
   "/licenciamiento/index.html",

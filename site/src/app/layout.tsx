@@ -8,6 +8,7 @@ import { company } from "@/content/site";
 import "./globals.css";
 import "./v5.css";
 import "./v6.css";
+import "./v7.css";
 
 const ibmPlex = IBM_Plex_Sans({
   subsets: ["latin"],
