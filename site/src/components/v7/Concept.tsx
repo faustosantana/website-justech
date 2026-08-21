@@ -217,7 +217,7 @@ export function ConceptV7() {
                 Ver cómo opera
               </a>
             </div>
-            <p className="v7-trust-line">Un interlocutor. Sin cifras inventadas. El portal de soporte vive en otro host.</p>
+            <p className="v7-trust-line">Integradora en {company.city}. Un interlocutor. El portal de soporte vive en otro host.</p>
             <ul className="v7-layers" aria-label="Capas de la operación">
               {layers.map((name, i) => (
                 <li key={name} className={i === layer ? "is-on" : i < layer ? "is-done" : ""}>
@@ -293,13 +293,19 @@ export function ConceptV7() {
               <p className="v7-note">
                 <strong>{net.t}.</strong> {net.d}
               </p>
-              <ol className="v7-story" aria-live="polite">
-                {netStory.map((s, i) => (
-                  <li key={s} className={i === beat ? "is-on" : i < beat ? "is-done" : ""}>
-                    {s}
-                  </li>
-                ))}
-              </ol>
+              <div className="v7-beat" aria-live="polite">
+                <span>
+                  {String(beat + 1).padStart(2, "0")} / {String(netStory.length).padStart(2, "0")}
+                </span>
+                <p>{netStory[beat]}</p>
+                <ol>
+                  {netStory.map((s, i) => (
+                    <li key={s} className={i === beat ? "is-on" : i < beat ? "is-done" : ""}>
+                      <span className="v7-sr">{s}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
             <NetworkBoard view={view} beat={beat} />
           </div>
