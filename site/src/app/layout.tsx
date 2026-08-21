@@ -6,6 +6,7 @@ import { StagingBanner } from "@/components/Flags";
 import { Header } from "@/components/Header";
 import { company } from "@/content/site";
 import "./globals.css";
+import "./v5.css";
 
 const ibmPlex = IBM_Plex_Sans({
   subsets: ["latin"],

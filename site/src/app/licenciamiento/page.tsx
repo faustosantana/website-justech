@@ -1,5 +1,5 @@
-import { LicenseOrg } from "@/components/LicenseOrg";
-import { Stage } from "@/components/Stage";
+import Link from "next/link";
+import { Tenant } from "@/components/v5/Tenant";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
@@ -10,24 +10,24 @@ export const metadata = pageMeta(
 
 export default function Page() {
   return (
-    <Stage
-      family="process"
-      kicker="Licenciamiento"
-      title="Puestos que coinciden con personas."
-      lead="Descubrimiento, asignación, migración, renovación y soporte. Sin precios en pantalla."
-      scene="license"
-      crumbs={[
-        { href: "/", label: "Inicio" },
-        { href: "/licenciamiento/", label: "Licenciamiento" },
-      ]}
-      ctaHref="/contacto/licenciamiento/"
-      ctaLabel="Solicitar evaluación"
-      note="La organización se ve. El configurador no cierra un plan."
-    >
-      <div className="container section">
-        <h2 className="section-title">De disperso a gobernado.</h2>
-        <LicenseOrg />
+    <main id="contenido" className="v5">
+      <div className="v5-frame split">
+        <div>
+          <p className="v5-kicker" style={{ color: "#0a5c64" }}>
+            Licenciamiento
+          </p>
+          <h1>Control sobre cada licencia.</h1>
+          <p className="lead-copy">
+            Identidad, asignaciones y aplicaciones en un tenant que se puede gobernar.
+          </p>
+          <p>
+            <Link className="btn btn-primary" href="/contacto/licenciamiento/">
+              Solicitar evaluación
+            </Link>
+          </p>
+        </div>
+        <Tenant />
       </div>
-    </Stage>
+    </main>
   );
 }
