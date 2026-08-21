@@ -10,7 +10,7 @@ export function pageMeta(
 ): Metadata {
   const full = title.includes("Justech") ? title : `${title} · ${TITLE_BASE}`;
   return {
-    title: full,
+    title: { absolute: full },
     description,
     robots: { index: false, follow: false, nocache: true },
     alternates: { canonical: path },

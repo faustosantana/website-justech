@@ -4,7 +4,9 @@ import { findCap, serviceCaps } from "@/content/capabilities";
 import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
-  return serviceCaps.map((s) => ({ slug: s.slug }));
+  return serviceCaps
+    .filter((s) => s.slug !== "servicios-administrados")
+    .map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {

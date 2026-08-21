@@ -4,7 +4,9 @@ import { findCap, productCaps } from "@/content/capabilities";
 import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
-  return productCaps.map((s) => ({ slug: s.slug }));
+  return productCaps
+    .filter((s) => s.slug !== "laptops")
+    .map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {

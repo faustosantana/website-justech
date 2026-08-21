@@ -149,6 +149,8 @@ h3,
 .page-hero .eyebrow,
 .cta-band .eyebrow,
 .hero .eyebrow,
+.cine-hero .eyebrow,
+.seq-dark .eyebrow,
 .header-utility .eyebrow {
   color: var(--signal);
 }
@@ -1286,6 +1288,12 @@ body.landing-mode .cta-band {
 .seq-dark h2,
 .seq-dark h3 {
   color: white;
+}
+
+.seq-dark a:not(.btn) {
+  color: var(--teal-bright);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .trust-inline {

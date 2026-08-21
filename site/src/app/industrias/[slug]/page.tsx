@@ -5,6 +5,7 @@ import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   const slugs = new Set([...industryCaps.map((s) => s.slug), ...Object.keys(industryAliases)]);
+  slugs.delete("multisucursal");
   return [...slugs].map((slug) => ({ slug }));
 }
 
