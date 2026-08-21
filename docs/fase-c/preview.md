@@ -20,7 +20,7 @@ Comprobado: home 200, `lang=es-DO`, banner de pruebas, `noindex`, `robots.txt` D
 2. **GitHub Pages**  
    Workflow `.github/workflows/pages.yml` despliega el export con `basePath=/website-justech`.  
    URL esperada: `https://faustosantana.github.io/website-justech/`  
-   Requiere: Settings → Pages → Source = GitHub Actions (un clic; no cambia DNS de justech.do).
+   Falta un clic (no lo puede hacer este agente): [Settings → Pages](https://github.com/faustosantana/website-justech/settings/pages) → Source = **GitHub Actions**. No cambia DNS de justech.do. El workflow sigue construyendo el artefacto aunque Pages aún no esté habilitado.
 
 3. **Cloudflare Pages**  
    Root `site`, comando `npm run build`, output `out`. `wrangler.toml` de referencia en `site/`.

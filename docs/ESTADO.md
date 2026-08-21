@@ -35,7 +35,7 @@ Todo lo marcado `PENDIENTE_VALIDACION` y la lista `docs/PENDIENTES_CONTENIDO.md`
 
 ## Bloqueos que sí requieren a una persona
 
-1. Importar el repo en **Vercel** (un clic; root del proyecto `site/` o usar `vercel.json` de la raíz) **o** activar **GitHub Pages** (Settings → Pages → GitHub Actions) para un hostname estable. Sin token de PaaS en este entorno no puedo crear el proyecto en Vercel yo mismo.
+1. Importar el repo en **Vercel** (un clic; usa `vercel.json` de la raíz) **o** en GitHub: Settings → Pages → Source = GitHub Actions. Sin token de PaaS no puedo crear el proyecto Vercel ni activar Pages yo mismo. El túnel actual sirve mientras este preview viva.
 2. Rotar la clave FTPS que circuló en el chat y enjaular esa cuenta.
 3. Autorizar el plan de limpieza de `/legal/` **con backup**, si va a tocar producción.
 4. Validar copy, logos, partners, cifras, correo canónico, WhatsApp, RNC y dirección.
