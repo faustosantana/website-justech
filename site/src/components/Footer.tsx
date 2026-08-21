@@ -43,11 +43,11 @@ export function Footer() {
             Fundada en {company.founded}.
           </p>
           <p className="mt-4 mb-0 text-sm">
-            <a className="text-inherit" href={`tel:${company.phoneTel}`}>
+            <a className="inline-flex min-h-11 items-center text-inherit" href={`tel:${company.phoneTel}`}>
               {company.phoneDisplay}
             </a>
             <br />
-            <a className="text-inherit" href={`mailto:${company.email}`}>
+            <a className="inline-flex min-h-11 items-center text-inherit" href={`mailto:${company.email}`}>
               {company.email}
             </a>
           </p>
