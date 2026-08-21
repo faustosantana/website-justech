@@ -8,12 +8,12 @@ Este repositorio partió vacío. La producción actual vive en WordPress (tema T
 
 | Fase | Nombre | Estado |
 | --- | --- | --- |
-| A | Descubrimiento (auditoría, inventario, benchmark, stack) | En curso — ver `docs/fase-a/` |
-| B | Estrategia (IA, SEO, conversiones, redirecciones) | Pendiente de aprobación de A |
-| C | Diseño (sistema visual, wireframes, prototipo) | Pendiente |
-| D | Desarrollo | Pendiente |
-| E | Validación | Pendiente |
-| F | Lanzamiento | Pendiente |
+| A | Descubrimiento | Hecha — `docs/fase-a/` |
+| B | Estrategia | Hecha — `docs/fase-b/` |
+| C | Design system + preview | En curso — `docs/fase-c/` y `site/` |
+| D | Desarrollo del sitio nuevo | En curso en `site/` (staging) |
+| E | Validación | Parcial (build + lint) |
+| F | Lanzamiento | Bloqueado a autorización |
 
 ## Incidente P0 (producción)
 
@@ -21,8 +21,17 @@ El 21 de agosto de 2026 la URL `https://www.justech.do/legal/` servía contenido
 
 **Expediente:** `docs/incidentes/2026-08-21-legal/` — evidencia pública, plan de limpieza **no ejecutado** (falta acceso + autorización). No hay credenciales en este repositorio.
 
+## Sitio nuevo (staging)
+
+Código en `site/` (Next.js 15, export estático). No toca WordPress.
+
+- `npm --prefix site run build`
+- Preview temporal (túnel): ver `docs/fase-c/preview.md`
+- Durable: importar este repo en Vercel (root `site/`) o Cloudflare Pages (`site`, `npm run build`, output `out`)
+
 ## Cómo leer este repo
 
+- `site/` — aplicación Next.js del sitio nuevo
 - `docs/fase-a/` — evidencia de auditoría de solo lectura
 - `docs/fase-b/` — IA, SEO, conversiones y plan de staging (FTP actual no es jaula)
 - `docs/PENDIENTES_CONTENIDO.md` — información que falta para publicar sin inventar

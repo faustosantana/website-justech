@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-21 (sitio nuevo + preview)
+
+- App Next.js 15.5.23 en `site/` (export estático, noindex, formularios simulados).
+- Design system editorial (navy/teal/papel). Home y páginas P del sitemap.
+- Preview temporal: `docs/fase-c/preview.md`.
+- CI: `.github/workflows/preview.yml`.
+- Producción y FTPS de cPanel: sin escrituras.
+
 ## 2026-08-21 (FTPS + Fase B)
 
 - Verificación FTPS de solo lectura: el usuario no está enjaulado (ve `public_html` y el home cPanel). **Cero escrituras en servidor.**

@@ -24,7 +24,9 @@ Toda decisión irreversible espera aprobación. Los supuestos se marcan como tal
 | D03 | Tratar `/legal/` como **incidente de seguridad P0**, independiente del rediseño | Esperar al lanzamiento del sitio nuevo | Contenido ilegal/spam en URL de cumplimiento; daño reputacional y SEO inmediato |
 | D04 | No publicar logos de fabricantes como “aliados” | Copiar el muro de logos actual | El mandato prohíbe confundir marca comercializada con partnership |
 | D05 | Hosting objetivo: plataforma con HTTPS, CDN, cabeceras y preview (p. ej. Vercel o Cloudflare Pages), no shared hosting | Seguir en BanaHosting | Cabeceras vacías, listing, WP login público, IP Chicago |
-| D06 | CMS: contenido versionado en repo (MDX/JSON tipado) en v1 de staging; CMS visual (Payload o Sanity) en v1.1 si el equipo lo exige | WordPress headless sobre el mismo WP | El WP actual está comprometido y con deuda de plugins |
+| D06 | CMS: contenido versionado en repo (TypeScript en `site/src/content`) en v1 de staging | WordPress headless | WP comprometido |
+| D07 | Preview: Next.js 15 static export en `site/`, IBM Plex Sans, tokens editoriales. Hosting de preview: Vercel/CF cuando haya token; mientras, Actions + túnel si hace falta | Seguir en Teba | Mandato de rebuild |
+| D08 | FTPS actual no se usa para deploy (cuenta ve `public_html`) | Subir a `/staging.justech.do/` | Autorizado crear carpeta, no pisar prod; DNS de staging no existe |
 
 ## Fuera de alcance hasta nueva aprobación
 

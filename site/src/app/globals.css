@@ -1,0 +1,246 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #071525;
+  --navy-2: #0c2340;
+  --ink: #1a2430;
+  --muted: #4b5563;
+  --paper: #f6f3ec;
+  --foam: #fbfaf7;
+  --line: #d9d3c7;
+  --teal: #0e7c88;
+  --teal-bright: #3ec4d0;
+  --danger: #8b1e2d;
+  --focus: #0e7c88;
+  --radius: 2px;
+  --shadow: 0 18px 40px rgba(7, 21, 37, 0.08);
+}
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-navy-2: var(--navy-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-paper: var(--paper);
+  --color-foam: var(--foam);
+  --color-line: var(--line);
+  --color-teal: var(--teal);
+  --color-teal-bright: var(--teal-bright);
+  --font-sans: var(--font-ibm-plex);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--foam);
+  color: var(--ink);
+  font-family: var(--font-ibm-plex), "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -100%;
+  z-index: 100;
+  background: var(--navy);
+  color: white;
+  padding: 0.6rem 1rem;
+}
+
+.skip-link:focus {
+  top: 0.75rem;
+}
+
+.container {
+  width: min(1120px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--teal);
+}
+
+.pending-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--navy);
+  background: #efe6c9;
+  border: 1px solid #d9c57a;
+  padding: 0.15rem 0.45rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.7rem 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background: var(--teal);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #0b6a74;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: inherit;
+  border-color: currentColor;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.grid-cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .grid-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-cards.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--line);
+  padding: 1.35rem 1.4rem;
+  height: 100%;
+}
+
+.card h3,
+.card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.card a.more {
+  display: inline-block;
+  margin-top: 0.9rem;
+  color: var(--teal);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.card a.more:hover {
+  text-decoration: underline;
+}
+
+.page-hero {
+  background: var(--navy);
+  color: #e8eef3;
+  padding: 4.5rem 0 3.2rem;
+}
+
+.page-hero h1 {
+  margin: 0.4rem 0 0.7rem;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: white;
+}
+
+.prose {
+  max-width: 42rem;
+}
+
+.prose h2 {
+  margin-top: 2rem;
+  letter-spacing: -0.02em;
+}
+
+.form-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-grid label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+  font: inherit;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--line);
+  background: white;
+  min-height: 48px;
+}
+
+.form-grid textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.notice {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  padding: 0.9rem 1rem;
+}
