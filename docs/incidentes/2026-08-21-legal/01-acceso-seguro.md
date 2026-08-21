@@ -82,12 +82,17 @@ Cree el usuario SFTP temporal. En el chat indique **solo**: host ya conocido, pu
 
 Si no quieren darme SFTP: hagan Full Backup, capturas de `public_html/legal/` (nombres, fechas, tamaños, **no** ejecuten el PHP), listado de cron y de usuarios WP, y súbanlos como archivos al agente (no al repo). Más lento, pero válido.
 
+## Hallazgo 2026-08-21 (cuenta entregada)
+
+El usuario FTPS actual inicia en el **home cPanel** y ve `public_html`. No se usará para subir archivos. Hace falta un usuario **enjaulado** a staging. Rotar la contraseña que viajó por el chat.
+
 ## Cuentas temporales recomendadas (háganlo ustedes en cPanel)
 
-1. SFTP `ir-legal-20260821` → `public_html`  
-2. WP admin `justech-ir-2026` + application password  
-3. Calendario: revocar ambas al cerrar el incidente  
-4. No reutilizar la contraseña del propietario
+1. FTP jaulado `cursor-staging` → solo docroot de `staging.justech.do` (nunca `public_html`)  
+2. (IR `/legal/`, aparte) usuario IR acotado, no el mismo que staging  
+3. WP admin `justech-ir-2026` + application password  
+4. Revocar al cerrar el incidente  
+5. No reutilizar la contraseña del propietario
 
 ## Qué haré en cuanto existan secretos (aún sin limpiar)
 

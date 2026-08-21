@@ -24,6 +24,7 @@ El 21 de agosto de 2026 la URL `https://www.justech.do/legal/` servía contenido
 ## Cómo leer este repo
 
 - `docs/fase-a/` — evidencia de auditoría de solo lectura
+- `docs/fase-b/` — IA, SEO, conversiones y plan de staging (FTP actual no es jaula)
 - `docs/PENDIENTES_CONTENIDO.md` — información que falta para publicar sin inventar
 - `docs/DECISIONES.md` — supuestos y decisiones arquitectónicas
 - `docs/CHANGELOG.md` — bitácora del trabajo

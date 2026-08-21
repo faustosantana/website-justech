@@ -35,3 +35,5 @@ Leyenda de impacto: **P0** bloquea confianza/seguridad · **P1** bloquea página
 | C27 | Autorización expresa del plan de limpieza WP | Incidente P0 | P0 | Propietario | Esperando |
 | C28 | Search Console: ¿`/legal/` en índice o Security Issues? | Post-limpieza | P1 | Marketing | Tras contener |
 | C29 | Usuarios WP enumerables: cuáles son del equipo vs. proveedores | Incidente P0 | P0 | Propietario | Confirmar **en el chat**, no en Git |
+| C30 | Enjaular FTP a un directorio ≠ `public_html`; rotar la clave expuesta en el chat | Staging | P0 | Propietario / hosting | Bloquea deploys |
+| C31 | Crear `staging.justech.do` (DNS + TLS + auth) o autorizar preview PaaS | Staging | P1 | Propietario | Tras C30 |

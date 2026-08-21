@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-21 (FTPS + Fase B)
+
+- Verificación FTPS de solo lectura: el usuario no está enjaulado (ve `public_html` y el home cPanel). **Cero escrituras en servidor.**
+- `ftp.justechrd.com` no resuelve; el login TLS funcionó en el host FTP de Justech.
+- Plan de staging: jaula FTP o PaaS; noindex; sin tags de producción.
+- Fase B: sitemap, SEO, conversiones, 301, audiencias, KPIs.
+
 ## 2026-08-21 (P0 `/legal/`)
 
 - Expediente de incidente: evidencia pública (hash estable, sin cloaking por UA), hipótesis de `legal/index.php` físico, plan de limpieza **en espera de autorización**.
