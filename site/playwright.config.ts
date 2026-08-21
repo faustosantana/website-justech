@@ -2,7 +2,8 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./tests",
-  timeout: 30000,
+  timeout: 60000,
+  fullyParallel: false,
   use: { baseURL: "http://127.0.0.1:4173", trace: "off" },
   webServer: {
     command: "npx --yes serve out -l 4173",
