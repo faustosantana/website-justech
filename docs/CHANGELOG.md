@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-21 (P0 `/legal/`)
+
+- Expediente de incidente: evidencia pública (hash estable, sin cloaking por UA), hipótesis de `legal/index.php` físico, plan de limpieza **en espera de autorización**.
+- Instrucciones de entrega de acceso por secretos (SFTP/cPanel/WP/DB); `.gitignore` para secretos y dumps.
+- Confirmación: el plan WP no toca MX/SPF/DKIM/DMARC.
+- Odoo selector documentado como P1 en otro host; sin cambios.
+- Fase B de IA/SEO pausada.
+
 ## 2026-08-21
 
 - Creación de rama `cursor/fase-a-auditoria-017a`.

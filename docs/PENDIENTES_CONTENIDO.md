@@ -30,4 +30,8 @@ Leyenda de impacto: **P0** bloquea confianza/seguridad · **P1** bloquea página
 | C22 | Aprobación de narrativa: “La tecnología correcta mueve su negocio hacia adelante.” | Home hero | P2 | Dirección | Abierto |
 | C23 | ¿Existe blog, casos escritos, FAQs o descargables reales? | Recursos | P2 | Marketing | Abierto — no hay blog en prod |
 | C24 | Horario de soporte 8:00–17:30 (JT-SOP-ATN-001) vs. emergencias 24/7. ¿Se promete 24/7? | SLA, soporte | P1 | Operaciones | No afirmar 24/7 sin contrato |
-| C25 | Autorización para conservar/enlazar PDFs legales de ` /documentos-legales/` | Centro legal | P1 | Legal / Gerencia | Abierto |
+| C25 | Autorización para conservar/enlazar PDFs legales de `/documentos-legales/` | Centro legal | P1 | Legal / Gerencia | Abierto |
+| C26 | Acceso SFTP/cPanel/WP por secretos (no chat) para IR de `/legal/` | Incidente P0 | P0 | Propietario | Esperando entrega |
+| C27 | Autorización expresa del plan de limpieza WP | Incidente P0 | P0 | Propietario | Esperando |
+| C28 | Search Console: ¿`/legal/` en índice o Security Issues? | Post-limpieza | P1 | Marketing | Tras contener |
+| C29 | Usuarios WP enumerables: cuáles son del equipo vs. proveedores | Incidente P0 | P0 | Propietario | Confirmar **en el chat**, no en Git |

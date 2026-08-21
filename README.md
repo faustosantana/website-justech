@@ -17,7 +17,9 @@ Este repositorio partió vacío. La producción actual vive en WordPress (tema T
 
 ## Incidente P0 (producción)
 
-El 21 de agosto de 2026 la URL `https://www.justech.do/legal/` servía contenido ajeno de apuestas (OK88 / slots, Indonesia). Las demás políticas legales del 13/07/2026 siguen respondiendo contenido de Justech. **No es un rediseño: es un incidente de seguridad.** Ver `docs/fase-a/01-auditoria-tecnica.md`.
+El 21 de agosto de 2026 la URL `https://www.justech.do/legal/` servía contenido ajeno de apuestas (OK88 / Plaza IT). Las demás políticas legales del 13/07/2026 siguen respondiendo contenido de Justech.
+
+**Expediente:** `docs/incidentes/2026-08-21-legal/` — evidencia pública, plan de limpieza **no ejecutado** (falta acceso + autorización). No hay credenciales en este repositorio.
 
 ## Cómo leer este repo
 
