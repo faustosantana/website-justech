@@ -22,6 +22,9 @@ const pages = [
   { path: "/soporte/", name: "soporte" },
   { path: "/servicios/servicios-administrados/", name: "msp" },
   { path: "/infraestructura-fisica/", name: "cableado" },
+  { path: "/productos/laptops/", name: "laptops" },
+  { path: "/productos/servidores/", name: "servidores" },
+  { path: "/nube/", name: "nube" },
   { path: "/resolver/", name: "resolver" },
 ];
 
@@ -63,7 +66,8 @@ async function shoot() {
     });
     const page = await context.newPage();
     for (const route of pages) {
-      if (vp.name !== "desktop" && route.name !== "home") continue;
+      if (vp.name === "mobile" && !["home", "laptops", "redes", "seguridad"].includes(route.name)) continue;
+      if (vp.name === "tablet" && route.name !== "home") continue;
       await page.goto(base + route.path, { waitUntil: "networkidle" });
       await paintPage(page);
       const tmp = join(artShots, `tmp-${route.name}-${vp.name}.png`);

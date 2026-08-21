@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
+import { HomeHero } from "@/components/HomeHero";
 import { LayerSystem } from "@/components/LayerSystem";
 import { NeedPicker } from "@/components/NeedPicker";
-import { TechScene } from "@/components/TechScene";
 import { TicketPreview } from "@/components/TicketPreview";
 import { TrustSlots } from "@/components/TrustSlots";
-import { company, problems, technologyLinks, verifiedSignals } from "@/content/site";
+import { company, problems, technologyLinks } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
-import { withBase } from "@/lib/paths";
 
 export const metadata = pageMeta(
   "La capa que mantiene el negocio en movimiento",
@@ -18,34 +17,9 @@ export const metadata = pageMeta(
 export default function HomePage() {
   return (
     <main id="contenido">
-      <section className="cine-hero">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="cine-photo" src={withBase("/visual/city-mesh.webp")} alt="" width={1920} height={1080} fetchPriority="high" />
-        <TechScene scene="hero" className="cine-overlay" />
-        <div className="cine-copy container">
-          <p className="eyebrow">Justech · Santo Domingo · Desde 2018</p>
-          <h1>La capa que mantiene el negocio en movimiento.</h1>
-          <p className="deck">
-            Infraestructura, software y soporte, conectados y operados como un sistema.
-          </p>
-          <div className="hero-actions">
-            <Link className="btn btn-primary" href="/contacto/diagnostico/">
-              Solicitar diagnóstico
-            </Link>
-            <Link className="btn btn-ghost" href="#sistema">
-              Ver el sistema
-            </Link>
-          </div>
-          <ul className="trust-inline">
-            {verifiedSignals.map((s) => (
-              <li key={s.k}>
-                <strong>{s.k}</strong>
-                <span>{s.v}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      <HomeHero />
+
+      <div className="seq-bridge" aria-hidden />
 
       <section className="section" id="sistema">
         <div className="container">
@@ -70,72 +44,6 @@ export default function HomePage() {
               El tráfico debe llegar. Un evento no debe apagar sucursales. Ver{" "}
               <Link href="/redes/">redes</Link> y <Link href="/seguridad/">seguridad</Link>.
             </p>
-          </div>
-          <TechScene scene="security" story={0.8} />
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container grid gap-10 lg:grid-cols-2 lg:items-center">
-          <div>
-            <p className="eyebrow">Equipos, licencias y nube</p>
-            <h2 className="section-title">Aprovisionar con criterio, no con catálogo.</h2>
-            <p className="lead-copy">
-              Puestos, tenants y cargas se cotizan y se ponen en marcha. Sin carrito. Sin logos de
-              partnership.
-            </p>
-            <div className="hero-actions">
-              <Link className="btn btn-primary" href="/licenciamiento/">
-                Licenciamiento
-              </Link>
-              <Link className="btn btn-paper" href="/productos/laptops/">
-                Equipos
-              </Link>
-            </div>
-          </div>
-          <TechScene scene="license" />
-        </div>
-      </section>
-
-      <section className="photo-band" aria-hidden>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={withBase("/visual/cabling-order.webp")} alt="" />
-      </section>
-
-      <section className="section band-paper">
-        <div className="container grid gap-10 lg:grid-cols-2 lg:items-center">
-          <div>
-            <p className="eyebrow">Cableado y data center</p>
-            <h2 className="section-title">De un closet improvisado a una planta que se puede operar.</h2>
-            <p className="lead-copy">
-              Levantamiento, rutas, rack, etiquetas, certificación, documentos. La historia completa
-              está en infraestructura física.
-            </p>
-            <Link className="btn btn-primary" href="/infraestructura-fisica/">
-              Ver la obra
-            </Link>
-          </div>
-          <TechScene scene="cabling" story={0.7} />
-        </div>
-      </section>
-
-      <section className="section seq-dark">
-        <div className="container grid gap-10 lg:grid-cols-2 lg:items-center">
-          <div>
-            <p className="eyebrow">Soporte</p>
-            <h2 className="section-title">Trazabilidad: qué ocurre y quién atiende.</h2>
-            <p>
-              Portal propio, N1–N3 según contrato, horario publicado.{" "}
-              {company.hours}
-            </p>
-            <div className="hero-actions">
-              <a className="btn btn-primary" href={company.supportUrl}>
-                Entrar al portal
-              </a>
-              <Link className="btn btn-ghost" href="/soporte/">
-                Cómo opera el soporte
-              </Link>
-            </div>
           </div>
           <TicketPreview />
         </div>

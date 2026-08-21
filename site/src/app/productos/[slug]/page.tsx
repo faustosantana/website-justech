@@ -5,7 +5,7 @@ import { pageMeta } from "@/lib/seo";
 
 export function generateStaticParams() {
   return productCaps
-    .filter((s) => s.slug !== "laptops")
+    .filter((s) => s.slug !== "laptops" && s.slug !== "servidores")
     .map((s) => ({ slug: s.slug }));
 }
 

@@ -54,12 +54,8 @@ function Mega({
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <div className="flex items-center">
-        <Link
-          href={id}
-          className="nav-link"
-          aria-current={undefined}
-        >
+      <div className="nav-item">
+        <Link href={id} className="nav-link">
           {label}
         </Link>
         <button
@@ -118,7 +114,7 @@ function MegaProducts() {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <div className="flex items-center">
+      <div className="nav-item">
         <Link href="/productos/" className="nav-link">
           Productos
         </Link>
@@ -181,14 +177,15 @@ export function Header() {
       <div className="container">
         <div className="header-utility">
           <Link href="/" className="brand-lockup" aria-label="Justech, inicio">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={withBase("/brand/justech-mark-white.png")}
-              alt=""
-              width={48}
-              height={32}
-            />
-            <span>Justech</span>
+            <span className="brand-chip">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={withBase("/brand/justech-logo.png")}
+                alt="Justech"
+                width={150}
+                height={36}
+              />
+            </span>
           </Link>
 
           <div className="header-actions">

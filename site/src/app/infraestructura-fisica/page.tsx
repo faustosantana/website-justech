@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { CablingStory } from "@/components/CablingStory";
-import { Flagship } from "@/components/Flagship";
+import { CablingCompare } from "@/components/CablingCompare";
+import { Stage } from "@/components/Stage";
 import { cablingCaps } from "@/content/capabilities";
 import { pageMeta } from "@/lib/seo";
-import { withBase } from "@/lib/paths";
 
 export const metadata = pageMeta(
   "Cableado e infraestructura física",
@@ -13,27 +12,25 @@ export const metadata = pageMeta(
 
 export default function Page() {
   return (
-    <Flagship
+    <Stage
+      family="process"
       kicker="Infraestructura física"
       title="Ver la obra. No imaginarla."
       lead="Doce pasos, de un sitio desordenado a una planta etiquetada y certificable."
       scene="cabling"
-      photo="/visual/patch-panel.webp"
+      story={0.7}
       crumbs={[
         { href: "/", label: "Inicio" },
         { href: "/infraestructura-fisica/", label: "Infraestructura física" },
       ]}
       ctaHref="/contacto/levantamiento/"
       ctaLabel="Solicitar levantamiento"
+      note="El plano se construye delante. El antes/después es ilustración, no un cliente."
     >
       <div className="container section">
-        <h2 className="section-title">Avance el proceso.</h2>
-        <CablingStory />
+        <h2 className="section-title">De closet improvisado a planta operable.</h2>
+        <CablingCompare />
       </div>
-      <section className="photo-band" aria-hidden>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={withBase("/visual/cabling-order.webp")} alt="" />
-      </section>
       <div className="container py-16">
         <h2>Capítulos de la planta</h2>
         <ul className="chip-list">
@@ -44,6 +41,6 @@ export default function Page() {
           ))}
         </ul>
       </div>
-    </Flagship>
+    </Stage>
   );
 }

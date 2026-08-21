@@ -1,5 +1,5 @@
-import { Flagship } from "@/components/Flagship";
 import { SecurityLayers } from "@/components/SecurityLayers";
+import { Stage } from "@/components/Stage";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
@@ -10,23 +10,26 @@ export const metadata = pageMeta(
 
 export default function Page() {
   return (
-    <Flagship
+    <Stage
+      family="layers"
       kicker="Seguridad"
       title="Proteger sin apagar el negocio."
       lead="Un evento se aísla. La operación sigue. Capas que las personas pueden cumplir."
       scene="security"
+      story={0.85}
       crumbs={[
         { href: "/", label: "Inicio" },
         { href: "/seguridad/", label: "Seguridad" },
       ]}
       ctaHref="/contacto/diagnostico/?need=seguridad"
       ctaLabel="Pedir diagnóstico"
+      note="Estética ejecutiva: capas, señal, contención. Sin clichés de hacker."
     >
       <div className="container section">
-        <p className="eyebrow">Capas</p>
+        <p className="eyebrow">Capas vivas</p>
         <h2 className="section-title">Seleccione una capa. Entienda el riesgo y el siguiente paso.</h2>
         <SecurityLayers />
       </div>
-    </Flagship>
+    </Stage>
   );
 }

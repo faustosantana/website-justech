@@ -11,6 +11,9 @@ const routes = [
   "/soporte/",
   "/servicios/servicios-administrados/",
   "/infraestructura-fisica/",
+  "/productos/laptops/",
+  "/productos/servidores/",
+  "/nube/",
   "/resolver/",
 ];
 

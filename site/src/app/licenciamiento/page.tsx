@@ -1,6 +1,5 @@
-import { Flagship } from "@/components/Flagship";
-import { LicenseStudio } from "@/components/LicenseStudio";
-import { TechScene } from "@/components/TechScene";
+import { LicenseOrg } from "@/components/LicenseOrg";
+import { Stage } from "@/components/Stage";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
@@ -11,7 +10,8 @@ export const metadata = pageMeta(
 
 export default function Page() {
   return (
-    <Flagship
+    <Stage
+      family="process"
       kicker="Licenciamiento"
       title="Puestos que coinciden con personas."
       lead="Descubrimiento, asignación, migración, renovación y soporte. Sin precios en pantalla."
@@ -22,20 +22,12 @@ export default function Page() {
       ]}
       ctaHref="/contacto/licenciamiento/"
       ctaLabel="Solicitar evaluación"
+      note="La organización se ve. El configurador no cierra un plan."
     >
-      <div className="container section grid gap-12 lg:grid-cols-2">
-        <div>
-          <h2>De disperso a gobernado</h2>
-          <ol>
-            <li>Descubrir tenants y cuentas personales</li>
-            <li>Seleccionar el plan según el trabajo real</li>
-            <li>Asignar, migrar y configurar</li>
-            <li>Renovar y optimizar puestos</li>
-          </ol>
-          <TechScene scene="license" />
-        </div>
-        <LicenseStudio />
+      <div className="container section">
+        <h2 className="section-title">De disperso a gobernado.</h2>
+        <LicenseOrg />
       </div>
-    </Flagship>
+    </Stage>
   );
 }

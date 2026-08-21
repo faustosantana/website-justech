@@ -9,6 +9,8 @@ export function LicenseStudio() {
   const [files, setFiles] = useState(true);
   const [meet, setMeet] = useState(true);
   const [sec, setSec] = useState(false);
+  const [admin, setAdmin] = useState(true);
+  const [migrate, setMigrate] = useState(false);
   const [storage, setStorage] = useState("estándar");
 
   return (
@@ -34,9 +36,11 @@ export function LicenseStudio() {
       <fieldset>
         <legend>Aplicaciones</legend>
         <label><input type="checkbox" checked={mail} onChange={(e) => setMail(e.target.checked)} /> Correo</label>
-        <label><input type="checkbox" checked={files} onChange={(e) => setFiles(e.target.checked)} /> Archivos</label>
+        <label><input type="checkbox" checked={files} onChange={(e) => setFiles(e.target.checked)} /> Archivos y colaboración</label>
         <label><input type="checkbox" checked={meet} onChange={(e) => setMeet(e.target.checked)} /> Videoconferencia</label>
-        <label><input type="checkbox" checked={sec} onChange={(e) => setSec(e.target.checked)} /> Seguridad adicional</label>
+        <label><input type="checkbox" checked={sec} onChange={(e) => setSec(e.target.checked)} /> Seguridad y dispositivos</label>
+        <label><input type="checkbox" checked={admin} onChange={(e) => setAdmin(e.target.checked)} /> Administración central</label>
+        <label><input type="checkbox" checked={migrate} onChange={(e) => setMigrate(e.target.checked)} /> Migración</label>
       </fieldset>
       <label>
         Almacenamiento
@@ -49,9 +53,11 @@ export function LicenseStudio() {
       <p className="notice">
         Lectura de esta demostración: {users} puestos
         {mail ? ", correo" : ""}
-        {files ? ", archivos" : ""}
+        {files ? ", archivos y colaboración" : ""}
         {meet ? ", reuniones" : ""}
-        {sec ? ", capa de seguridad a diseñar" : ""}. Un especialista valida el tenant y el licenciamiento real.
+        {sec ? ", seguridad y dispositivos a diseñar" : ""}
+        {admin ? ", administración" : ""}
+        {migrate ? ", migración" : ""}. Un especialista valida el tenant y el licenciamiento real.
       </p>
       <Link className="btn btn-primary" href={`/contacto/licenciamiento/?users=${users}`}>
         Solicitar evaluación de licenciamiento

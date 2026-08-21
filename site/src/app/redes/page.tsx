@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Flagship } from "@/components/Flagship";
-import { NetworkScenarios } from "@/components/NetworkScenarios";
+import { NetworkExplorer } from "@/components/NetworkExplorer";
+import { Stage } from "@/components/Stage";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
@@ -11,23 +11,24 @@ export const metadata = pageMeta(
 
 export default function Page() {
   return (
-    <Flagship
+    <Stage
+      family="layers"
       kicker="Redes"
       title="Conectar la operación, no improvisar un switch."
       lead="Sede, sucursales, APs, usuarios y nube en un diseño que se puede documentar y sostener."
       scene="network"
-      photo="/visual/city-mesh.webp"
       crumbs={[
         { href: "/", label: "Inicio" },
         { href: "/redes/", label: "Redes" },
       ]}
       ctaHref="/contacto/diagnostico/?need=red"
       ctaLabel="Pedir diagnóstico de red"
+      note="Topología propia, no la ciudad de la portada."
     >
       <div className="container section">
-        <p className="eyebrow">Escenario</p>
-        <h2 className="section-title">El sitio dicta la topología.</h2>
-        <NetworkScenarios />
+        <p className="eyebrow">Topología explorable</p>
+        <h2 className="section-title">El sitio dicta el diseño.</h2>
+        <NetworkExplorer />
       </div>
       <div className="container pb-16 grid gap-10 lg:grid-cols-2">
         <article>
@@ -54,6 +55,6 @@ export default function Page() {
           </details>
         </article>
       </div>
-    </Flagship>
+    </Stage>
   );
 }

@@ -9,6 +9,9 @@ const columns = [
       { href: "/soluciones/", label: "Soluciones" },
       { href: "/servicios/", label: "Servicios" },
       { href: "/productos/", label: "Productos y tecnología" },
+      { href: "/redes/", label: "Redes" },
+      { href: "/seguridad/", label: "Seguridad" },
+      { href: "/nube/", label: "Nube" },
       { href: "/infraestructura-fisica/", label: "Infraestructura física" },
       { href: "/industrias/", label: "Industrias" },
     ],
@@ -28,6 +31,17 @@ const columns = [
 export function Footer() {
   return (
     <footer className="site-footer mt-20 border-t border-line bg-navy text-[#d5dee6]">
+      <div className="footer-cta">
+        <div className="container flex flex-wrap items-center justify-between gap-4 py-8">
+          <div>
+            <p className="eyebrow m-0">Siguiente conversación</p>
+            <p className="m-0 text-lg text-white">Diga qué necesita resolver. El formulario no envía en staging.</p>
+          </div>
+          <Link className="btn btn-primary" href="/resolver/">
+            ¿Qué necesita resolver?
+          </Link>
+        </div>
+      </div>
       <div className="container grid gap-10 py-16 md:grid-cols-4">
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -82,7 +96,7 @@ export function Footer() {
               </a>
             </li>
           </ul>
-          <p className="mt-4 text-xs text-[#9aa8b2]">{company.hours}</p>
+          <p className="mt-4 text-xs text-[#c5d3dc]">{company.hours}</p>
         </div>
       </div>
       <div className="border-t border-white/10">

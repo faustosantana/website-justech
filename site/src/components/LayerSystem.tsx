@@ -38,7 +38,7 @@ const layers: { id: SceneName; href: string; title: string; result: string }[] =
   },
   {
     id: "cloud",
-    href: "/soluciones/modernizacion-de-infraestructura/",
+    href: "/nube/",
     title: "Nube",
     result: "Oleadas, validación y operación — no un “subir todo”.",
   },

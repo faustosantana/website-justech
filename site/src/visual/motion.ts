@@ -19,7 +19,7 @@ export const pal = {
   signal: "#5eead4",
   teal: "#3ec4d0",
   paper: "rgba(232, 238, 243, 0.92)",
-  dim: "rgba(165, 186, 198, 0.7)",
+  dim: "rgba(214, 226, 234, 0.92)",
   warn: "#d4a373",
   alert: "#c45c4a",
   metal: "rgba(186, 198, 208, 0.35)",
@@ -34,4 +34,5 @@ export type SceneName =
   | "cabling"
   | "msp"
   | "cloud"
-  | "rack";
+  | "rack"
+  | "laptop";

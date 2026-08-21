@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { Flagship } from "@/components/Flagship";
+import { EquipWizard } from "@/components/EquipWizard";
+import { LaptopRig } from "@/components/LaptopRig";
+import { Stage } from "@/components/Stage";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
@@ -8,24 +10,14 @@ export const metadata = pageMeta(
   "/productos/laptops/",
 );
 
-const chain = [
-  "Necesidad",
-  "Especificación",
-  "Cotización",
-  "Recepción",
-  "Imagen y cifrado",
-  "Etiqueta",
-  "Entrega",
-  "Garantía",
-];
-
 export default function Page() {
   return (
-    <Flagship
+    <Stage
+      family="object"
       kicker="Aprovisionamiento"
       title="Una laptop es un puesto de trabajo, no una oferta de mostrador."
       lead="Criterio de uso, imagen corporativa, inventario y RMA. Sin precios en el sitio."
-      scene="rack"
+      scene="laptop"
       crumbs={[
         { href: "/", label: "Inicio" },
         { href: "/productos/", label: "Productos" },
@@ -33,20 +25,16 @@ export default function Page() {
       ]}
       ctaHref="/contacto/cotizacion/?need=equipos"
       ctaLabel="Solicitar cotización"
+      note="El objeto es un portátil. El rack no entra en esta página."
     >
       <div className="container section">
-        <ol className="rail">
-          {chain.map((s, i) => (
-            <li key={s}>
-              <p className="n m-0">{String(i + 1).padStart(2, "0")}</p>
-              <h3>{s}</h3>
-            </li>
-          ))}
-        </ol>
+        <LaptopRig />
+        <EquipWizard />
         <p>
-          Otras categorías en el <Link href="/productos/">catálogo consultivo</Link>.
+          Otras categorías en el <Link href="/productos/">catálogo consultivo</Link>. Servidores y
+          data center: <Link href="/productos/servidores/">diseño de carga</Link>.
         </p>
       </div>
-    </Flagship>
+    </Stage>
   );
 }

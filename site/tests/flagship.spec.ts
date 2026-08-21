@@ -24,6 +24,8 @@ test("flagship pages are distinct and keyboard reachable", async ({ page }) => {
   await expect(page.locator("h1")).toContainText("Operar la tecnología");
   await page.goto("/infraestructura-fisica/");
   await expect(page.locator("h1")).toContainText("obra");
+  await page.goto("/productos/laptops/");
+  await expect(page.locator("h1")).toContainText("laptop");
   await page.goto("/resolver/");
   await expect(page.getByRole("button", { name: "Renovar equipos" })).toBeVisible();
 });

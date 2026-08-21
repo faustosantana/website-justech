@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Flagship } from "@/components/Flagship";
-import { TicketFlow } from "@/components/TicketFlow";
+import { ProcessTrack } from "@/components/ProcessTrack";
+import { Stage } from "@/components/Stage";
+import { SupportConsole } from "@/components/SupportConsole";
 import { company } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
@@ -10,36 +11,56 @@ export const metadata = pageMeta(
   "/soporte/",
 );
 
+const flow = [
+  { t: "Solicitud", d: "El usuario reporta. El portal registra. No se pierde en un chat." },
+  { t: "Clasificación", d: "Qué es, a quién le duele, qué capa toca." },
+  { t: "Prioridad", d: "Se nombra. No se recita un SLA no firmado." },
+  { t: "Asignación", d: "Un responsable. Un estado visible." },
+  { t: "Diagnóstico", d: "N1 contiene. N2/N3 cambia con control." },
+  { t: "Intervención", d: "La acción queda. El usuario no adivina." },
+  { t: "Validación", d: "El que reportó confirma antes del cierre." },
+  { t: "Cierre", d: "Historial para la siguiente vez." },
+];
+
 export default function Page() {
   return (
-    <Flagship
+    <Stage
+      family="interface"
       kicker="Soporte"
       title="Un caso. Un responsable. Un cierre."
       lead="El usuario reporta, el portal registra, N1 contiene, N2/N3 cambia con control. Horario publicado."
-      scene="support"
-      photo="/visual/ops-desk.webp"
+      visual={<SupportConsole />}
       crumbs={[
         { href: "/", label: "Inicio" },
         { href: "/soporte/", label: "Soporte" },
       ]}
       ctaHref={company.supportUrl}
-      ctaLabel="Ir al portal"
+      ctaLabel="Soy cliente: entrar al portal"
+      secondaryHref="/contacto/soporte/"
+      secondaryLabel="Necesito soporte empresarial"
+      note="La consola es una simulación. Los tiempos se firman, no se publican."
     >
       <div className="container section">
-        <p className="eyebrow">Flujo</p>
-        <h2 className="section-title">Simulación: de usuario a cierre.</h2>
-        <TicketFlow />
+        <ProcessTrack title="El ticket en movimiento" steps={flow} />
       </div>
-      <div className="container pb-16">
-        <p>
-          Horario: {company.hours}. Canales en{" "}
-          <Link href="/canales-de-asistencia/">asistencia</Link>. Contratos nuevos:{" "}
-          <Link href="/contacto/soporte/">hablar de soporte</Link>.
-        </p>
-        <p className="text-sm text-muted">
-          Los tiempos de respuesta se firman. Aquí no se publican minutos ni 24/7.
-        </p>
+      <div className="container pb-16 grid gap-10 lg:grid-cols-3">
+        <article>
+          <h2>Portal</h2>
+          <p>Historial, estados y un responsable. Canal: {company.supportUrl.replace("https://", "")}.</p>
+        </article>
+        <article>
+          <h2>Mesa de ayuda</h2>
+          <p>
+            N1–N3 según contrato. <Link href="/contacto/soporte/">Quiero una mesa de ayuda</Link>.
+          </p>
+        </article>
+        <article>
+          <h2>Horario</h2>
+          <p>
+            {company.hours}. Canales en <Link href="/canales-de-asistencia/">asistencia</Link>.
+          </p>
+        </article>
       </div>
-    </Flagship>
+    </Stage>
   );
 }

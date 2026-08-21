@@ -1,22 +1,9 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { TechScene } from "@/components/TechScene";
+import { Stage, type HeroFamily } from "@/components/Stage";
 import type { SceneName } from "@/visual/motion";
-import { withBase } from "@/lib/paths";
 
-export function Flagship({
-  kicker,
-  title,
-  lead,
-  scene,
-  photo,
-  photoAlt,
-  crumbs,
-  children,
-  ctaHref,
-  ctaLabel,
-}: {
+/** Adaptador: las páginas nuevas usan Stage con familia explícita. */
+export function Flagship(props: {
   kicker: string;
   title: string;
   lead: string;
@@ -27,28 +14,20 @@ export function Flagship({
   children: ReactNode;
   ctaHref: string;
   ctaLabel: string;
+  family?: HeroFamily;
 }) {
   return (
-    <main id="contenido" className="flagship">
-      <header className="cine-hero">
-        {photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img className="cine-photo" src={withBase(photo)} alt={photoAlt ?? ""} width={1600} height={900} fetchPriority="high" />
-        ) : null}
-        <TechScene scene={scene} className="cine-overlay" />
-        <div className="cine-copy container">
-          <p className="eyebrow">{kicker}</p>
-          <h1>{title}</h1>
-          <p className="deck">{lead}</p>
-          <Link className="btn btn-primary" href={ctaHref.startsWith("http") ? ctaHref : ctaHref} {...(ctaHref.startsWith("http") ? { target: "_self" } : {})}>
-            {ctaLabel}
-          </Link>
-        </div>
-      </header>
-      <div className="container pt-6">
-        <Breadcrumbs items={crumbs} />
-      </div>
-      {children}
-    </main>
+    <Stage
+      family={props.family ?? "layers"}
+      kicker={props.kicker}
+      title={props.title}
+      lead={props.lead}
+      scene={props.scene}
+      crumbs={props.crumbs}
+      ctaHref={props.ctaHref}
+      ctaLabel={props.ctaLabel}
+    >
+      {props.children}
+    </Stage>
   );
 }
