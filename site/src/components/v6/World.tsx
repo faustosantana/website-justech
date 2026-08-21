@@ -43,7 +43,7 @@ export function World() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="v6-plate"
-          src={withBase("/visual/v6/v6-concepto-b-home.jpg")}
+          src={withBase("/visual/v5/home-still.jpg")}
           alt=""
           width={1600}
           height={900}

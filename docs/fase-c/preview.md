@@ -2,11 +2,13 @@
 
 El sitio nuevo se construye en Git (`site/`). **Producción no se toca.**
 
-## URL navegable ahora
+## URL navegable ahora (V6)
 
 Túnel Cloudflare (HTTPS, vive mientras el agente/preview local esté activo):
 
-https://buf-courage-glossary-designation.trycloudflare.com/
+https://moderators-road-awards-boot.trycloudflare.com/
+
+Comprobado 2026-08-21: home 200, `noindex`, `robots.txt` Disallow `/`, `/redes/` y `/productos/laptops/` 200.
 
 Comprobado: home 200, `lang=es-DO`, banner de pruebas, `noindex`, `robots.txt` Disallow, `/legal/` es índice Justech (no OK88).
 
