@@ -2,12 +2,12 @@
 
 Producción (`www.justech.do`) no se toca. `noindex`, robots `Disallow: /`, formularios simulados.
 
-## Concepto V7 (revisar esto)
+## Concepto V7 (congelada, no aprobada)
 
-https://views-disabilities-opt-seeking.trycloudflare.com/concepto-v7/
+https://modification-ourselves-buzz-farm.trycloudflare.com/concepto-v7/
 
-Túnel efímero. V6 permanece en `/`. Este PR no se fusiona.
+## Gate creativo V8 (elegir dirección, no implementar)
 
-## URL durable
+https://modification-ourselves-buzz-farm.trycloudflare.com/gate-v8/
 
-GitHub Pages sigue sin habilitarse. Vercel/Cloudflare Pages siguen siendo la vía permanente, sin DNS de justech.do.
+Túnel efímero. `/` sigue siendo V6. Este PR no se fusiona.
