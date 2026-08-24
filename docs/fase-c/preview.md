@@ -4,10 +4,10 @@ Producción (`www.justech.do`) no se toca. `noindex`, robots `Disallow: /`, form
 
 ## Concepto V7 (congelada, no aprobada)
 
-https://modification-ourselves-buzz-farm.trycloudflare.com/concepto-v7/
+https://ecommerce-necklace-received-metallic.trycloudflare.com/concepto-v7/
 
 ## Gate creativo V8 (elegir dirección, no implementar)
 
-https://modification-ourselves-buzz-farm.trycloudflare.com/gate-v8/
+https://ecommerce-necklace-received-metallic.trycloudflare.com/gate-v8/
 
 Túnel efímero. `/` sigue siendo V6. Este PR no se fusiona.
