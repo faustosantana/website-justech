@@ -359,6 +359,7 @@ export function ExperienceV8() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- show() only uses setters
   }, [view, panel, open, demo.beats.length]);
 
   return (

@@ -3,7 +3,7 @@
 .app {
   --paper: #f5f3ee;
   --ink: #06111f;
-  --muted: #5b6570;
+  --muted: #3f4a55;
   --line: rgba(6, 17, 31, 0.1);
   --signal: #0f766e;
   --signal-bright: #12b3ad;
@@ -678,21 +678,47 @@
 .pins button {
   appearance: none;
   border: 0;
-  background: rgba(6, 17, 31, 0.55);
-  color: rgba(255, 255, 255, 0.72);
+  background: transparent;
+  color: transparent;
+  font-size: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.pins button::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.16);
+}
+.pinOn::before {
+  background: var(--signal-bright);
+  box-shadow: 0 0 0 6px rgba(18, 179, 173, 0.35);
+}
+.pins button:hover,
+.pins button:focus-visible,
+.pinFocus {
+  width: auto;
+  height: auto;
+  min-width: 44px;
+  min-height: 32px;
+  border-radius: 4px;
+  background: rgba(6, 17, 31, 0.82);
+  color: #fff;
   font-size: 0.7rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  padding: 5px 8px;
-  cursor: pointer;
-  border-radius: 4px;
+  padding: 6px 8px;
 }
-.pinOn {
-  background: rgba(18, 179, 173, 0.92) !important;
-  color: #05201e !important;
-}
-.pinFocus {
-  box-shadow: var(--focus);
+.pins button:hover::before,
+.pins button:focus-visible::before,
+.pinFocus::before {
+  display: none;
 }
 
 .flag {
@@ -910,8 +936,46 @@
   .mega img {
     display: none;
   }
+  .rail {
+    padding: 8px 12px;
+  }
   .railJump {
+    flex-basis: 100%;
     margin-left: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .railJump button {
+    flex-shrink: 0;
+  }
+  .heroCopy {
+    padding: 22px 16px 18px;
+    max-width: none;
+  }
+  .hero h1 {
+    font-size: 1.65rem;
+    overflow-wrap: break-word;
+  }
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .row .cta,
+  .row .ghost,
+  .row .ghostDark {
+    width: 100%;
+  }
+  .headInner {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 0 12px;
+  }
+  .head .cta {
+    font-size: 0.78rem;
+    padding: 0 12px;
+    min-height: 36px;
   }
   .hero,
   .explorer,
