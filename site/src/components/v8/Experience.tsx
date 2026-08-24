@@ -1,31 +1,35 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, KeyboardEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { company } from "@/content/site";
 import { withBase } from "@/lib/paths";
 import styles from "./experience.module.css";
 
+type View = "inicio" | "explorar" | "demo" | "metodo" | "hablar";
+type SceneId = (typeof scenarios)[number]["id"];
+type DemoId = (typeof demos)[number]["id"];
+
 const heroLayers = [
-  { id: "rack", t: "Rack", x: "16%", y: "58%", hint: "Los puertos responden." },
-  { id: "red", t: "Red", x: "42%", y: "46%", hint: "El tráfico circula." },
-  { id: "equipo", t: "Equipos", x: "58%", y: "62%", hint: "El puesto se prepara." },
-  { id: "seguridad", t: "Seguridad", x: "72%", y: "38%", hint: "Una conexión queda aislada." },
-  { id: "nube", t: "Nube", x: "84%", y: "28%", hint: "Los datos se sincronizan." },
-  { id: "soporte", t: "Soporte", x: "78%", y: "72%", hint: "Llega una alerta." },
+  { id: "rack", t: "Rack", x: "18%", y: "62%", hint: "Los puertos responden." },
+  { id: "red", t: "Red", x: "44%", y: "48%", hint: "El tráfico circula." },
+  { id: "equipo", t: "Equipos", x: "60%", y: "66%", hint: "El puesto se prepara." },
+  { id: "seguridad", t: "Seguridad", x: "74%", y: "36%", hint: "Una conexión queda aislada." },
+  { id: "nube", t: "Nube", x: "86%", y: "24%", hint: "Los datos se sincronizan." },
+  { id: "soporte", t: "Soporte", x: "80%", y: "78%", hint: "Llega una alerta." },
 ] as const;
 
-const jump = [
-  { id: "equipos", t: "Equipos" },
-  { id: "red", t: "Redes" },
-  { id: "oficina", t: "Cableado" },
-  { id: "red", t: "Servidores" },
-  { id: "licencias", t: "Licenciamiento" },
-  { id: "migrar", t: "Nube" },
-  { id: "proteger", t: "Seguridad" },
-  { id: "incidencias", t: "Soporte" },
-  { id: "msp", t: "Servicios administrados" },
-  { id: "cotizar", t: "Cotización" },
+const jump: { t: string; view: View; scene?: SceneId; demo?: DemoId }[] = [
+  { t: "Equipos", view: "explorar", scene: "equipos" },
+  { t: "Redes", view: "demo", demo: "falla" },
+  { t: "Cableado", view: "explorar", scene: "oficina" },
+  { t: "Servidores", view: "demo", demo: "sede" },
+  { t: "Licenciamiento", view: "explorar", scene: "licencias" },
+  { t: "Nube", view: "explorar", scene: "migrar" },
+  { t: "Seguridad", view: "explorar", scene: "proteger" },
+  { t: "Soporte", view: "explorar", scene: "incidencias" },
+  { t: "Servicios administrados", view: "explorar", scene: "msp" },
+  { t: "Cotización", view: "hablar" },
 ];
 
 const scenarios = [
@@ -37,6 +41,7 @@ const scenarios = [
     photo: "/visual/v8/v8-scene-network.jpg",
     alt: "Sede con rack, red, puestos y sucursal.",
     parts: ["Levantamiento", "Cableado", "Rack", "Wi-Fi", "Equipos", "Licencias", "Seguridad", "Soporte"],
+    svc: "Levantamiento, cableado y puesta en marcha.",
     result: "La oficina entra en servicio con un responsable y un plano documentado.",
   },
   {
@@ -47,6 +52,7 @@ const scenarios = [
     photo: "/visual/v8/v8-scene-puesto.jpg",
     alt: "Portátil empresarial listo para aprovisionar.",
     parts: ["Perfil", "Imagen", "Cifrado", "Aplicaciones", "Inventario", "Entrega"],
+    svc: "Aprovisionamiento de puestos.",
     result: "El usuario se sienta y trabaja. El activo queda registrado.",
   },
   {
@@ -57,6 +63,7 @@ const scenarios = [
     photo: "/visual/v8/v8-scene-network.jpg",
     alt: "Topología con ISP, firewall, core, APs y sucursal.",
     parts: ["ISP", "Firewall", "Core", "Acceso", "APs", "Sucursal", "Respaldo"],
+    svc: "Diseño y operación de la red.",
     result: "Si cae el enlace principal, el secundario sostiene y se abre el caso.",
   },
   {
@@ -67,6 +74,7 @@ const scenarios = [
     photo: "/visual/v5/license.jpg",
     alt: "Puesto de trabajo con identidad y aplicaciones.",
     parts: ["Usuario", "Departamento", "Licencia", "Aplicaciones", "Política"],
+    svc: "Orden del tenant y asignación.",
     result: "Cada persona tiene lo que necesita. Sobran las cuentas huérfanas.",
   },
   {
@@ -77,6 +85,7 @@ const scenarios = [
     photo: "/visual/v5/security.jpg",
     alt: "Controles de seguridad en un entorno de operación.",
     parts: ["Identidad", "Endpoint", "Red", "Firewall", "Datos"],
+    svc: "Protección por capas, sin afirmar un SOC.",
     result: "El evento se aísla. No afirmamos un SOC que Justech no opera.",
   },
   {
@@ -87,6 +96,7 @@ const scenarios = [
     photo: "/visual/v5/cloud.jpg",
     alt: "Arquitectura híbrida con origen local y destino en nube.",
     parts: ["Origen", "Destino", "Identidad", "Respaldo", "Prueba"],
+    svc: "Migración con origen, destino y dueño.",
     result: "La operación continúa. La carga queda con responsable.",
   },
   {
@@ -97,6 +107,7 @@ const scenarios = [
     photo: "/visual/v8/v8-scene-soporte.jpg",
     alt: "Consola de caso Sucursal sin conectividad.",
     parts: ["Reporte", "Clasificación", "Diagnóstico", "Corrección", "Cierre"],
+    svc: "Mesa de ayuda. El portal vive en otro host.",
     result: "El visitante entiende el flujo. No es una plataforma propiedad de Justech.",
   },
   {
@@ -107,6 +118,7 @@ const scenarios = [
     photo: "/visual/v5/support.jpg",
     alt: "Mesa de operación y seguimiento de casos.",
     parts: ["Alcance", "Mesa", "Cambios", "Informes"],
+    svc: "Servicios administrados con alcance escrito.",
     result: "La empresa sabe a quién llamar y qué queda fuera.",
   },
 ] as const;
@@ -192,29 +204,46 @@ const mega = {
     { id: "incidencias", t: "Soporte" },
     { id: "msp", t: "Servicios administrados" },
   ],
+  industrias: [
+    { id: "oficina", t: "Sede y sucursales", d: "Una operación en varios puntos." },
+    { id: "equipos", t: "Puestos de trabajo", d: "Equipos listos para operar." },
+    { id: "red", t: "Infraestructura", d: "Rack, red y continuidad." },
+  ],
 } as const;
 
+const megaPhoto: Record<keyof typeof mega, string> = {
+  soluciones: "/visual/v8/v8-scene-network.jpg",
+  servicios: "/visual/v8/v8-scene-soporte.jpg",
+  productos: "/visual/v8/v8-scene-puesto.jpg",
+  industrias: "/visual/v7/v7-hero.jpg",
+};
+
 const labs = [
-  { t: "Redes", d: "Laboratorio: tráfico, falla y respaldo." },
-  { t: "Equipos", d: "Estudio de puesto y aprovisionamiento." },
-  { t: "Licenciamiento", d: "Usuario, licencia y política." },
-  { t: "Nube", d: "Migración híbrida explorable." },
-  { t: "Seguridad", d: "Evento conceptual por capas." },
-  { t: "Soporte", d: "Consola de caso, no un dashboard falso." },
-  { t: "Infraestructura", d: "Planta, rutas y rack." },
+  { t: "Redes", demo: "falla" as DemoId },
+  { t: "Equipos", scene: "equipos" as SceneId },
+  { t: "Licenciamiento", scene: "licencias" as SceneId },
+  { t: "Nube", scene: "migrar" as SceneId },
+  { t: "Seguridad", scene: "proteger" as SceneId },
+  { t: "Soporte", scene: "incidencias" as SceneId },
+  { t: "Infraestructura", demo: "sede" as DemoId },
 ];
 
 const needs = ["Equipos", "Redes", "Cableado", "Licencias", "Seguridad", "Nube", "Soporte", "Proyecto integral"];
-
-type MegaKey = keyof typeof mega | "industrias" | "recursos" | "nosotros" | "soporte";
+const views: { id: View; t: string }[] = [
+  { id: "inicio", t: "Inicio" },
+  { id: "explorar", t: "Explorar" },
+  { id: "demo", t: "Operación" },
+  { id: "metodo", t: "Método" },
+  { id: "hablar", t: "Conversar" },
+];
 
 export function ExperienceV8() {
-  const [solid, setSolid] = useState(false);
+  const [view, setView] = useState<View>("inicio");
   const [open, setOpen] = useState(false);
-  const [panel, setPanel] = useState<MegaKey | null>(null);
+  const [panel, setPanel] = useState<keyof typeof mega | null>(null);
   const [layer, setLayer] = useState<(typeof heroLayers)[number]["id"] | null>(null);
-  const [scene, setScene] = useState<(typeof scenarios)[number]["id"]>("oficina");
-  const [demoId, setDemoId] = useState<(typeof demos)[number]["id"]>("sede");
+  const [scene, setScene] = useState<SceneId>("oficina");
+  const [demoId, setDemoId] = useState<DemoId>("sede");
   const [beat, setBeat] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [focus, setFocus] = useState<(typeof nodes)[number]["id"] | null>(null);
@@ -228,11 +257,40 @@ export function ExperienceV8() {
   const frame = demo.beats[Math.min(beat, demo.beats.length - 1)];
   const heroHint = heroLayers.find((h) => h.id === layer);
 
+  function syncUrl(next: View, nextScene = scene, nextDemo = demoId) {
+    const q = new URLSearchParams({ vista: next });
+    if (next === "explorar") q.set("resolver", nextScene);
+    if (next === "demo") q.set("demo", nextDemo);
+    window.history.replaceState(null, "", `?${q.toString()}`);
+  }
+
+  function show(next: View) {
+    setView(next);
+    setPanel(null);
+    setOpen(false);
+    syncUrl(next);
+  }
+
+  function goScene(id: SceneId) {
+    setScene(id);
+    setView("explorar");
+    setPanel(null);
+    setOpen(false);
+    syncUrl("explorar", id);
+  }
+
+  function goDemo(id: DemoId) {
+    setDemoId(id);
+    setBeat(0);
+    setPlaying(!reduce);
+    setView("demo");
+    setPanel(null);
+    setOpen(false);
+    syncUrl("demo", scene, id);
+  }
+
   useEffect(() => {
-    document.body.classList.add("landing-mode");
-    const onScroll = () => setSolid(window.scrollY > 20);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    document.body.classList.add("landing-mode", "v8-shell");
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const apply = () => {
       setReduce(mq.matches);
@@ -241,130 +299,114 @@ export function ExperienceV8() {
     apply();
     mq.addEventListener("change", apply);
     const params = new URLSearchParams(window.location.search);
+    const vista = params.get("vista") as View | null;
     const resolver = params.get("resolver");
     const demoParam = params.get("demo");
-    if (resolver && scenarios.some((s) => s.id === resolver)) setScene(resolver as (typeof scenarios)[number]["id"]);
-    if (demoParam && demos.some((d) => d.id === demoParam)) setDemoId(demoParam as (typeof demos)[number]["id"]);
+    if (vista && views.some((v) => v.id === vista)) setView(vista);
+    if (resolver && scenarios.some((s) => s.id === resolver)) {
+      setScene(resolver as SceneId);
+      if (!vista) setView("explorar");
+    }
+    if (demoParam && demos.some((d) => d.id === demoParam)) {
+      setDemoId(demoParam as DemoId);
+      if (!vista) setView("demo");
+    }
     return () => {
-      document.body.classList.remove("landing-mode");
-      window.removeEventListener("scroll", onScroll);
+      document.body.classList.remove("landing-mode", "v8-shell");
       mq.removeEventListener("change", apply);
     };
   }, []);
 
   useEffect(() => {
-    if (!playing || reduce) return;
-    const id = window.setInterval(() => {
-      setBeat((n) => (n + 1) % demo.beats.length);
-    }, 1600);
+    if (!playing || reduce || view !== "demo") return;
+    const id = window.setInterval(() => setBeat((n) => (n + 1) % demo.beats.length), 1600);
     return () => window.clearInterval(id);
-  }, [playing, reduce, demo.beats.length]);
+  }, [playing, reduce, demo.beats.length, view]);
 
-  useEffect(() => {
-    setBeat(0);
-  }, [demoId]);
+  useEffect(() => setBeat(0), [demoId]);
 
   const activeNodes = useMemo(() => new Set(frame.on), [frame]);
-
-  function goScene(id: (typeof scenarios)[number]["id"]) {
-    setScene(id);
-    setPanel(null);
-    setOpen(false);
-    document.getElementById("explorar")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-  }
-
-  function goDemo(id: (typeof demos)[number]["id"]) {
-    setDemoId(id);
-    setBeat(0);
-    setPlaying(true);
-    setPanel(null);
-    document.getElementById("demo")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-  }
-
-  function jumpTo(item: (typeof jump)[number]) {
-    if (item.t === "Cotización") {
-      document.getElementById("conversar")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
-      return;
-    }
-    if (item.t === "Servidores") {
-      goDemo("sede");
-      setFocus("srv");
-      return;
-    }
-    if (item.id === "red") {
-      goDemo("falla");
-      return;
-    }
-    goScene(item.id as (typeof scenarios)[number]["id"]);
-  }
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     setSent(true);
   }
 
-  function onRootKey(e: KeyboardEvent<HTMLDivElement>) {
-    if (e.key === "Escape") {
-      setPanel(null);
-      setOpen(false);
-    }
-    if (e.code === "Space" && (e.target as HTMLElement).tagName !== "INPUT") {
+  useEffect(() => {
+    function onKey(e: globalThis.KeyboardEvent) {
       const tag = (e.target as HTMLElement).tagName;
-      if (tag === "BUTTON" || tag === "A") return;
-      e.preventDefault();
-      setPlaying((v) => !v);
+      const typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+      if (e.key === "Escape") {
+        if (panel || open) {
+          setPanel(null);
+          setOpen(false);
+          return;
+        }
+        if (view !== "inicio") show("inicio");
+      }
+      if (typing) return;
+      if (e.code === "Space" && view === "demo" && tag !== "BUTTON" && tag !== "A") {
+        e.preventDefault();
+        setPlaying((v) => !v);
+      }
+      if (view === "demo" && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
+        e.preventDefault();
+        setBeat((n) => {
+          const len = demo.beats.length;
+          return e.key === "ArrowRight" ? (n + 1) % len : (n - 1 + len) % len;
+        });
+      }
     }
-  }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [view, panel, open, demo.beats.length]);
 
   return (
-    <div className={styles.root} onKeyDown={onRootKey}>
-      <header className={`${styles.head} ${solid ? styles.solid : ""}`}>
+    <div className={styles.app}>
+      <header className={styles.head}>
         <div className={styles.headInner}>
-          <Link href="/concepto-v8/" className={styles.brand} aria-label="Justech, concepto V8">
+          <button type="button" className={styles.brand} onClick={() => show("inicio")} aria-label="Justech, inicio">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={withBase("/brand/justech-mark-white.png")} alt="" width={28} height={20} />
             Justech
-          </Link>
+          </button>
           <nav className={styles.nav} aria-label="Principal">
             {(
               [
                 ["soluciones", "Soluciones"],
                 ["servicios", "Servicios"],
                 ["productos", "Productos"],
+                ["industrias", "Industrias"],
               ] as const
             ).map(([key, label]) => (
-              <button
-                key={key}
-                type="button"
-                className={panel === key ? styles.on : ""}
-                aria-expanded={panel === key}
-                onClick={() => setPanel((p) => (p === key ? null : key))}
-              >
+              <button key={key} type="button" className={panel === key ? styles.on : ""} aria-expanded={panel === key} onClick={() => setPanel((p) => (p === key ? null : key))}>
                 {label}
               </button>
             ))}
-            <a href="#labs">Industrias</a>
-            <a href="#metodo">Recursos</a>
-            <a href="#confianza">Nosotros</a>
+            <button type="button" onClick={() => show("metodo")}>
+              Recursos
+            </button>
+            <button type="button" onClick={() => show("metodo")}>
+              Nosotros
+            </button>
             <a href={company.supportUrl}>Soporte</a>
           </nav>
           <div className={styles.actions}>
             <a className={styles.phone} href={`tel:${company.phoneTel}`}>
               {company.phoneDisplay}
             </a>
-            <a className={styles.cta} href="#conversar">
+            <button type="button" className={styles.cta} onClick={() => show("hablar")}>
               Hablar con un especialista
-            </a>
+            </button>
             <button type="button" className={styles.menu} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
               {open ? "Cerrar" : "Menú"}
             </button>
           </div>
         </div>
-        {panel && panel in mega ? (
-          <div className={styles.mega} onMouseLeave={() => setPanel(null)}>
-            <p>{panel}</p>
+        {panel ? (
+          <div className={styles.mega}>
             <div className={styles.megaGrid}>
-              {mega[panel as keyof typeof mega].map((item) => (
+              {mega[panel].map((item) => (
                 <button key={item.t} type="button" onClick={() => goScene(item.id)}>
                   <strong>{item.t}</strong>
                   {"d" in item ? <span>{item.d}</span> : null}
@@ -372,136 +414,156 @@ export function ExperienceV8() {
               ))}
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={withBase(current.photo)} alt="" />
+            <img src={withBase(megaPhoto[panel])} alt="" />
           </div>
         ) : null}
         {open ? (
           <div className={styles.drawer}>
-            {scenarios.map((s) => (
-              <button key={s.id} type="button" onClick={() => goScene(s.id)}>
-                {s.t}
+            {views.map((v) => (
+              <button key={v.id} type="button" onClick={() => show(v.id)}>
+                {v.t}
               </button>
             ))}
-            <a href="#demo" onClick={() => setOpen(false)}>
-              Demostración
-            </a>
-            <a href="#conversar" onClick={() => setOpen(false)}>
-              Hablar con un especialista
-            </a>
-          </div>
-        ) : null}
-      </header>
-
-      <main id="contenido">
-        <section className={styles.hero} aria-label="Hero">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className={styles.heroPhoto} src={withBase("/visual/v7/v7-hero.jpg")} alt="" width={1536} height={1024} fetchPriority="high" />
-          <div className={styles.heroShade} data-layer={layer ?? ""} />
-          <svg className={styles.heroNet} viewBox="0 0 100 56" preserveAspectRatio="none" aria-hidden="true">
-            <path className={`${styles.flow} ${layer === "red" || layer === "rack" ? styles.flowOn : ""}`} d="M12 40 L28 32 L44 30 L70 22 L86 16" />
-            <path className={`${styles.flow} ${layer === "seguridad" ? styles.flowBlock : ""}`} d="M70 22 L78 34" />
-            <path className={`${styles.flow} ${layer === "nube" ? styles.flowOn : ""}`} d="M70 22 L88 12" />
-            <path className={`${styles.flow} ${layer === "soporte" ? styles.flowAlert : ""}`} d="M44 30 L80 46" />
-          </svg>
-          <div className={styles.heroCopy}>
-            <p className={styles.kicker}>Justech Technology Experience</p>
-            <h1>Tecnología empresarial, conectada de extremo a extremo.</h1>
-            <p className={styles.lead}>
-              Equipos, infraestructura, redes, licencias, nube, seguridad y soporte bajo una sola estrategia.
-            </p>
-            <div className={styles.row}>
-              <a className={styles.cta} href="#explorar">
-                Diseñar mi solución
-              </a>
-              <a className={styles.ghost} href="#demo">
-                Explorar lo que hacemos
-              </a>
-            </div>
-            <p className={styles.hint} aria-live="polite">
-              {heroHint ? `${heroHint.t}: ${heroHint.hint}` : "Toque o recorra los puntos. Cada capa responde."}
-            </p>
-          </div>
-          <ul className={styles.hotspots} aria-label="Capas de la instalación">
-            {heroLayers.map((h) => (
-              <li key={h.id} style={{ left: h.x, top: h.y }}>
-                <button
-                  type="button"
-                  className={layer === h.id ? styles.hotOn : ""}
-                  aria-pressed={layer === h.id}
-                  onMouseEnter={() => setLayer(h.id)}
-                  onFocus={() => setLayer(h.id)}
-                  onClick={() => setLayer((v) => (v === h.id ? null : h.id))}
-                >
-                  <span />
-                  {h.t}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <nav className={styles.jump} aria-label="Acceso rápido">
-          <p>Ir a</p>
-          <div>
             {jump.map((item) => (
-              <button key={item.t} type="button" onClick={() => jumpTo(item)}>
+              <button
+                key={`m-${item.t}`}
+                type="button"
+                onClick={() => {
+                  if (item.scene) goScene(item.scene);
+                  else if (item.demo) goDemo(item.demo);
+                  else show(item.view);
+                }}
+              >
                 {item.t}
               </button>
             ))}
           </div>
-        </nav>
+        ) : null}
+      </header>
 
-        <section className={styles.block} id="explorar">
-          <div className={styles.wrap}>
-            <p className={styles.kicker}>Explorador</p>
-            <h2>¿Qué necesita resolver?</h2>
-            <p className={styles.note}>Una escena. Un escenario. El visual cambia de verdad.</p>
-            <div className={styles.explorer}>
+      <nav className={styles.rail} aria-label="Experiencia">
+        {views.map((v) => (
+          <button key={v.id} type="button" className={view === v.id ? styles.on : ""} aria-current={view === v.id ? "page" : undefined} onClick={() => show(v.id)}>
+            {v.t}
+          </button>
+        ))}
+        <span className={styles.railJump}>
+          {jump.map((item) => (
+            <button
+              key={item.t}
+              type="button"
+              onClick={() => {
+                if (item.scene) goScene(item.scene);
+                else if (item.demo) goDemo(item.demo);
+                else show(item.view);
+              }}
+            >
+              {item.t}
+            </button>
+          ))}
+        </span>
+      </nav>
+
+      <main id="contenido" className={styles.stage} data-view={view}>
+        {view === "inicio" ? (
+          <section className={styles.hero} aria-label="Hero">
+            <div className={styles.heroCopy}>
+              <p className={styles.kicker}>Justech Technology Experience</p>
+              <h1>Tecnología empresarial, conectada de extremo a extremo.</h1>
+              <p className={styles.lead}>Equipos, infraestructura, redes, licencias, nube, seguridad y soporte bajo una sola estrategia.</p>
+              <div className={styles.row}>
+                <button type="button" className={styles.cta} onClick={() => show("explorar")}>
+                  Diseñar mi solución
+                </button>
+                <button type="button" className={styles.ghost} onClick={() => show("demo")}>
+                  Explorar lo que hacemos
+                </button>
+              </div>
+              <p className={styles.hint} aria-live="polite">
+                {heroHint ? `${heroHint.t}: ${heroHint.hint}` : "Recorra los puntos de la instalación. Cada capa responde."}
+              </p>
+            </div>
+            <div className={styles.heroVisual}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={withBase("/visual/v7/v7-hero.jpg")} alt="Instalación empresarial: rack, operación y ciudad." width={1536} height={1024} fetchPriority="high" />
+              <div className={styles.heroShade} data-layer={layer ?? ""} />
+              <svg className={styles.heroNet} viewBox="0 0 100 56" preserveAspectRatio="none" aria-hidden="true">
+                <path className={`${styles.flow} ${layer === "red" || layer === "rack" ? styles.flowOn : ""}`} d="M12 40 L28 32 L44 30 L70 22 L86 16" />
+                <path className={`${styles.flow} ${layer === "seguridad" ? styles.flowBlock : ""}`} d="M70 22 L78 34" />
+                <path className={`${styles.flow} ${layer === "nube" ? styles.flowOn : ""}`} d="M70 22 L88 12" />
+                <path className={`${styles.flow} ${layer === "soporte" ? styles.flowAlert : ""}`} d="M44 30 L80 46" />
+              </svg>
+              <ul className={styles.hotspots} aria-label="Capas de la instalación">
+                {heroLayers.map((h) => (
+                  <li key={h.id} style={{ left: h.x, top: h.y }}>
+                    <button
+                      type="button"
+                      className={layer === h.id ? styles.hotOn : ""}
+                      aria-pressed={layer === h.id}
+                      onMouseEnter={() => setLayer(h.id)}
+                      onFocus={() => setLayer(h.id)}
+                      onClick={() => setLayer((v) => (v === h.id ? null : h.id))}
+                    >
+                      <span className={styles.dot} />
+                      <span className={styles.hotLabel}>{h.t}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : null}
+
+        {view === "explorar" ? (
+          <section className={styles.explorer} aria-label="Explorador">
+            <div className={styles.side}>
+              <p className={styles.kicker}>¿Qué necesita resolver?</p>
               <div className={styles.sceneList} role="tablist" aria-label="Escenarios">
                 {scenarios.map((s) => (
-                  <button
-                    key={s.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={scene === s.id}
-                    className={scene === s.id ? styles.on : ""}
-                    onClick={() => setScene(s.id)}
-                  >
+                  <button key={s.id} type="button" role="tab" aria-selected={scene === s.id} className={scene === s.id ? styles.on : ""} onClick={() => goScene(s.id)}>
                     {s.t}
                   </button>
                 ))}
               </div>
-              <div className={styles.stage}>
-                <figure>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={withBase(current.photo)} alt={current.alt} width={1536} height={1024} />
-                  <ol className={styles.parts} aria-label="Componentes">
-                    {current.parts.map((p) => (
-                      <li key={p}>{p}</li>
-                    ))}
-                  </ol>
-                </figure>
-                <div className={styles.stageCopy}>
-                  <h3>{current.t}</h3>
-                  <p>{current.sit}</p>
-                  <p>
-                    <strong>Resultado.</strong> {current.result}
-                  </p>
-                  <a className={styles.cta} href="#conversar">
-                    {current.cta}
-                  </a>
-                </div>
-              </div>
             </div>
-          </div>
-        </section>
+            <figure className={styles.canvas}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={withBase(current.photo)} alt={current.alt} width={1536} height={1024} />
+              <ol className={styles.parts}>
+                {current.parts.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ol>
+            </figure>
+            <div className={styles.panel}>
+              <h2>{current.t}</h2>
+              <p>{current.sit}</p>
+              <p>
+                <strong>Servicio.</strong> {current.svc}
+              </p>
+              <p className={styles.kicker}>Proceso</p>
+              <ol className={styles.process}>
+                {current.parts.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ol>
+              <p>
+                <strong>Resultado.</strong> {current.result}
+              </p>
+              <button type="button" className={styles.cta} onClick={() => show("hablar")}>
+                {current.cta}
+              </button>
+              <button type="button" className={styles.ghostDark} onClick={() => show("inicio")}>
+                Volver al inicio
+              </button>
+            </div>
+          </section>
+        ) : null}
 
-        <section className={`${styles.block} ${styles.alt}`} id="demo">
-          <div className={styles.wrap}>
-            <p className={styles.kicker}>Demostración</p>
-            <h2>Una operación conectada.</h2>
-            <p className={styles.note}>Usted reproduce, pausa, reinicia y elige el escenario. El scroll no es el control.</p>
-            <div className={styles.transport} role="toolbar" aria-label="Controles de la demostración">
+        {view === "demo" ? (
+          <section className={styles.demo} aria-label="Demostración">
+            <div className={styles.transport} role="toolbar" aria-label="Controles">
+              <p className={styles.kicker}>Una operación conectada</p>
               <button type="button" onClick={() => setPlaying((v) => !v)}>
                 {playing ? "Pausar" : "Reproducir"}
               </button>
@@ -509,7 +571,7 @@ export function ExperienceV8() {
                 type="button"
                 onClick={() => {
                   setBeat(0);
-                  setPlaying(true);
+                  setPlaying(!reduce);
                 }}
               >
                 Reiniciar
@@ -521,7 +583,7 @@ export function ExperienceV8() {
               ))}
             </div>
             <div className={styles.theater}>
-              <figure>
+              <figure className={styles.canvas}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={withBase("/visual/v8/v8-scene-network.jpg")} alt="Operación conectada: sede, sucursal y nube." width={1536} height={1024} />
                 <svg className={styles.topo} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -529,19 +591,12 @@ export function ExperienceV8() {
                   <path className={`${styles.link} ${activeNodes.has("acceso") ? styles.linkOn : ""}`} d="M40 16 L58 40 L46 32 L36 52" />
                   <path className={`${styles.link} ${activeNodes.has("srv") ? styles.linkOn : ""}`} d="M40 16 L34 76" />
                   <path className={`${styles.link} ${activeNodes.has("cloud") ? styles.linkOn : ""}`} d="M40 16 L78 16" />
-                  <path
-                    className={`${styles.link} ${"backup" in frame && frame.backup ? styles.linkBackup : ""}`}
-                    d="M22 20 C48 88 70 88 84 74"
-                  />
+                  <path className={`${styles.link} ${"backup" in frame && frame.backup ? styles.linkBackup : ""}`} d="M22 20 C48 88 70 88 84 74" />
                 </svg>
                 <ul className={styles.pins}>
                   {nodes.map((n) => (
                     <li key={n.id} style={{ left: `${n.x}%`, top: `${n.y}%` }}>
-                      <button
-                        type="button"
-                        className={`${activeNodes.has(n.id) ? styles.pinOn : ""} ${focus === n.id ? styles.pinFocus : ""}`}
-                        onClick={() => setFocus(n.id)}
-                      >
+                      <button type="button" className={`${activeNodes.has(n.id) ? styles.pinOn : ""} ${focus === n.id ? styles.pinFocus : ""}`} onClick={() => setFocus(n.id)}>
                         {n.t}
                       </button>
                     </li>
@@ -549,16 +604,16 @@ export function ExperienceV8() {
                 </ul>
                 {"ticket" in frame && frame.ticket ? <p className={styles.flag}>Caso abierto · sucursal sin enlace primario</p> : null}
               </figure>
-              <aside>
+              <aside className={styles.panel}>
                 <p className={styles.count}>
                   {String(beat + 1).padStart(2, "0")} / {String(demo.beats.length).padStart(2, "0")}
                 </p>
-                <h3>{frame.t}</h3>
+                <h2>{frame.t}</h2>
                 <p>{frame.d}</p>
-                <p className={styles.note}>Explorar componentes: pulse un equipo en la escena.</p>
+                <p className={styles.hint}>Pulse un equipo para inspeccionarlo. Espacio pausa.</p>
                 {focus ? (
                   <p>
-                    <strong>{nodes.find((n) => n.id === focus)?.t}.</strong> Parte de esta operación. Pulse otro para comparar.
+                    <strong>{nodes.find((n) => n.id === focus)?.t}.</strong> Activo en esta operación.
                   </p>
                 ) : null}
                 <ol className={styles.beats}>
@@ -570,81 +625,67 @@ export function ExperienceV8() {
                     </li>
                   ))}
                 </ol>
+                <button type="button" className={styles.ghostDark} onClick={() => show("inicio")}>
+                  Volver al inicio
+                </button>
               </aside>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : null}
 
-        <section className={styles.block} id="labs">
-          <div className={styles.wrap}>
-            <p className={styles.kicker}>Laboratorios</p>
-            <h2>Páginas de experiencia, después de este gate.</h2>
-            <p className={styles.note}>Aquí se entra. Aún no se construyen. Cada una tendrá un control propio.</p>
-            <ul className={styles.labs}>
-              {labs.map((lab) => (
-                <li key={lab.t}>
-                  <a href="#demo">
-                    <strong>{lab.t}</strong>
-                    <span>{lab.d}</span>
-                  </a>
+        {view === "metodo" ? (
+          <section className={styles.method}>
+            <div>
+              <p className={styles.kicker}>Cómo trabajamos</p>
+              <h2>Ver. Diseñar. Poner en marcha. Acompañar.</h2>
+              <ol>
+                <li>
+                  <strong>Ver</strong> Levantamiento de lo que ya existe.
                 </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+                <li>
+                  <strong>Diseñar</strong> Una solución con dueño y alcance.
+                </li>
+                <li>
+                  <strong>Poner en marcha</strong> Obra, equipos, red y software en el mismo plan.
+                </li>
+                <li>
+                  <strong>Acompañar</strong> Mesa y portal. {company.hours.split("(")[0].trim()}.
+                </li>
+              </ol>
+            </div>
+            <aside className={styles.panel}>
+              <p className={styles.kicker}>Confianza</p>
+              <h2>
+                {company.city}, desde {company.founded}.
+              </h2>
+              <p>
+                Integradora tecnológica. Sin cifras inventadas. Portal:{" "}
+                <a href={company.supportUrl}>{company.supportUrl.replace("https://", "")}</a>
+              </p>
+              <p className={styles.kicker}>Laboratorios futuros</p>
+              <div className={styles.labs}>
+                {labs.map((lab) => (
+                  <button key={lab.t} type="button" onClick={() => (lab.demo ? goDemo(lab.demo) : lab.scene ? goScene(lab.scene) : show("demo"))}>
+                    {lab.t}
+                  </button>
+                ))}
+              </div>
+              <button type="button" className={styles.ghostDark} onClick={() => show("inicio")}>
+                Volver al inicio
+              </button>
+            </aside>
+          </section>
+        ) : null}
 
-        <section className={`${styles.block} ${styles.alt}`} id="metodo">
-          <div className={styles.wrapNarrow}>
-            <p className={styles.kicker}>Cómo trabajamos</p>
-            <h2>Ver. Diseñar. Poner en marcha. Acompañar.</h2>
-            <ol className={styles.method}>
-              <li>
-                <strong>Ver</strong>
-                <span>Levantamiento de lo que ya existe.</span>
-              </li>
-              <li>
-                <strong>Diseñar</strong>
-                <span>Una solución con dueño y alcance.</span>
-              </li>
-              <li>
-                <strong>Poner en marcha</strong>
-                <span>Obra, equipos, red y software en el mismo plan.</span>
-              </li>
-              <li>
-                <strong>Acompañar</strong>
-                <span>Mesa, portal y operación. Horario laboral.</span>
-              </li>
-            </ol>
-          </div>
-        </section>
-
-        <section className={styles.band} id="confianza">
-          <div className={styles.wrap}>
-            <p className={styles.kicker}>Confianza</p>
-            <h2>Integradora en {company.city}, desde {company.founded}.</h2>
-            <ul className={styles.facts}>
-              <li>
-                <strong>{company.city}</strong>
-                <span>{company.country}</span>
-              </li>
-              <li>
-                <strong>{company.hours.split("(")[0].trim()}</strong>
-                <span>Sin afirmar 24/7.</span>
-              </li>
-              <li>
-                <strong>Portal</strong>
-                <span>
-                  <a href={company.supportUrl}>{company.supportUrl.replace("https://", "")}</a>
-                </span>
-              </li>
-            </ul>
-          </div>
-        </section>
-
-        <section className={styles.block} id="conversar">
-          <div className={styles.wrapNarrow}>
-            <p className={styles.kicker}>Conversación</p>
-            <h2>Diseñar mi solución</h2>
+        {view === "hablar" ? (
+          <section className={styles.talk}>
+            <div>
+              <p className={styles.kicker}>Conversación</p>
+              <h2>Diseñar mi solución</h2>
+              <p>
+                {company.phoneDisplay} · {company.email}
+              </p>
+            </div>
             {sent ? (
               <p role="status">
                 Registrado en este entorno de prueba. En el sitio público responde {company.email}. Aquí no se envía correo.
@@ -653,7 +694,7 @@ export function ExperienceV8() {
               <form className={styles.form} onSubmit={onSubmit}>
                 {step === 0 ? (
                   <>
-                    <p className={styles.note}>¿Qué necesita resolver?</p>
+                    <p>¿Qué necesita resolver?</p>
                     <div className={styles.needs}>
                       {needs.map((n) => (
                         <button key={n} type="button" className={need === n ? styles.on : ""} onClick={() => setNeed(n)}>
@@ -695,43 +736,19 @@ export function ExperienceV8() {
                 )}
               </form>
             )}
-          </div>
-        </section>
+          </section>
+        ) : null}
       </main>
 
       <footer className={styles.foot}>
-        <div className={styles.wrapFoot}>
-          <div>
-            <p className={styles.brandText}>Justech</p>
-            <p>
-              Integradora tecnológica. {company.city}, desde {company.founded}.
-            </p>
-            <p>
-              <a href={`tel:${company.phoneTel}`}>{company.phoneDisplay}</a>
-              <br />
-              <a href={`mailto:${company.email}`}>{company.email}</a>
-            </p>
-          </div>
-          <div>
-            <p>Experiencia</p>
-            <a href="#explorar">Explorador</a>
-            <a href="#demo">Demostración</a>
-            <a href="#labs">Laboratorios</a>
-          </div>
-          <div>
-            <p>Contacto</p>
-            <a href={company.supportUrl}>Portal</a>
-            <Link href="/soporte/">Mesa de ayuda</Link>
-            <Link href="/nosotros/">Nosotros</Link>
-          </div>
-          <div>
-            <p>Legal</p>
-            <Link href="/legal/">Centro legal</Link>
-            <Link href="/politica-de-privacidad/">Privacidad</Link>
-          </div>
-        </div>
-        <p className={styles.end}>
-          © {new Date().getFullYear()} {company.legalName}. Concepto V8. El sitio público permanece en www.justech.do.
+        <p>
+          {company.legalName} · {company.city} ·{" "}
+          <a href={`mailto:${company.email}`}>{company.email}</a>
+        </p>
+        <p>
+          <Link href="/legal/">Legal</Link>
+          <Link href="/politica-de-privacidad/">Privacidad</Link>
+          <span>Concepto V8. El sitio público permanece en www.justech.do.</span>
         </p>
       </footer>
     </div>
