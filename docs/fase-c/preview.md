@@ -2,12 +2,13 @@
 
 Producción (`www.justech.do`) no se toca. `noindex`, robots `Disallow: /`, formularios simulados.
 
-## Concepto V7 (congelada, no aprobada)
+## Concepto V8 (gate interactivo, no aprobado)
 
-https://ecommerce-necklace-received-metallic.trycloudflare.com/concepto-v7/
+https://birds-michel-stocks-thoroughly.trycloudflare.com/concepto-v8/
 
-## Gate creativo V8 (elegir dirección, no implementar)
+## Referencia congelada
 
-https://ecommerce-necklace-received-metallic.trycloudflare.com/gate-v8/
+- V7: https://birds-michel-stocks-thoroughly.trycloudflare.com/concepto-v7/
+- Gate creativo: https://birds-michel-stocks-thoroughly.trycloudflare.com/gate-v8/
 
 Túnel efímero. `/` sigue siendo V6. Este PR no se fusiona.
