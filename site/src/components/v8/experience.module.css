@@ -61,7 +61,7 @@
   padding: 4px 0;
 }
 .brand img {
-  height: 40px;
+  height: 44px;
   width: auto;
   display: block;
 }
@@ -417,7 +417,7 @@
   letter-spacing: -0.04em;
   padding: 8px 0 14px;
   cursor: pointer;
-  color: rgba(12, 18, 32, 0.34);
+  color: #4a5563;
   transition: color 0.2s ease;
 }
 .pathOn {
@@ -633,8 +633,14 @@
 .sheetActions {
   grid-column: 3;
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.sheet .cta {
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
 .sheetActions button {
   appearance: none;
@@ -677,27 +683,22 @@
 }
 
 .route {
-  position: absolute;
-  left: 18px;
-  bottom: 18px;
-  right: 18px;
-  color: #f4f7f8;
+  grid-column: 1 / -1;
+  color: var(--ink);
   z-index: 2;
-  pointer-events: none;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
 }
 .route p {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   display: flex;
   gap: 12px;
   align-items: baseline;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .route strong {
   font-weight: 650;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--muted);
 }
 .route ul {
   list-style: none;
@@ -705,37 +706,36 @@
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 18px;
+  gap: 8px 16px;
 }
 .route li {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-size: 0.86rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--muted);
 }
 .route li::before {
   content: "";
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #6b7280;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.25);
+  background: #c5c0b6;
 }
 .route li[data-live="1"] {
-  color: #e8fffb;
+  color: var(--ink);
 }
 .route li[data-live="1"]::before {
-  background: #12b3ad;
+  background: var(--teal);
 }
 .route li[data-dead="1"] {
-  color: #fecaca;
+  color: #9f1239;
 }
 .route li[data-dead="1"]::before {
-  background: #ef4444;
+  background: var(--fail);
 }
 .route li[data-wait="1"] {
-  color: rgba(255, 255, 255, 0.38);
+  color: var(--muted);
 }
 
 @media (max-width: 980px) {
@@ -775,12 +775,11 @@
     padding: 8px 16px;
     min-height: 68px;
   }
-  .brand img {
-    height: 32px;
-  }
   .head .cta {
-    font-size: 0.8rem;
-    padding: 0 12px;
+    display: none;
+  }
+  .brand img {
+    height: 34px;
   }
   .hero,
   .expBody,
@@ -793,16 +792,26 @@
     min-height: 0;
   }
   .heroCopy {
-    padding: 32px 20px 16px;
+    padding: 24px 20px 12px;
     max-width: none;
   }
   .hero h1 {
     max-width: 14ch;
-    font-size: clamp(1.9rem, 8vw, 2.4rem);
+    font-size: clamp(1.75rem, 7.4vw, 2.2rem);
+  }
+  .heroCopy p {
+    margin-top: 12px;
+    font-size: 0.98rem;
+  }
+  .heroCtas {
+    margin-top: 18px;
+  }
+  .caption {
+    margin-top: 14px !important;
   }
   .heroStage {
-    aspect-ratio: 3 / 4;
-    min-height: 58vh;
+    aspect-ratio: 4 / 5;
+    min-height: 48vh;
     height: auto;
   }
   .heroStage img {
@@ -839,8 +848,8 @@
     margin-top: 18px;
   }
   .scene {
-    aspect-ratio: 4 / 5;
-    min-height: 280px;
+    aspect-ratio: 1 / 1;
+    min-height: 240px;
   }
   .expCopy {
     padding-bottom: 8px;

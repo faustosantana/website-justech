@@ -54,7 +54,7 @@ async function interact(page, mobile) {
     await page.waitForTimeout(1600);
   }
   await page.getByRole("button", { name: "Ver falla y respaldo" }).click();
-  await page.waitForTimeout(4200);
+  await page.waitForTimeout(12000);
   await page.getByRole("button", { name: "Siguiente" }).click().catch(() => {});
   await page.waitForTimeout(600);
   await page.getByRole("button", { name: /Cerrar/ }).click();
@@ -90,7 +90,7 @@ async function stills() {
   await page.waitForTimeout(1400);
   await shot(page, "v82-operar-desktop.png");
   await page.getByRole("button", { name: "Ver falla y respaldo" }).click();
-  await page.waitForTimeout(2800);
+  await page.waitForTimeout(5500);
   await shot(page, "v82-falla-desktop.png");
   await page.getByRole("button", { name: /Cerrar/ }).click();
   await page.locator("#conversar").scrollIntoViewIfNeeded();

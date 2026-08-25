@@ -143,7 +143,7 @@ export function ExperienceV8() {
   const [menu, setMenu] = useState(false);
   const [megaKey, setMegaKey] = useState<Mega>(null);
   const [heroBeat, setHeroBeat] = useState(0);
-  const [heroPlay, setHeroPlay] = useState(true);
+  const [heroPlay, setHeroPlay] = useState(false);
   const [heroRest, setHeroRest] = useState(false);
   const [heroExtra, setHeroExtra] = useState(false);
   const [mode, setMode] = useState<Mode>("construir");
@@ -209,19 +209,16 @@ export function ExperienceV8() {
     if (exp && modes.some((m) => m.id === exp)) setMode(exp);
     if (params.get("demo") === "1") setFocus(true);
     setReady(true);
-    let idleId = 0;
-    let timeoutId = 0;
-    if (typeof window.requestIdleCallback === "function") {
-      idleId = window.requestIdleCallback(() => setHeroExtra(true), { timeout: 1200 });
-    } else {
-      timeoutId = window.setTimeout(() => setHeroExtra(true), 500);
-    }
+    const start = window.setTimeout(() => {
+      if (!mq.matches) setHeroPlay(true);
+    }, 2500);
+    const extras = window.setTimeout(() => setHeroExtra(true), 4000);
     return () => {
       document.body.classList.remove("landing-mode");
       mq.removeEventListener("change", apply);
       wideMq.removeEventListener("change", applyWide);
-      if (idleId) window.cancelIdleCallback(idleId);
-      if (timeoutId) window.clearTimeout(timeoutId);
+      window.clearTimeout(start);
+      window.clearTimeout(extras);
     };
   }, []);
 
@@ -366,13 +363,14 @@ export function ExperienceV8() {
 
       {focus ? (
         <div className={styles.focus} role="dialog" aria-modal="true" aria-label={current.t}>
-          <Scene mode={mode} plate={plate} beat={frame} focused extra failBeat={failBeat} />
+          <Scene mode={mode} plate={plate} beat={frame} focused extra />
           {showTicket ? <Ticket beat={frame} /> : null}
           <aside className={styles.sheet}>
             <p className={styles.kicker}>{current.t}</p>
             <p className={styles.state} aria-live="polite">
               {steps[frame]}
             </p>
+            {mode === "operar" ? <RouteRead beat={failBeat} /> : null}
             <div className={styles.sheetActions}>
               <button type="button" onClick={() => setPlaying((v) => !v)}>
                 {playing ? "Pausar" : "Reproducir"}
@@ -387,7 +385,7 @@ export function ExperienceV8() {
                 Siguiente
               </button>
               <a className={styles.cta} href="#conversar" onClick={closeFocus}>
-                {current.cta === "Ver falla y respaldo" ? "Hablar con un especialista" : current.cta}
+                Conversar
               </a>
             </div>
             <button type="button" className={styles.quiet} onClick={closeFocus}>
@@ -496,7 +494,7 @@ export function ExperienceV8() {
             </div>
           </div>
           <div className={styles.expBody}>
-            <Scene mode={mode} plate={plate} beat={frame} extra={sceneExtra} failBeat={-1} />
+            <Scene mode={mode} plate={plate} beat={frame} extra={sceneExtra} />
             <div className={styles.expCopy} data-mode={mode}>
               <div className={styles.meter} aria-hidden="true">
                 <span style={{ width: `${progress}%` }} />
@@ -654,14 +652,12 @@ function Scene({
   beat,
   focused,
   extra,
-  failBeat,
 }: {
   mode: Mode;
   plate: string;
   beat: number;
   focused?: boolean;
   extra: boolean;
-  failBeat: number;
 }) {
   const catalog =
     mode === "construir"
@@ -692,7 +688,6 @@ function Scene({
           active={name === plate}
         />
       ))}
-      {focused && mode === "operar" ? <RouteRead beat={failBeat} /> : null}
     </figure>
   );
 }

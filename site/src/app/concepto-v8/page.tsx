@@ -14,9 +14,7 @@ export default function Page() {
   return (
     <>
       <link rel="preload" as="image" href={`${desk}.avif`} type="image/avif" media="(min-width: 721px)" />
-      <link rel="preload" as="image" href={`${desk}.webp`} type="image/webp" media="(min-width: 721px)" />
       <link rel="preload" as="image" href={`${mobile}.avif`} type="image/avif" media="(max-width: 720px)" />
-      <link rel="preload" as="image" href={`${mobile}.webp`} type="image/webp" media="(max-width: 720px)" />
       <ExperienceV8 />
     </>
   );
