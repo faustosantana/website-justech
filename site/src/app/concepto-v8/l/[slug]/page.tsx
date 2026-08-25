@@ -34,12 +34,12 @@ const landings = {
   },
   "equipos-empresariales": {
     title: "Equipos listos para el primer día de trabajo",
-    lead: "Perfil, configuración, inventario y garantía. Cotizamos; no vendemos en carrito.",
+    lead: "Perfil, configuración, inventario y garantía. Cotizamos según el puesto y el volumen.",
     need: "equipos",
   },
   "servicios-administrados": {
     title: "Acompañar la operación tecnológica",
-    lead: "Mantenimiento, administración y mesa. Un plan, no un eslogan de 24/7.",
+    lead: "Mantenimiento, administración y mesa de ayuda, con un plan definido según la operación.",
     need: "soporte",
   },
 } as const;
@@ -71,13 +71,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           ]}
         />
         <article className={styles.article}>
-          <p className={styles.kicker}>Landing de campaña · inactiva</p>
+          <p className={styles.kicker}>Solicitud</p>
           <h1>{item.title}</h1>
           <p className={styles.lead}>{item.lead}</p>
-          <p>
-            Esta ruta está preparada para SEM. No hay campaña activa, ni medición real, ni envío de leads. El
-            formulario es simulado.
-          </p>
+          <p>Cuente el problema y el sitio. Un especialista responde en horario laboral con un alcance concreto.</p>
           <h2>Proceso</h2>
           <ol>
             <li>Cuenta el problema y el sitio.</li>

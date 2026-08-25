@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { QuoteFlow } from "@/components/v8/Studios";
+import { company } from "@/content/site";
 
 const Motivo: Record<string, string> = {
   sede: "sede",
@@ -36,7 +37,7 @@ export function IntentQuote({ initial, intents }: { initial?: string; intents?: 
     return (
       <section id="conversar">
         <h2>Solicitud registrada</h2>
-        <p role="status">En este entorno no se envía correo ni se crea un caso real.</p>
+        <p role="status">Solicitud registrada. Un especialista respondería en horario laboral a través de {company.email}.</p>
       </section>
     );
   }

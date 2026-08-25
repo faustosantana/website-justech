@@ -10,7 +10,7 @@ import styles from "@/components/v8/article.module.css";
 
 export const metadata = pageMeta(
   "Hablar con un especialista",
-  "Cuente qué necesita resolver. Justech SRL evalúa, diseña, suministra, implementa y soporta desde Santo Domingo. Formulario de demostración en este entorno.",
+  "Cuente qué necesita resolver. Justech SRL evalúa, diseña, suministra, implementa y soporta desde Santo Domingo.",
   `${V85_BASE}/contacto/`,
   "/visual/v8/v83-hero-day.jpg",
 );
@@ -56,12 +56,12 @@ export default function Page() {
           <PageHero
             kicker="Contacto"
             title="Cuente el problema. Diseñamos el alcance."
-            lead="El formulario de este entorno es simulado: no crea un caso ni envía correo. En el sitio público, un especialista responde en horario laboral."
+            lead="Cuente el problema, el sitio y el alcance previsto. Un especialista responde en horario laboral."
             image="v83-hero-day"
             alt="Oficina empresarial de día en Santo Domingo."
           />
           <section>
-            <h2>Datos verificados</h2>
+            <h2>Datos de contacto</h2>
             <ul>
               <li>{publicText("legal-name")}</li>
               <li>{publicText("city")}</li>

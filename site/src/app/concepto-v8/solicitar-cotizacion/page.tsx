@@ -7,7 +7,7 @@ import styles from "@/components/v8/article.module.css";
 
 export const metadata = pageMeta(
   "Solicitar cotización",
-  "Ruta de conversión para cotizar infraestructura, equipos, licencias o un proyecto integral. Formulario simulado en staging.",
+  "Ruta para cotizar infraestructura, equipos, licencias o un proyecto integral. Un especialista responde en horario laboral.",
   `${V85_BASE}/solicitar-cotizacion/`,
 );
 
@@ -25,8 +25,8 @@ export default function Page() {
           <p className={styles.kicker}>Conversión</p>
           <h1>Solicitar cotización</h1>
           <p className={styles.lead}>
-            Describa equipos, licencias o un proyecto. Recibirá una propuesta según el alcance, no un carrito de
-            compra.
+            Describa equipos, licencias o un proyecto. Recibirá una propuesta según el alcance, los usuarios y las
+            plataformas requeridas.
           </p>
         </article>
         <IntentQuote initial="equipos" />

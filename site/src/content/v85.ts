@@ -505,12 +505,16 @@ export const PAGES = {
     ],
     faq: [
       {
+        q: "¿Qué modalidad de acompañamiento ofrece Justech?",
+        a: "El alcance se define según la operación, los canales de atención, los horarios y los servicios contratados. Para los servicios publicados actualmente, la atención se coordina mediante el equipo local y el portal de soporte.",
+      },
+      {
         q: "¿En qué horario atiende el soporte?",
         a: "La atención publicada es de lunes a viernes, 8:00 a 17:30, hora de República Dominicana, a través del equipo local y el portal de soporte. Coberturas adicionales se definen en el contrato.",
       },
       {
-        q: "¿Dónde abro un ticket?",
-        a: "En el portal de soporte, en un host distinto a este sitio. El enlace está en la cabecera y en esta página.",
+        q: "¿Dónde abro un ticket si ya soy cliente?",
+        a: "En el portal de soporte. El enlace está en la cabecera y en esta página. Si aún no es cliente, use el formulario comercial de esta misma página.",
       },
     ],
   },

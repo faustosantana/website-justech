@@ -25,8 +25,8 @@ export default function Page() {
           <p className={styles.kicker}>Conversión</p>
           <h1>Solicitar un diagnóstico de red</h1>
           <p className={styles.lead}>
-            Partimos de la topología real: enlaces, Wi-Fi, borde y sucursales. El resultado es un alcance, no una
-            promesa de NOC.
+            Partimos de la topología real: enlaces, Wi-Fi, borde y sucursales. El resultado es un alcance técnico para
+            mejorar cobertura, capacidad o continuidad.
           </p>
         </article>
         <IntentQuote initial="redes" />

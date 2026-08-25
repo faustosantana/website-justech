@@ -15,6 +15,10 @@ const internal = [
   "SOC 24/7",
   "NOC 24/7",
   "sin identificar organizaciones",
+  "promesa de NOC",
+  "Landing de campaña",
+  "Formulario simulado",
+  "Datos verificados",
 ];
 
 test("V8.7 home has one H1, needs, unified demo and v87 shell", async ({ page }) => {
@@ -79,6 +83,14 @@ test("V8.7 form is simulated and cases are professional", async ({ page }) => {
   await page.goto("/concepto-v8/contacto/");
   await expect(page.locator("form")).toBeVisible();
   await expect(page.locator("form[action^='http']")).toHaveCount(0);
+  await expect(page.locator("h1")).toContainText("Cuente el problema");
+  await expect(page.locator("body")).not.toContainText("formulario de este entorno es simulado");
+  await page.goto("/concepto-v8/solicitar-diagnostico/");
+  await expect(page.locator("body")).not.toContainText("promesa de NOC");
+  await page.goto("/concepto-v8/l/servicios-administrados/");
+  await expect(page.locator("body")).not.toContainText("eslogan de 24/7");
+  await page.goto("/concepto-v8/soporte-tecnico-empresarial/");
+  await expect(page.getByRole("heading", { name: "¿Qué modalidad de acompañamiento ofrece Justech?" })).toBeVisible();
   await page.goto(home);
   await expect(page.getByRole("heading", { name: "Experiencia aplicada a escenarios empresariales." })).toBeVisible();
 });

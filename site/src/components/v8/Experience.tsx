@@ -247,7 +247,7 @@ export function ExperienceV8() {
         <section className={styles.talk} id="conversar">
           <h2>Solicitud registrada</h2>
           <p role="status">
-            Gracias. En producción un especialista escribiría a {company.email}. En este entorno no se envía correo.
+            Gracias. Un especialista respondería a {company.email} en horario laboral.
           </p>
         </section>
       ) : (
