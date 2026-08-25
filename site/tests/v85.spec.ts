@@ -34,7 +34,8 @@ test("V8.7 home has one H1, needs, unified demo and v87 shell", async ({ page })
   }
   await expect(page.locator("head meta[name='robots']")).toHaveAttribute("content", /noindex/i);
   await expect(page.locator("head meta[property='og:image']")).toHaveCount(1);
-  await expect(page.locator("head link[rel='canonical']")).toHaveAttribute("href", /justech\.do\/$/);
+  await expect(page.locator("head link[rel='canonical']")).toHaveAttribute("href", /\/$/);
+  await expect(page.locator("head link[rel='canonical']")).not.toHaveAttribute("href", /concepto-v8/);
 });
 
 test("V8.7 six internal pages have visual hero, one H1 and SEO", async ({ page }) => {

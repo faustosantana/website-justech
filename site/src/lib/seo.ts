@@ -34,8 +34,8 @@ export function pageMeta(
   image = "/visual/v8/v83-hero-day.jpg",
 ): Metadata {
   const full = title.includes("Justech") ? title : `${title} · ${TITLE_BASE}`;
-  const canonical = canonicalUrl(path);
-  const ogImage = absAsset(image);
+  const canonical = productionPath(path);
+  const ogImage = image;
   return {
     title: { absolute: full },
     description,
