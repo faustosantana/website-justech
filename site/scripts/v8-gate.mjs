@@ -41,45 +41,47 @@ async function convert(videoDir, outName) {
 async function interact(page, mobile) {
   await page.goto(base, { waitUntil: "networkidle" });
   await page.locator("h1").waitFor();
-  await page.waitForTimeout(3500);
+  await page.waitForTimeout(mobile ? 4000 : 12000);
   if (mobile) {
     await page.getByRole("button", { name: "Menú" }).click().catch(() => {});
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(700);
     await page.getByRole("button", { name: "Cerrar" }).click().catch(() => {});
   }
   await page.getByRole("link", { name: "Explorar capacidades" }).click();
-  await page.waitForTimeout(900);
+  await page.waitForTimeout(1200);
   for (const name of ["Construir", "Modernizar", "Operar"]) {
     await page.getByRole("tab", { name, exact: true }).click();
-    await page.waitForTimeout(1600);
+    await page.waitForTimeout(2200);
   }
   await page.getByRole("button", { name: "Ver la red" }).click();
-  await page.waitForTimeout(2500);
+  await page.waitForTimeout(mobile ? 2500 : 12000);
   await page.getByRole("button", { name: "Fallar enlace" }).click().catch(() => {});
-  await page.waitForTimeout(900);
+  await page.waitForTimeout(1400);
   await page.getByRole("button", { name: "Activar respaldo" }).click().catch(() => {});
-  await page.waitForTimeout(900);
+  await page.waitForTimeout(1400);
   await page.getByRole("button", { name: "Abrir caso" }).click().catch(() => {});
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(1800);
   await page.locator("#equipos").scrollIntoViewIfNeeded();
   await page.getByRole("tab", { name: "Ejecutivo" }).click().catch(() => {});
-  await page.waitForTimeout(600);
+  await page.waitForTimeout(1200);
   await page.getByRole("tab", { name: "Ingeniería" }).click().catch(() => {});
-  await page.waitForTimeout(600);
+  await page.waitForTimeout(1200);
   await page.locator("#licencias").scrollIntoViewIfNeeded();
   await page.getByRole("button", { name: "Finanzas" }).click().catch(() => {});
   await page.getByLabel("Añadir usuario").click().catch(() => {});
   await page.getByRole("button", { name: "Archivos" }).click().catch(() => {});
-  await page.waitForTimeout(500);
+  await page.getByRole("button", { name: "Activar política de acceso (conceptual)" }).click().catch(() => {});
+  await page.waitForTimeout(1200);
   await page.locator("#soporte-demo").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(700);
+  await page.waitForTimeout(1600);
   await page.locator("#cableado").scrollIntoViewIfNeeded();
   await page.getByRole("button", { name: "Rutas" }).click().catch(() => {});
   await page.getByRole("button", { name: "Rack" }).click().catch(() => {});
-  await page.waitForTimeout(500);
+  await page.getByRole("button", { name: "Entrega" }).click().catch(() => {});
+  await page.waitForTimeout(1000);
   await page.locator("#conversar").scrollIntoViewIfNeeded();
   await page.getByText("Redes", { exact: true }).click().catch(() => {});
-  await page.waitForTimeout(400);
+  await page.waitForTimeout(800);
 }
 
 async function shot(page, name) {
@@ -233,7 +235,7 @@ await demo("licencias", async (page) => {
   await page.getByRole("button", { name: "Identidad" }).click();
   await page.getByRole("button", { name: "Archivos" }).click();
   await page.getByRole("button", { name: "Reuniones" }).click();
-  await page.getByRole("button", { name: /Política de acceso/ }).click();
+  await page.getByRole("button", { name: "Activar política de acceso (conceptual)" }).click();
   await page.waitForTimeout(1200);
 });
 await demo("soporte", async (page) => {
