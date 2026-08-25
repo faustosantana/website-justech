@@ -1,27 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { company } from "@/content/site";
 import { withBase } from "@/lib/paths";
 import styles from "./experience.module.css";
 
 type Mode = "construir" | "modernizar" | "operar";
 type Mega = "soluciones" | "servicios" | "productos" | "industrias" | null;
+type Need = "sede" | "modernizar" | "operar" | "orientacion" | "";
 
-const HERO_MS = 1200;
-const SCENE_MS = 1400;
+const HERO_MS = 1100;
+const SCENE_MS = 1300;
 
 const heroBeats = [
   "El rack se energiza.",
   "Los puertos se encienden.",
-  "El tráfico llega al core.",
+  "El tráfico llega al puesto.",
   "Se conecta un puesto.",
   "Se habilita una aplicación.",
   "Aparece protección.",
   "Se sincroniza la nube.",
   "Soporte confirma operación.",
 ];
+
+const heroDesk = ["v82-hero-rack", "v82-hero-rack", "v82-hero-net", "v82-hero-desk", "v82-hero-desk", "v82-hero-sec", "v82-hero-cloud", "v82-hero-support2"];
 
 const modes: { id: Mode; t: string; d: string; cta: string }[] = [
   {
@@ -45,6 +48,8 @@ const modes: { id: Mode; t: string; d: string; cta: string }[] = [
 ];
 
 const construir = ["Plano", "Cableado", "Rack y red", "Puestos activos"];
+const construirFrames = ["v82-sede-vacio", "v82-sede-cables", "v82-sede-rack", "v82-sede-activa"];
+
 const modernizar = [
   "Preparando equipo",
   "Registrando identidad",
@@ -53,15 +58,43 @@ const modernizar = [
   "Conectando servicios",
   "Listo para entregar",
 ];
-const operar = [
+const modernizarFrames = [
+  "v82-modern-old",
+  "v82-modern-id",
+  "v82-modern-sec",
+  "v82-modern-apps",
+  "v82-modern-cloud",
+  "v82-puesto-listo",
+];
+
+const operar = ["Operación normal", "Cuarto técnico", "Infraestructura en servicio", "Continuidad lista"];
+const operarFrames = ["v82-sede-activa", "v82-sede-focus-mdf", "v82-ops-normal", "v82-ops-normal"];
+
+const operarFail = [
   "Tráfico por ISP principal",
-  "Se pierde el enlace",
-  "Estado degradado",
-  "Ruta secundaria activa",
-  "Tráfico redirigido",
-  "Usuarios conectados",
-  "Monitoreo alerta",
+  "Enlace principal degradado",
+  "Se pierde la señal",
+  "Ruta principal apagada",
+  "Borde detecta la caída",
+  "Enlace secundario entra",
+  "Tráfico cambia de ruta",
+  "Puestos activos",
+  "Alerta discreta",
   "Soporte recibe el caso",
+  "Continuidad confirmada",
+];
+const operarFailFrames = [
+  "v82-ops-normal",
+  "v82-ops-degraded",
+  "v82-ops-down",
+  "v82-ops-down",
+  "v82-ops-down",
+  "v82-ops-backup",
+  "v82-ops-backup",
+  "v82-ops-backup",
+  "v82-ops-alert",
+  "v82-ops-alert",
+  "v82-ops-recovered",
 ];
 
 const mega = {
@@ -87,10 +120,23 @@ const mega = {
   ],
 } as const;
 
-function stepsOf(mode: Mode) {
+const needs: { id: Need; label: string }[] = [
+  { id: "sede", label: "Construir una sede." },
+  { id: "modernizar", label: "Modernizar tecnología." },
+  { id: "operar", label: "Mejorar la operación." },
+  { id: "orientacion", label: "Necesito orientación." },
+];
+
+function stepsOf(mode: Mode, focused: boolean) {
   if (mode === "construir") return construir;
   if (mode === "modernizar") return modernizar;
-  return operar;
+  return focused ? operarFail : operar;
+}
+
+function framesOf(mode: Mode, focused: boolean) {
+  if (mode === "construir") return construirFrames;
+  if (mode === "modernizar") return modernizarFrames;
+  return focused ? operarFailFrames : operarFrames;
 }
 
 export function ExperienceV8() {
@@ -99,17 +145,27 @@ export function ExperienceV8() {
   const [heroBeat, setHeroBeat] = useState(0);
   const [heroPlay, setHeroPlay] = useState(true);
   const [heroRest, setHeroRest] = useState(false);
+  const [heroExtra, setHeroExtra] = useState(false);
   const [mode, setMode] = useState<Mode>("construir");
   const [beat, setBeat] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
   const [focus, setFocus] = useState(false);
   const [sent, setSent] = useState(false);
+  const [need, setNeed] = useState<Need>("");
   const [reduce, setReduce] = useState(false);
   const [ready, setReady] = useState(false);
+  const [sceneExtra, setSceneExtra] = useState(false);
+  const [wide, setWide] = useState(true);
 
   const current = modes.find((m) => m.id === mode) ?? modes[0];
-  const steps = stepsOf(mode);
+  const steps = stepsOf(mode, focus);
+  const frames = framesOf(mode, focus);
   const frame = Math.min(beat, steps.length - 1);
+  const plate = frames[Math.min(frame, frames.length - 1)];
+  const heroPlate = heroRest || reduce ? "v82-hero-rest" : heroDesk[heroBeat] ?? "v82-hero-rest";
+  const progress = ((frame + 1) / steps.length) * 100;
+
+  const heroDeskUniq = useMemo(() => ["v82-hero-rest", "v82-hero-rack", "v82-hero-net", "v82-hero-desk", "v82-hero-sec", "v82-hero-cloud", "v82-hero-support2"], []);
 
   function go(next: Mode, open = false) {
     setMode(next);
@@ -118,7 +174,6 @@ export function ExperienceV8() {
     setMegaKey(null);
     setMenu(false);
     setFocus(open);
-    if (open) setPlaying(!reduce);
     const q = new URLSearchParams({ experiencia: next });
     if (open) q.set("demo", "1");
     window.history.replaceState(null, "", `?${q}`);
@@ -127,12 +182,14 @@ export function ExperienceV8() {
 
   function closeFocus() {
     setFocus(false);
+    setBeat(0);
     window.history.replaceState(null, "", `?experiencia=${mode}`);
   }
 
   useEffect(() => {
     document.body.classList.add("landing-mode");
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const wideMq = window.matchMedia("(min-width: 721px)");
     const apply = () => {
       setReduce(mq.matches);
       if (mq.matches) {
@@ -142,16 +199,29 @@ export function ExperienceV8() {
         setHeroBeat(heroBeats.length - 1);
       }
     };
+    const applyWide = () => setWide(wideMq.matches);
     apply();
+    applyWide();
     mq.addEventListener("change", apply);
+    wideMq.addEventListener("change", applyWide);
     const params = new URLSearchParams(window.location.search);
     const exp = params.get("experiencia") as Mode | null;
     if (exp && modes.some((m) => m.id === exp)) setMode(exp);
     if (params.get("demo") === "1") setFocus(true);
     setReady(true);
+    let idleId = 0;
+    let timeoutId = 0;
+    if (typeof window.requestIdleCallback === "function") {
+      idleId = window.requestIdleCallback(() => setHeroExtra(true), { timeout: 1200 });
+    } else {
+      timeoutId = window.setTimeout(() => setHeroExtra(true), 500);
+    }
     return () => {
       document.body.classList.remove("landing-mode");
       mq.removeEventListener("change", apply);
+      wideMq.removeEventListener("change", applyWide);
+      if (idleId) window.cancelIdleCallback(idleId);
+      if (timeoutId) window.clearTimeout(timeoutId);
     };
   }, []);
 
@@ -176,10 +246,11 @@ export function ExperienceV8() {
     if (!el) return;
     const io = new IntersectionObserver(
       ([entry]) => {
+        if (entry.isIntersecting) setSceneExtra(true);
         if (reduce) return;
         setPlaying(entry.isIntersecting);
       },
-      { threshold: 0.25 },
+      { threshold: 0.2 },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -189,7 +260,7 @@ export function ExperienceV8() {
     if (!playing || reduce) return;
     const id = window.setInterval(() => setBeat((n) => (n + 1) % steps.length), SCENE_MS);
     return () => window.clearInterval(id);
-  }, [playing, reduce, steps.length, mode]);
+  }, [playing, reduce, steps.length, mode, focus]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -224,15 +295,15 @@ export function ExperienceV8() {
     setSent(true);
   }
 
-  const showTicket = mode === "operar" && frame >= 6;
+  const showTicket = focus && mode === "operar" && frame >= 9;
+  const failBeat = focus && mode === "operar" ? frame : -1;
 
   return (
     <div className={styles.page} data-ready={ready ? "1" : "0"}>
       <header className={styles.head}>
-        <a className={styles.brand} href="#inicio" onClick={() => setFocus(false)}>
+        <a className={styles.brand} href="#inicio" aria-label="Justech" onClick={() => setFocus(false)}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={withBase("/brand/justech-mark-white.png")} alt="" width={28} height={20} />
-          Justech
+          <img src={withBase("/brand/justech-logo.png")} alt="Justech" width={300} height={72} />
         </a>
         <nav className={styles.nav} aria-label="Principal">
           {(
@@ -295,7 +366,8 @@ export function ExperienceV8() {
 
       {focus ? (
         <div className={styles.focus} role="dialog" aria-modal="true" aria-label={current.t}>
-          <Scene mode={mode} beat={frame} focused />
+          <Scene mode={mode} plate={plate} beat={frame} focused extra failBeat={failBeat} />
+          {showTicket ? <Ticket beat={frame} /> : null}
           <aside className={styles.sheet}>
             <p className={styles.kicker}>{current.t}</p>
             <p className={styles.state} aria-live="polite">
@@ -315,14 +387,13 @@ export function ExperienceV8() {
                 Siguiente
               </button>
               <a className={styles.cta} href="#conversar" onClick={closeFocus}>
-                {current.cta}
+                {current.cta === "Ver falla y respaldo" ? "Hablar con un especialista" : current.cta}
               </a>
             </div>
             <button type="button" className={styles.quiet} onClick={closeFocus}>
               Cerrar · Esc
             </button>
           </aside>
-          {showTicket ? <Ticket /> : null}
         </div>
       ) : null}
 
@@ -349,43 +420,69 @@ export function ExperienceV8() {
             ) : null}
           </div>
           <div className={styles.heroStage} data-beat={heroRest ? "rest" : heroBeat} data-motion={reduce ? "reduce" : "ok"}>
-            <picture>
-              <source media="(max-width: 720px)" srcSet={withBase("/visual/v8/v81-hero-mobile.webp")} type="image/webp" />
-              <source media="(max-width: 720px)" srcSet={withBase("/visual/v8/v81-hero-mobile.jpg")} />
-              <source srcSet={withBase("/visual/v8/v81-hero.webp")} type="image/webp" />
-              <img
-                src={withBase("/visual/v8/v81-hero.jpg")}
-                alt="Instalación empresarial: rack, puestos y ciudad. Sin textos en la imagen."
-                width={1600}
-                height={1066}
-                fetchPriority="high"
-              />
-            </picture>
-            <HeroDemo beat={heroRest ? -1 : heroBeat} />
+            <Plate
+              name="v82-hero-rest"
+              mobile="v82-hero-mobile"
+              alt="Sede empresarial: rack, puesto y ciudad al anochecer."
+              width={1600}
+              height={900}
+              priority
+              active={wide ? heroPlate === "v82-hero-rest" : heroRest || reduce || heroBeat < 1}
+              avif
+            />
+            {heroExtra
+              ? wide
+                ? heroDeskUniq
+                    .filter((n) => n !== "v82-hero-rest")
+                    .map((n) => (
+                      <Plate key={n} name={n} alt="" width={1600} height={900} active={heroPlate === n} />
+                    ))
+                : (
+                    <Plate
+                      name="v82-hero-mobile-live"
+                      alt=""
+                      width={900}
+                      height={1600}
+                      active={!heroRest && !reduce && heroBeat >= 1}
+                    />
+                  )
+              : null}
           </div>
         </section>
 
         <section className={styles.proposal} aria-labelledby="propuesta">
-          <p className={styles.kicker}>Propuesta</p>
-          <h2 id="propuesta">Una sola estrategia para lo que hoy está separado.</h2>
-          <p>
-            Justech integra equipos, obra, red, licenciamiento, nube, seguridad y soporte. Santo Domingo, desde {company.founded}.
-            Sin cifras inventadas. El portal de casos vive en otro host.
-          </p>
+          <div className={styles.proposalCopy}>
+            <p className={styles.kicker}>Propuesta</p>
+            <h2 id="propuesta">Una sola estrategia para lo que hoy está separado.</h2>
+            <p>
+              Justech integra infraestructura, equipos, redes, licenciamiento, nube, seguridad y soporte bajo una sola
+              estrategia tecnológica.
+            </p>
+            <p>
+              Desde el levantamiento hasta la operación, unificamos proveedores, procesos y responsabilidades para reducir
+              complejidad.
+            </p>
+          </div>
+          <ol className={styles.cycle} aria-label="Ciclo de trabajo">
+            <li>Evaluar</li>
+            <li>Diseñar</li>
+            <li>Implementar</li>
+            <li>Operar</li>
+          </ol>
         </section>
 
         <section className={styles.experiences} id="experiencias" aria-labelledby="exp-title">
           <div className={styles.expHead}>
             <p className={styles.kicker}>Cómo entra</p>
             <h2 id="exp-title">Tres caminos. Una escena.</h2>
-            <div className={styles.tabs} role="tablist" aria-label="Experiencias">
+            <div className={styles.paths} role="tablist" aria-label="Experiencias">
               {modes.map((m) => (
                 <button
                   key={m.id}
                   type="button"
                   role="tab"
                   aria-selected={mode === m.id}
-                  className={mode === m.id ? styles.on : undefined}
+                  className={mode === m.id ? styles.pathOn : styles.path}
                   onClick={() => {
                     setMode(m.id);
                     setBeat(0);
@@ -399,8 +496,11 @@ export function ExperienceV8() {
             </div>
           </div>
           <div className={styles.expBody}>
-            <Scene mode={mode} beat={frame} />
-            <div className={styles.expCopy}>
+            <Scene mode={mode} plate={plate} beat={frame} extra={sceneExtra} failBeat={-1} />
+            <div className={styles.expCopy} data-mode={mode}>
+              <div className={styles.meter} aria-hidden="true">
+                <span style={{ width: `${progress}%` }} />
+              </div>
               <h3>{current.t}</h3>
               <p>{current.d}</p>
               <p className={styles.state} aria-live="polite">
@@ -415,14 +515,13 @@ export function ExperienceV8() {
 
         <section className={styles.method} id="metodo">
           <p className={styles.kicker}>Método</p>
-          <h2>Ver. Diseñar. Poner en marcha. Acompañar.</h2>
+          <h2>Tecnología alineada con su operación.</h2>
           <ol>
-            <li>Levantamiento de lo que ya existe.</li>
-            <li>Una solución con dueño y alcance.</li>
-            <li>Obra, equipos, red y software en el mismo plan.</li>
-            <li>
-              Mesa y portal. {company.hours.split("(")[0].trim()}.
-            </li>
+            <li>Levantamiento</li>
+            <li>Diseño</li>
+            <li>Suministro</li>
+            <li>Implementación</li>
+            <li>Acompañamiento</li>
           </ol>
         </section>
 
@@ -432,25 +531,52 @@ export function ExperienceV8() {
             {company.phoneDisplay} · {company.email}
           </p>
           {sent ? (
-            <p role="status">Registrado en este entorno de prueba. En el sitio público responde {company.email}. Aquí no se envía correo.</p>
+            <p role="status">Gracias. Un especialista le escribe a {company.email}.</p>
           ) : (
             <form onSubmit={onSubmit}>
-              <label>
-                Nombre
-                <input name="name" autoComplete="name" required />
-              </label>
-              <label>
-                Empresa
-                <input name="company" autoComplete="organization" required />
-              </label>
-              <label>
-                Correo corporativo
-                <input name="email" type="email" autoComplete="email" required />
-              </label>
-              <p className={styles.legal}>Formulario de demostración. No hay envío real en staging.</p>
-              <button type="submit" className={styles.cta}>
-                Enviar en este entorno
-              </button>
+              <fieldset className={styles.need}>
+                <legend>¿Qué necesita resolver?</legend>
+                {needs.map((item) => (
+                  <label key={item.id} className={need === item.id ? styles.needOn : undefined}>
+                    <input
+                      type="radio"
+                      name="need"
+                      value={item.id}
+                      checked={need === item.id}
+                      onChange={() => setNeed(item.id)}
+                      required
+                    />
+                    {item.label}
+                  </label>
+                ))}
+              </fieldset>
+              {need ? (
+                <>
+                  <label>
+                    Nombre
+                    <input name="name" autoComplete="name" required />
+                  </label>
+                  <label>
+                    Empresa
+                    <input name="company" autoComplete="organization" required />
+                  </label>
+                  <label>
+                    Correo corporativo
+                    <input name="email" type="email" autoComplete="email" required />
+                  </label>
+                  <label>
+                    Teléfono <span>(opcional)</span>
+                    <input name="phone" type="tel" autoComplete="tel" />
+                  </label>
+                  <label>
+                    Descripción breve
+                    <textarea name="note" rows={3} />
+                  </label>
+                  <button type="submit" className={styles.cta}>
+                    Enviar
+                  </button>
+                </>
+              ) : null}
             </form>
           )}
         </section>
@@ -463,6 +589,7 @@ export function ExperienceV8() {
             <p>
               {company.city} · {company.phoneDisplay}
             </p>
+            <p>{company.hours}</p>
             <a href={`mailto:${company.email}`}>{company.email}</a>
             <a href={company.supportUrl}>Soporte</a>
           </div>
@@ -473,163 +600,138 @@ export function ExperienceV8() {
             <Link href="/legal/">Legal</Link>
             <Link href="/politica-de-privacidad/">Privacidad</Link>
           </div>
-          <p>Concepto V8. El sitio público permanece en www.justech.do.</p>
         </footer>
       )}
     </div>
   );
 }
 
-function HeroDemo({ beat }: { beat: number }) {
+function Plate({
+  name,
+  mobile,
+  alt,
+  width,
+  height,
+  priority,
+  active,
+  avif,
+}: {
+  name: string;
+  mobile?: string;
+  alt: string;
+  width: number;
+  height: number;
+  priority?: boolean;
+  active: boolean;
+  avif?: boolean;
+}) {
+  const desk = withBase(`/visual/v8/${name}`);
+  const mob = mobile ? withBase(`/visual/v8/${mobile}`) : null;
   return (
-    <svg className={styles.heroSvg} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        {Array.from({ length: 8 }).map((_, i) => (
-        <rect
-          key={i}
-          className={`${styles.led} ${beat >= 1 ? styles.on : ""}`}
-          x={16.4 + (i % 2) * 2.6}
-          y={26 + Math.floor(i / 2) * 7.2}
-          width="1.1"
-          height="0.7"
-          rx="0.15"
-        />
-      ))}
-      <path className={`${styles.heroFlow} ${beat >= 2 && beat < 8 ? styles.on : ""}`} d="M18 48 C32 47 46 54 62 64" />
-      {beat >= 2 && beat < 8 ? (
-        <circle className={styles.pkt} r="0.45">
-          <animateMotion dur="1.2s" repeatCount="indefinite" path="M18 48 C32 47 46 54 62 64" />
-        </circle>
-      ) : null}
-      <rect className={`${styles.screen} ${beat >= 4 ? styles.on : ""}`} x="61" y="60" width="10" height="7" rx="0.3" />
-      <circle className={`${styles.ok} ${beat >= 7 ? styles.on : ""}`} cx="84" cy="76" r="1.1" />
-    </svg>
+    <picture className={`${styles.plate} ${priority ? styles.lcp : ""} ${active ? styles.plateOn : ""}`}>
+      {mob && avif ? <source media="(max-width: 720px)" srcSet={`${mob}.avif`} type="image/avif" /> : null}
+      {mob ? <source media="(max-width: 720px)" srcSet={`${mob}.webp`} type="image/webp" /> : null}
+      {mob ? <source media="(max-width: 720px)" srcSet={`${mob}.jpg`} /> : null}
+      {avif ? <source srcSet={`${desk}.avif`} type="image/avif" /> : null}
+      <source srcSet={`${desk}.webp`} type="image/webp" />
+      <img
+        src={`${desk}.jpg`}
+        alt={alt}
+        width={width}
+        height={height}
+        fetchPriority={priority ? "high" : "low"}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        draggable={false}
+      />
+    </picture>
   );
 }
 
-function Scene({ mode, beat, focused }: { mode: Mode; beat: number; focused?: boolean }) {
-  const usePuesto = mode === "modernizar" && beat >= 1;
+function Scene({
+  mode,
+  plate,
+  beat,
+  focused,
+  extra,
+  failBeat,
+}: {
+  mode: Mode;
+  plate: string;
+  beat: number;
+  focused?: boolean;
+  extra: boolean;
+  failBeat: number;
+}) {
+  const catalog =
+    mode === "construir"
+      ? construirFrames
+      : mode === "modernizar"
+        ? modernizarFrames
+        : focused
+          ? Array.from(new Set(operarFailFrames))
+          : Array.from(new Set(operarFrames));
+  const uniq = extra ? catalog : Array.from(new Set([catalog[0], plate]));
+
   return (
     <figure className={styles.scene} data-mode={mode} data-beat={beat} data-focus={focused ? "1" : "0"}>
-      <picture>
-        <source srcSet={withBase(usePuesto ? "/visual/v8/v81-puesto.webp" : "/visual/v8/v81-campus.webp")} type="image/webp" />
-        <img
-          src={withBase(usePuesto ? "/visual/v8/v81-puesto.jpg" : "/visual/v8/v81-campus.jpg")}
-          alt={usePuesto ? "Puesto empresarial: laptop, monitor y dock. Sin textos en la imagen." : "Campus empresarial con cuarto técnico, rack y sucursal. Sin textos en la imagen."}
-          width={usePuesto ? 1400 : 1600}
-          height={usePuesto ? 934 : 1066}
-          loading={focused ? "eager" : "lazy"}
+      {uniq.map((name, i) => (
+        <Plate
+          key={name}
+          name={name}
+          alt={
+            i === 0
+              ? mode === "modernizar"
+                ? "Puesto de trabajo empresarial."
+                : "Sede empresarial mediana: cuarto técnico, rack y puestos."
+              : ""
+          }
+          width={1600}
+          height={900}
+          priority={Boolean(focused && i === 0)}
+          active={name === plate}
         />
-      </picture>
-      {mode === "construir" ? <BuildOverlay beat={beat} /> : null}
-      {mode === "modernizar" ? <DeskOverlay beat={beat} /> : null}
-      {mode === "operar" ? <Network beat={beat} /> : null}
+      ))}
+      {focused && mode === "operar" ? <RouteRead beat={failBeat} /> : null}
     </figure>
   );
 }
 
-function BuildOverlay({ beat }: { beat: number }) {
+function RouteRead({ beat }: { beat: number }) {
+  const primaryLive = beat < 2;
+  const primaryDead = beat >= 2 && beat < 10;
+  const backup = beat >= 5;
+  const route = primaryLive ? "ISP principal" : backup ? "ISP de respaldo" : "Enlace principal caído";
   return (
-    <svg className={styles.overlay} viewBox="0 0 100 62" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <g className={beat >= 0 ? styles.on : undefined}>
-        <path className={styles.plan} d="M18 40 h22 v14 h-22z M42 36 h28 v18 h-28z M72 38 h16 v12 h-16z" />
-      </g>
-      <path className={`${styles.cable} ${beat >= 1 ? styles.on : ""}`} d="M30 48 C38 44 46 40 54 38 C62 36 70 40 78 44" />
-      <g className={beat >= 2 ? styles.on : undefined}>
-        <rect className={styles.rackGlow} x="44" y="28" width="8" height="16" rx="0.4" />
-        {Array.from({ length: 5 }).map((_, i) => (
-          <rect key={i} className={styles.port} x="45.2" y={30 + i * 2.4} width="5.4" height="1.1" rx="0.2" />
-        ))}
-      </g>
-      <g className={beat >= 3 ? styles.on : undefined}>
-        <circle className={styles.ap} cx="58" cy="34" r="1.1" />
-        <circle className={styles.ap} cx="66" cy="34" r="1.1" />
-      </g>
-      {beat >= 2 ? (
-        <text className={styles.label} x="44" y="26">
-          Rack
-        </text>
-      ) : null}
-      {beat >= 3 ? (
-        <text className={styles.label} x="72" y="37">
-          Sucursal
-        </text>
-      ) : null}
-    </svg>
+    <div className={styles.route} aria-live="polite">
+      <p>
+        <strong>Ruta activa</strong>
+        <span>{route}</span>
+      </p>
+      <ul>
+        <li data-live={primaryLive ? "1" : "0"} data-dead={primaryDead ? "1" : "0"}>
+          ISP principal
+        </li>
+        <li data-live={beat >= 0 && !primaryDead ? "1" : backup ? "1" : "0"}>Borde</li>
+        <li data-live={beat >= 0 && (primaryLive || backup) ? "1" : "0"}>Firewall</li>
+        <li data-live={beat >= 0 && (primaryLive || backup) ? "1" : "0"}>Core</li>
+        <li data-live="1">Acceso · puestos</li>
+        <li data-live={backup ? "1" : "0"} data-wait={beat < 5 ? "1" : "0"}>
+          ISP de respaldo
+        </li>
+      </ul>
+    </div>
   );
 }
 
-function DeskOverlay({ beat }: { beat: number }) {
-  return (
-    <svg className={styles.overlay} viewBox="0 0 100 67" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect className={`${styles.screenFill} ${beat >= 0 ? styles.on : ""}`} x="38" y="22" width="28" height="18" rx="0.6" />
-      <g className={beat >= 1 ? styles.on : undefined}>
-        <circle className={styles.id} cx="72" cy="18" r="3.2" />
-      </g>
-      <g className={beat >= 2 ? styles.on : undefined}>
-        <path className={styles.shield} d="M22 20 l5 2 v6 c0 4-2.4 7-5 8.4 c-2.6-1.4-5-4.4-5-8.4 v-6z" />
-      </g>
-      <rect className={`${styles.app} ${beat >= 3 ? styles.on : ""}`} x="42" y="26" width="8" height="6" rx="0.4" />
-      <rect className={`${styles.app} ${beat >= 3 ? styles.on : ""}`} x="52" y="26" width="8" height="6" rx="0.4" />
-      <path className={`${styles.cable} ${beat >= 4 ? styles.on : ""}`} d="M68 48 C78 50 84 46 90 40" />
-      {beat >= 5 ? (
-        <text className={styles.label} x="38" y="14">
-          Listo
-        </text>
-      ) : null}
-    </svg>
-  );
-}
-
-function Node({ x, y, w, h, label, tone = "box" }: { x: number; y: number; w: number; h: number; label: string; tone?: "box" | "idle" | "bad" }) {
-  return (
-    <g className={styles.node} transform={`translate(${x} ${y})`}>
-      <rect width={w} height={h} rx="2" className={styles[tone]} />
-      <text x={w / 2} y={h / 2 + 4}>
-        {label}
-      </text>
-    </g>
-  );
-}
-
-function Network({ beat }: { beat: number }) {
-  const fail = beat >= 1 && beat < 4;
-  const backup = beat >= 3;
-  const okUsers = beat >= 5 || beat === 0;
-  const show = (from: number, to = 8) => beat >= from && beat <= to;
-  return (
-    <svg className={styles.net} viewBox="0 0 640 320" role="img" aria-label="Topología: ISP, borde, firewall, core y acceso.">
-      <path className={`${styles.link} ${beat === 0 || beat >= 5 ? styles.live : ""} ${fail ? styles.dead : ""}`} d="M70 70 L150 110" />
-      <path className={`${styles.link} ${backup ? styles.backup : ""}`} d="M70 190 L150 130" />
-      <path className={`${styles.link} ${beat >= 0 ? styles.live : ""} ${fail && !backup ? styles.dim : ""}`} d="M170 120 L250 120 L330 120 L420 120" />
-      <path className={`${styles.link} ${beat >= 0 ? styles.live : ""}`} d="M440 120 L520 70" />
-      <path className={`${styles.link} ${okUsers ? styles.live : styles.dim}`} d="M440 120 L520 150" />
-      <path className={`${styles.link} ${beat >= 0 ? styles.live : ""}`} d="M420 140 L420 210" />
-      <path className={`${styles.link} ${backup || beat === 0 ? styles.live : styles.dim}`} d="M520 170 C560 200 580 220 600 250" />
-      {beat === 0 || (backup && beat >= 4) ? (
-        <circle className={styles.dot} r="2.4">
-          <animateMotion dur="1.5s" repeatCount="indefinite" path={backup && beat >= 4 ? "M70 190 L150 130 L250 120 L330 120 L420 120 L520 150" : "M70 70 L150 110 L250 120 L330 120 L420 120 L520 150"} />
-        </circle>
-      ) : null}
-      {show(0, 3) ? <Node x={40} y={54} w={48} h={26} label="ISP principal" tone={fail ? "bad" : "box"} /> : null}
-      {show(3, 5) ? <Node x={40} y={176} w={52} h={26} label="ISP respaldo" tone={backup ? "box" : "idle"} /> : null}
-      {show(0, 5) ? <Node x={140} y={106} w={48} h={26} label="Borde" /> : null}
-      {show(0, 2) ? <Node x={236} y={106} w={58} h={26} label="Firewall" /> : null}
-      {show(0, 4) ? <Node x={318} y={106} w={44} h={26} label="Core" /> : null}
-      {show(4, 6) ? <Node x={404} y={106} w={48} h={26} label="Acceso" /> : null}
-      {show(5, 7) ? <Node x={490} y={136} w={52} h={26} label="Puestos" tone={okUsers ? "box" : "idle"} /> : null}
-      {show(6, 7) ? <Node x={560} y={248} w={58} h={26} label="Sucursal" /> : null}
-    </svg>
-  );
-}
-
-function Ticket() {
+function Ticket({ beat }: { beat: number }) {
   return (
     <aside className={styles.ticket} aria-label="Caso de soporte">
-      <p>Caso 1042 · Enlace primario</p>
+      <p>Caso asignado · Enlace principal</p>
       <ol>
-        <li className={styles.done}>Asignado</li>
-        <li className={styles.done}>Diagnóstico</li>
-        <li>Resuelto</li>
+        <li className={styles.done}>Recibido</li>
+        <li className={beat >= 10 ? styles.done : undefined}>Continuidad</li>
+        <li className={beat >= 10 ? styles.done : undefined}>Resuelto</li>
       </ol>
     </aside>
   );
