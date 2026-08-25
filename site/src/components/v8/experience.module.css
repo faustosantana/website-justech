@@ -244,9 +244,9 @@
   width: 124%;
   background: linear-gradient(
     90deg,
-    rgba(244, 240, 232, 0.94) 0%,
-    rgba(244, 240, 232, 0.78) 52%,
-    rgba(244, 240, 232, 0.28) 78%,
+    rgba(244, 240, 232, 0.97) 0%,
+    rgba(244, 240, 232, 0.9) 48%,
+    rgba(244, 240, 232, 0.4) 72%,
     rgba(244, 240, 232, 0) 100%
   );
   pointer-events: none;
@@ -374,6 +374,10 @@
 .resources {
   width: min(1180px, calc(100% - 56px));
   margin-inline: auto;
+  scroll-margin-top: 96px;
+}
+.hero {
+  scroll-margin-top: 96px;
 }
 
 .trust {
@@ -1045,7 +1049,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: 76px;
+    top: 68px;
     background: #0a1522;
     padding: 8px 16px 20px;
     transform: translateY(-6px);
@@ -1074,52 +1078,15 @@
   .brand img {
     height: 34px;
   }
-  .hero,
+}
+
+@media (max-width: 900px) {
   .expBody,
   .foot,
   .sheet,
   .proposal,
   .cable {
     grid-template-columns: 1fr;
-  }
-  .hero {
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .heroStage {
-    position: relative;
-    order: 2;
-    aspect-ratio: 4 / 5;
-    min-height: 46vh;
-    height: auto;
-  }
-  .heroCopy {
-    order: 1;
-    padding: 24px 20px 16px;
-    max-width: none;
-  }
-  .heroCopy::before {
-    display: none;
-  }
-  .hero h1 {
-    max-width: 14ch;
-    font-size: clamp(1.75rem, 7.4vw, 2.2rem);
-  }
-  .heroCopy p {
-    margin-top: 12px;
-    font-size: 0.98rem;
-  }
-  .heroCtas {
-    margin-top: 18px;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .heroStage img {
-    object-position: 50% 40%;
-  }
-  .caption {
-    margin-top: 14px !important;
   }
   .proposal,
   .experiences,
@@ -1157,7 +1124,7 @@
     margin-top: 18px;
   }
   .scene {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 16 / 10;
     min-height: 240px;
   }
   .expCopy {
@@ -1203,6 +1170,52 @@
   }
   .route li {
     font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+  .heroStage {
+    position: relative;
+    order: 2;
+    aspect-ratio: 4 / 5;
+    min-height: 46vh;
+    height: auto;
+  }
+  .heroCopy {
+    order: 1;
+    padding: 24px 20px 16px;
+    max-width: none;
+  }
+  .heroCopy::before {
+    display: none;
+  }
+  .hero h1 {
+    max-width: 14ch;
+    font-size: clamp(1.75rem, 7.4vw, 2.2rem);
+  }
+  .heroCopy p {
+    margin-top: 12px;
+    font-size: 0.98rem;
+  }
+  .heroCtas {
+    margin-top: 18px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .heroStage img {
+    object-position: 50% 40%;
+  }
+  .caption {
+    margin-top: 14px !important;
+  }
+  .scene {
+    aspect-ratio: 1 / 1;
   }
 }
 

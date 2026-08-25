@@ -733,6 +733,10 @@ export function CableDemo() {
             <polygon fill="#c9d4cc" points="20,210 360,380 360,420 20,250" />
             <polygon fill="#b7c4bb" points="360,380 700,210 700,250 360,420" />
             <polygon fill="#9aa89e" points="20,120 360,40 360,80 20,160" />
+            <polygon fill="#dfe6e1" points="160,200 240,160 280,180 200,220" />
+            <polygon fill="#dfe6e1" points="300,250 380,210 420,230 340,270" />
+            <polygon fill="#dfe6e1" points="440,200 520,160 560,180 480,220" />
+            <polygon fill="#c5d0c8" points="240,300 300,270 330,285 270,315" />
             {on(1) ? (
               <>
                 <path d="M80 180 L360 70 L640 180" fill="none" stroke="#0a5c56" strokeWidth="8" opacity="0.55" />
