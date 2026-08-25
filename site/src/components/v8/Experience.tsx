@@ -1,17 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState } from "react";
 import { Chrome, Foot } from "@/components/v8/Chrome";
-import { CableDemo } from "@/components/v8/CableDemo";
-import { CloudDemo, SecurityDemo } from "@/components/v8/StoryDemos";
-import {
-  DeviceDemo,
-  LicenseDemo,
-  NetworkDemo,
-  QuoteFlow,
-  SupportDemo,
-} from "@/components/v8/Studios";
+import { QuoteFlow } from "@/components/v8/Studios";
 import { company } from "@/content/site";
 import { publicEvidence } from "@/content/evidence";
 import { trustStrip } from "@/content/v83";
@@ -30,6 +23,14 @@ import {
 } from "@/content/v85";
 import { withBase } from "@/lib/paths";
 import styles from "./experience.module.css";
+
+const CableDemo = dynamic(() => import("@/components/v8/CableDemo").then((m) => m.CableDemo));
+const CloudDemo = dynamic(() => import("@/components/v8/StoryDemos").then((m) => m.CloudDemo));
+const SecurityDemo = dynamic(() => import("@/components/v8/StoryDemos").then((m) => m.SecurityDemo));
+const DeviceDemo = dynamic(() => import("@/components/v8/Studios").then((m) => m.DeviceDemo));
+const LicenseDemo = dynamic(() => import("@/components/v8/Studios").then((m) => m.LicenseDemo));
+const NetworkDemo = dynamic(() => import("@/components/v8/Studios").then((m) => m.NetworkDemo));
+const SupportDemo = dynamic(() => import("@/components/v8/Studios").then((m) => m.SupportDemo));
 
 const HERO_MS = 1100;
 const SCENE_MS = 1400;

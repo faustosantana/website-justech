@@ -228,7 +228,7 @@ await demo("equipos", async (page) => {
   }
   await page.getByRole("button", { name: "Configuración" }).click();
   await page.waitForTimeout(600);
-  await page.getByRole("button", { name: "Garantía" }).click();
+  await page.getByRole("button", { name: "Entrega" }).click();
   await page.waitForTimeout(800);
 });
 await demo("licencias", async (page) => {

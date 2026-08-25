@@ -313,7 +313,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #8a8580;
+  color: #3a4550;
   padding: 6px 8px;
   border-bottom: 2px solid transparent;
 }
@@ -407,7 +407,7 @@
   grid-template-columns: 14px 1fr;
   gap: 12px;
   align-items: start;
-  color: #8a8580;
+  color: #3a4550;
   padding: 8px 0;
   border-left: 0;
   position: relative;
@@ -865,7 +865,7 @@
   padding: 8px 12px;
   border: 1px solid rgba(12, 18, 32, 0.1);
   font-size: 0.86rem;
-  color: #8a8580;
+  color: #3a4550;
 }
 .storyRail li[data-on="1"] {
   color: #0b1018;
@@ -880,11 +880,12 @@
 .storyRail li[data-now="1"] {
   box-shadow: inset 0 -2px 0 #0a5c56;
 }
-.netLink {
+.netLink,
+.ticket .netLink {
   margin: 0;
   padding: 10px 18px;
   background: #0e161e;
-  color: #e8eef4;
+  color: #e8eef4 !important;
   font-size: 0.86rem;
 }
 .netLink[data-on="1"] {

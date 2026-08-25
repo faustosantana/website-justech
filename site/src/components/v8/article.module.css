@@ -34,6 +34,11 @@
   line-height: 1.62;
   font-size: 1.05rem;
 }
+.article :global(.studio) p,
+.article :global(.lab) p,
+.article :global(.ticket) p {
+  color: inherit;
+}
 .lead {
   font-size: 1.12rem;
   max-width: 58ch;
