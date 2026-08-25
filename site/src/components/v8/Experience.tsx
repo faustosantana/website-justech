@@ -210,6 +210,7 @@ export function ExperienceV8() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- closeFocus only uses setters and mode
   }, [focus, megaKey, menu, mode]);
 
   function replayHero() {
@@ -352,7 +353,6 @@ export function ExperienceV8() {
               <source media="(max-width: 720px)" srcSet={withBase("/visual/v8/v81-hero-mobile.webp")} type="image/webp" />
               <source media="(max-width: 720px)" srcSet={withBase("/visual/v8/v81-hero-mobile.jpg")} />
               <source srcSet={withBase("/visual/v8/v81-hero.webp")} type="image/webp" />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={withBase("/visual/v8/v81-hero.jpg")}
                 alt="Instalación empresarial: rack, puestos y ciudad. Sin textos en la imagen."
@@ -483,33 +483,25 @@ export function ExperienceV8() {
 function HeroDemo({ beat }: { beat: number }) {
   return (
     <svg className={styles.heroSvg} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-      <g className={beat >= 0 ? styles.on : undefined}>
-        <rect className={styles.rackGlow} x="6" y="12" width="22" height="78" rx="1.2" />
-      </g>
-      <g className={beat >= 1 ? styles.on : undefined}>
         {Array.from({ length: 8 }).map((_, i) => (
-          <rect key={i} className={styles.port} x={8.5 + (i % 2) * 8} y={18 + Math.floor(i / 2) * 14} width="5.2" height="1.6" rx="0.3" />
-        ))}
-      </g>
-      <path className={`${styles.heroFlow} ${beat >= 2 ? styles.on : ""}`} d="M28 48 C40 46 48 52 58 62" />
-      <circle className={`${styles.pkt} ${beat >= 2 && beat < 8 ? styles.on : ""}`} r="0.7">
-        <animateMotion dur="1.1s" repeatCount="indefinite" path="M28 48 C40 46 48 52 58 62" />
-      </circle>
-      <g className={beat >= 3 ? styles.on : undefined}>
-        <rect className={styles.desk} x="54" y="58" width="28" height="16" rx="0.8" />
-      </g>
-      <g className={beat >= 4 ? styles.on : undefined}>
-        <rect className={styles.screen} x="62" y="61" width="12" height="8" rx="0.4" />
-      </g>
-      <g className={beat >= 5 ? styles.on : undefined}>
-        <path className={styles.shield} d="M72 44 l4 1.6 v4.2 c0 3-1.8 5.2-4 6.2 c-2.2-1-4-3.2-4-6.2 v-4.2z" />
-      </g>
-      <g className={beat >= 6 ? styles.on : undefined}>
-        <path className={styles.cloud} d="M78 18 c2-4 10-4 12 0 c3 0 5 3 4 5 h-18 c-2-1-1-4 2-5z" />
-      </g>
-      <g className={beat >= 7 ? styles.on : undefined}>
-        <circle className={styles.ok} cx="86" cy="78" r="2.4" />
-      </g>
+        <rect
+          key={i}
+          className={`${styles.led} ${beat >= 1 ? styles.on : ""}`}
+          x={16.4 + (i % 2) * 2.6}
+          y={26 + Math.floor(i / 2) * 7.2}
+          width="1.1"
+          height="0.7"
+          rx="0.15"
+        />
+      ))}
+      <path className={`${styles.heroFlow} ${beat >= 2 && beat < 8 ? styles.on : ""}`} d="M18 48 C32 47 46 54 62 64" />
+      {beat >= 2 && beat < 8 ? (
+        <circle className={styles.pkt} r="0.45">
+          <animateMotion dur="1.2s" repeatCount="indefinite" path="M18 48 C32 47 46 54 62 64" />
+        </circle>
+      ) : null}
+      <rect className={`${styles.screen} ${beat >= 4 ? styles.on : ""}`} x="61" y="60" width="10" height="7" rx="0.3" />
+      <circle className={`${styles.ok} ${beat >= 7 ? styles.on : ""}`} cx="84" cy="76" r="1.1" />
     </svg>
   );
 }
@@ -520,7 +512,6 @@ function Scene({ mode, beat, focused }: { mode: Mode; beat: number; focused?: bo
     <figure className={styles.scene} data-mode={mode} data-beat={beat} data-focus={focused ? "1" : "0"}>
       <picture>
         <source srcSet={withBase(usePuesto ? "/visual/v8/v81-puesto.webp" : "/visual/v8/v81-campus.webp")} type="image/webp" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={withBase(usePuesto ? "/visual/v8/v81-puesto.jpg" : "/visual/v8/v81-campus.jpg")}
           alt={usePuesto ? "Puesto empresarial: laptop, monitor y dock. Sin textos en la imagen." : "Campus empresarial con cuarto técnico, rack y sucursal. Sin textos en la imagen."}
@@ -589,69 +580,44 @@ function DeskOverlay({ beat }: { beat: number }) {
   );
 }
 
+function Node({ x, y, w, h, label, tone = "box" }: { x: number; y: number; w: number; h: number; label: string; tone?: "box" | "idle" | "bad" }) {
+  return (
+    <g className={styles.node} transform={`translate(${x} ${y})`}>
+      <rect width={w} height={h} rx="2" className={styles[tone]} />
+      <text x={w / 2} y={h / 2 + 4}>
+        {label}
+      </text>
+    </g>
+  );
+}
+
 function Network({ beat }: { beat: number }) {
   const fail = beat >= 1 && beat < 4;
   const backup = beat >= 3;
   const okUsers = beat >= 5 || beat === 0;
+  const show = (from: number, to = 8) => beat >= from && beat <= to;
   return (
-    <svg className={styles.net} viewBox="0 0 640 320" role="img" aria-label="Topología: ISP, borde, firewall, core, acceso, puestos y sucursal.">
-      <path id="p-isp1" className={`${styles.link} ${beat === 0 || beat >= 5 ? styles.live : ""} ${fail ? styles.dead : ""}`} d="M70 70 L150 110" />
-      <path id="p-isp2" className={`${styles.link} ${backup ? styles.backup : ""}`} d="M70 190 L150 130" />
+    <svg className={styles.net} viewBox="0 0 640 320" role="img" aria-label="Topología: ISP, borde, firewall, core y acceso.">
+      <path className={`${styles.link} ${beat === 0 || beat >= 5 ? styles.live : ""} ${fail ? styles.dead : ""}`} d="M70 70 L150 110" />
+      <path className={`${styles.link} ${backup ? styles.backup : ""}`} d="M70 190 L150 130" />
       <path className={`${styles.link} ${beat >= 0 ? styles.live : ""} ${fail && !backup ? styles.dim : ""}`} d="M170 120 L250 120 L330 120 L420 120" />
       <path className={`${styles.link} ${beat >= 0 ? styles.live : ""}`} d="M440 120 L520 70" />
       <path className={`${styles.link} ${okUsers ? styles.live : styles.dim}`} d="M440 120 L520 150" />
       <path className={`${styles.link} ${beat >= 0 ? styles.live : ""}`} d="M420 140 L420 210" />
-      <path className={`${styles.link} ${beat >= 0 ? styles.live : ""}`} d="M330 100 L330 48" />
       <path className={`${styles.link} ${backup || beat === 0 ? styles.live : styles.dim}`} d="M520 170 C560 200 580 220 600 250" />
       {beat === 0 || (backup && beat >= 4) ? (
-        <circle className={styles.dot} r="3">
-          <animateMotion dur="1.4s" repeatCount="indefinite" path={backup && beat >= 4 ? "M70 190 L150 130 L250 120 L330 120 L420 120 L520 150" : "M70 70 L150 110 L250 120 L330 120 L420 120 L520 150"} />
+        <circle className={styles.dot} r="2.4">
+          <animateMotion dur="1.5s" repeatCount="indefinite" path={backup && beat >= 4 ? "M70 190 L150 130 L250 120 L330 120 L420 120 L520 150" : "M70 70 L150 110 L250 120 L330 120 L420 120 L520 150"} />
         </circle>
       ) : null}
-      <g className={styles.node} transform="translate(40 54)">
-        <rect width="44" height="28" rx="3" className={fail ? styles.bad : styles.box} />
-        <text x="22" y="18">ISP 1</text>
-      </g>
-      <g className={styles.node} transform="translate(40 176)">
-        <rect width="44" height="28" rx="3" className={backup ? styles.box : styles.idle} />
-        <text x="22" y="18">ISP 2</text>
-      </g>
-      <g className={styles.node} transform="translate(140 104)">
-        <rect width="52" height="32" rx="3" className={styles.box} />
-        <text x="26" y="20">Borde</text>
-      </g>
-      <g className={styles.node} transform="translate(236 104)">
-        <rect width="64" height="32" rx="3" className={styles.box} />
-        <text x="32" y="20">Firewall</text>
-      </g>
-      <g className={styles.node} transform="translate(318 104)">
-        <rect width="48" height="32" rx="3" className={styles.box} />
-        <text x="24" y="20">Core</text>
-      </g>
-      <g className={styles.node} transform="translate(404 104)">
-        <rect width="52" height="32" rx="3" className={styles.box} />
-        <text x="26" y="20">Acceso</text>
-      </g>
-      <g className={styles.node} transform="translate(496 54)">
-        <rect width="40" height="28" rx="3" className={styles.box} />
-        <text x="20" y="18">AP</text>
-      </g>
-      <g className={styles.node} transform="translate(490 136)">
-        <rect width="56" height="28" rx="3" className={okUsers ? styles.box : styles.idle} />
-        <text x="28" y="18">Puestos</text>
-      </g>
-      <g className={styles.node} transform="translate(392 200)">
-        <rect width="72" height="28" rx="3" className={styles.box} />
-        <text x="36" y="18">Servidores</text>
-      </g>
-      <g className={styles.node} transform="translate(300 20)">
-        <rect width="56" height="26" rx="3" className={styles.idle} />
-        <text x="28" y="17">Nube</text>
-      </g>
-      <g className={styles.node} transform="translate(560 248)">
-        <rect width="64" height="28" rx="3" className={styles.box} />
-        <text x="32" y="18">Sucursal</text>
-      </g>
+      {show(0, 3) ? <Node x={40} y={54} w={48} h={26} label="ISP principal" tone={fail ? "bad" : "box"} /> : null}
+      {show(3, 5) ? <Node x={40} y={176} w={52} h={26} label="ISP respaldo" tone={backup ? "box" : "idle"} /> : null}
+      {show(0, 5) ? <Node x={140} y={106} w={48} h={26} label="Borde" /> : null}
+      {show(0, 2) ? <Node x={236} y={106} w={58} h={26} label="Firewall" /> : null}
+      {show(0, 4) ? <Node x={318} y={106} w={44} h={26} label="Core" /> : null}
+      {show(4, 6) ? <Node x={404} y={106} w={48} h={26} label="Acceso" /> : null}
+      {show(5, 7) ? <Node x={490} y={136} w={52} h={26} label="Puestos" tone={okUsers ? "box" : "idle"} /> : null}
+      {show(6, 7) ? <Node x={560} y={248} w={58} h={26} label="Sucursal" /> : null}
     </svg>
   );
 }
