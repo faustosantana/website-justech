@@ -1175,17 +1175,6 @@ body.landing-mode .cta-band {
   display: none;
 }
 
-body.v8-shell {
-  overflow: hidden;
-  background: #f5f3ee;
-}
-
-@media (max-width: 980px) {
-  body.v8-shell {
-    overflow: auto;
-  }
-}
-
 .tech-scene {
   position: relative;
   min-height: 280px;

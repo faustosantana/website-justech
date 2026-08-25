@@ -1,757 +1,670 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { company } from "@/content/site";
 import { withBase } from "@/lib/paths";
 import styles from "./experience.module.css";
 
-type View = "inicio" | "explorar" | "demo" | "metodo" | "hablar";
-type SceneId = (typeof scenarios)[number]["id"];
-type DemoId = (typeof demos)[number]["id"];
+type Mode = "construir" | "modernizar" | "operar";
+type Mega = "soluciones" | "servicios" | "productos" | "industrias" | null;
 
-const heroLayers = [
-  { id: "rack", t: "Rack", x: "18%", y: "62%", hint: "Los puertos responden." },
-  { id: "red", t: "Red", x: "44%", y: "48%", hint: "El tráfico circula." },
-  { id: "equipo", t: "Equipos", x: "60%", y: "66%", hint: "El puesto se prepara." },
-  { id: "seguridad", t: "Seguridad", x: "74%", y: "36%", hint: "Una conexión queda aislada." },
-  { id: "nube", t: "Nube", x: "86%", y: "24%", hint: "Los datos se sincronizan." },
-  { id: "soporte", t: "Soporte", x: "80%", y: "78%", hint: "Llega una alerta." },
-] as const;
+const HERO_MS = 1200;
+const SCENE_MS = 1400;
 
-const jump: { t: string; view: View; scene?: SceneId; demo?: DemoId }[] = [
-  { t: "Equipos", view: "explorar", scene: "equipos" },
-  { t: "Redes", view: "demo", demo: "falla" },
-  { t: "Cableado", view: "explorar", scene: "oficina" },
-  { t: "Servidores", view: "demo", demo: "sede" },
-  { t: "Licenciamiento", view: "explorar", scene: "licencias" },
-  { t: "Nube", view: "explorar", scene: "migrar" },
-  { t: "Seguridad", view: "explorar", scene: "proteger" },
-  { t: "Soporte", view: "explorar", scene: "incidencias" },
-  { t: "Servicios administrados", view: "explorar", scene: "msp" },
-  { t: "Cotización", view: "hablar" },
+const heroBeats = [
+  "El rack se energiza.",
+  "Los puertos se encienden.",
+  "El tráfico llega al core.",
+  "Se conecta un puesto.",
+  "Se habilita una aplicación.",
+  "Aparece protección.",
+  "Se sincroniza la nube.",
+  "Soporte confirma operación.",
 ];
 
-const scenarios = [
+const modes: { id: Mode; t: string; d: string; cta: string }[] = [
   {
-    id: "oficina",
-    t: "Abrir una nueva oficina",
-    sit: "Una sede nueva debe operar el primer día, no a las tres semanas.",
-    cta: "Planificar nueva sede",
-    photo: "/visual/v8/v8-scene-network.jpg",
-    alt: "Sede con rack, red, puestos y sucursal.",
-    parts: ["Levantamiento", "Cableado", "Rack", "Wi-Fi", "Equipos", "Licencias", "Seguridad", "Soporte"],
-    svc: "Levantamiento, cableado y puesta en marcha.",
-    result: "La oficina entra en servicio con un responsable y un plano documentado.",
+    id: "construir",
+    t: "Construir",
+    d: "Nueva sede, cableado, rack, red, Wi-Fi, equipos y servidores. Un plano. Un responsable.",
+    cta: "Planificar una sede",
   },
   {
-    id: "equipos",
-    t: "Renovar equipos",
-    sit: "Los puestos se entregan con imagen, identidad y garantía. No como cajas sueltas.",
-    cta: "Preparar puestos",
-    photo: "/visual/v8/v8-scene-puesto.jpg",
-    alt: "Portátil empresarial listo para aprovisionar.",
-    parts: ["Perfil", "Imagen", "Cifrado", "Aplicaciones", "Inventario", "Entrega"],
-    svc: "Aprovisionamiento de puestos.",
-    result: "El usuario se sienta y trabaja. El activo queda registrado.",
+    id: "modernizar",
+    t: "Modernizar",
+    d: "Renovar equipos, identidad, licencias, seguridad, nube y respaldo. El puesto sale listo.",
+    cta: "Preparar un puesto",
   },
   {
-    id: "red",
-    t: "Mejorar la red",
-    sit: "Sede, sucursal y respaldo tienen que verse y poder operarse.",
-    cta: "Ver la topología",
-    photo: "/visual/v8/v8-scene-network.jpg",
-    alt: "Topología con ISP, firewall, core, APs y sucursal.",
-    parts: ["ISP", "Firewall", "Core", "Acceso", "APs", "Sucursal", "Respaldo"],
-    svc: "Diseño y operación de la red.",
-    result: "Si cae el enlace principal, el secundario sostiene y se abre el caso.",
+    id: "operar",
+    t: "Operar",
+    d: "Soporte, mesa, mantenimiento y servicios administrados. Si cae un enlace, el respaldo sostiene.",
+    cta: "Ver falla y respaldo",
   },
-  {
-    id: "licencias",
-    t: "Organizar licencias",
-    sit: "Identidad y aplicaciones bajo un tenant, no compras sueltas.",
-    cta: "Ordenar el tenant",
-    photo: "/visual/v5/license.jpg",
-    alt: "Puesto de trabajo con identidad y aplicaciones.",
-    parts: ["Usuario", "Departamento", "Licencia", "Aplicaciones", "Política"],
-    svc: "Orden del tenant y asignación.",
-    result: "Cada persona tiene lo que necesita. Sobran las cuentas huérfanas.",
-  },
-  {
-    id: "proteger",
-    t: "Proteger la empresa",
-    sit: "Una conexión intenta llegar a un recurso. Las capas responden en orden.",
-    cta: "Simular un evento",
-    photo: "/visual/v5/security.jpg",
-    alt: "Controles de seguridad en un entorno de operación.",
-    parts: ["Identidad", "Endpoint", "Red", "Firewall", "Datos"],
-    svc: "Protección por capas, sin afirmar un SOC.",
-    result: "El evento se aísla. No afirmamos un SOC que Justech no opera.",
-  },
-  {
-    id: "migrar",
-    t: "Migrar servicios",
-    sit: "Una carga tiene origen, destino, dueño y respaldo. No un ícono flotante.",
-    cta: "Diseñar la migración",
-    photo: "/visual/v5/cloud.jpg",
-    alt: "Arquitectura híbrida con origen local y destino en nube.",
-    parts: ["Origen", "Destino", "Identidad", "Respaldo", "Prueba"],
-    svc: "Migración con origen, destino y dueño.",
-    result: "La operación continúa. La carga queda con responsable.",
-  },
-  {
-    id: "incidencias",
-    t: "Resolver incidencias",
-    sit: "Un caso tiene etapa, responsable y cierre. El portal vive en otro host.",
-    cta: "Ver el caso",
-    photo: "/visual/v8/v8-scene-soporte.jpg",
-    alt: "Consola de caso Sucursal sin conectividad.",
-    parts: ["Reporte", "Clasificación", "Diagnóstico", "Corrección", "Cierre"],
-    svc: "Mesa de ayuda. El portal vive en otro host.",
-    result: "El visitante entiende el flujo. No es una plataforma propiedad de Justech.",
-  },
-  {
-    id: "msp",
-    t: "Externalizar TI",
-    sit: "Un interlocutor cubre operación diaria, no un ticket huérfano.",
-    cta: "Hablar de operación",
-    photo: "/visual/v5/support.jpg",
-    alt: "Mesa de operación y seguimiento de casos.",
-    parts: ["Alcance", "Mesa", "Cambios", "Informes"],
-    svc: "Servicios administrados con alcance escrito.",
-    result: "La empresa sabe a quién llamar y qué queda fuera.",
-  },
-] as const;
+];
 
-const demos = [
-  {
-    id: "sede",
-    t: "Apertura de una sede",
-    beats: [
-      { t: "Plano", d: "Se marca la planta y las rutas.", on: ["sede"] },
-      { t: "Cableado", d: "Entran los puntos de red.", on: ["sede", "acceso"] },
-      { t: "Rack", d: "Energía, patch y core.", on: ["sede", "acceso", "core"] },
-      { t: "Borde", d: "ISP, router y firewall.", on: ["sede", "isp", "fw", "core", "acceso"] },
-      { t: "Puestos", d: "APs y usuarios encienden.", on: ["sede", "isp", "fw", "core", "acceso", "ap", "users"] },
-      { t: "Lista", d: "Servidores, nube y mesa quedan enlazados.", on: ["sede", "isp", "fw", "core", "acceso", "ap", "users", "srv", "cloud"] },
-    ],
-  },
-  {
-    id: "falla",
-    t: "Falla de enlace",
-    beats: [
-      { t: "Normal", d: "El primario sostiene la sucursal.", on: ["isp", "fw", "core", "branch", "cloud"], fail: false, backup: false },
-      { t: "Caída", d: "El ISP principal deja de responder.", on: ["isp", "fw", "core", "branch"], fail: true, backup: false },
-      { t: "Respaldo", d: "El secundario entra sin teatro.", on: ["fw", "core", "branch", "cloud"], fail: true, backup: true },
-      { t: "Caso", d: "La mesa recibe la señal.", on: ["fw", "core", "branch", "cloud"], fail: true, backup: true, ticket: true },
-    ],
-  },
-  {
-    id: "empleado",
-    t: "Incorporación de empleado",
-    beats: [
-      { t: "Perfil", d: "Se elige el puesto, no un modelo suelto.", on: ["users"] },
-      { t: "Identidad", d: "La cuenta entra al tenant.", on: ["users", "cloud"] },
-      { t: "Cifrado", d: "El disco queda protegido antes de salir.", on: ["users"] },
-      { t: "Aplicaciones", d: "El conjunto estándar se asigna.", on: ["users", "cloud"] },
-      { t: "Red", d: "El equipo ve sede y sucursal.", on: ["users", "ap", "core", "fw"] },
-      { t: "Inventario", d: "Activo, garantía y mesa quedan ligados.", on: ["users", "srv"] },
-    ],
-  },
-] as const;
-
-const nodes = [
-  { id: "isp", t: "ISP", x: 8, y: 18 },
-  { id: "fw", t: "Firewall", x: 22, y: 20 },
-  { id: "core", t: "Core", x: 40, y: 16 },
-  { id: "acceso", t: "Access", x: 58, y: 40 },
-  { id: "ap", t: "APs", x: 46, y: 32 },
-  { id: "users", t: "Puestos", x: 36, y: 52 },
-  { id: "srv", t: "Servidores", x: 34, y: 76 },
-  { id: "cloud", t: "Nube", x: 78, y: 16 },
-  { id: "branch", t: "Sucursal", x: 84, y: 74 },
-  { id: "sede", t: "Sede", x: 14, y: 70 },
-] as const;
+const construir = ["Plano", "Cableado", "Rack y red", "Puestos activos"];
+const modernizar = [
+  "Preparando equipo",
+  "Registrando identidad",
+  "Aplicando seguridad",
+  "Instalando aplicaciones",
+  "Conectando servicios",
+  "Listo para entregar",
+];
+const operar = [
+  "Tráfico por ISP principal",
+  "Se pierde el enlace",
+  "Estado degradado",
+  "Ruta secundaria activa",
+  "Tráfico redirigido",
+  "Usuarios conectados",
+  "Monitoreo alerta",
+  "Soporte recibe el caso",
+];
 
 const mega = {
   soluciones: [
-    { id: "red", t: "Modernizar mi infraestructura", d: "Rack, red y operación en un plano." },
-    { id: "oficina", t: "Conectar una sede", d: "De la obra al primer día de trabajo." },
-    { id: "oficina", t: "Abrir una sucursal", d: "Mismo acceso, enlace propio y respaldo." },
-    { id: "proteger", t: "Proteger mi operación", d: "Capas, sin afirmar un SOC." },
-    { id: "migrar", t: "Migrar a la nube", d: "Origen, destino y dueño." },
-    { id: "equipos", t: "Preparar puestos", d: "Imagen, identidad y entrega." },
-    { id: "licencias", t: "Administrar licencias", d: "Un tenant, no compras sueltas." },
-    { id: "incidencias", t: "Mejorar soporte", d: "Un caso, un cierre." },
-  ],
-  productos: [
-    { id: "equipos", t: "Laptops" },
-    { id: "equipos", t: "Desktops" },
-    { id: "red", t: "Servidores" },
-    { id: "red", t: "Redes" },
-    { id: "incidencias", t: "Impresión" },
-    { id: "equipos", t: "Accesorios" },
-    { id: "oficina", t: "Energía" },
-    { id: "licencias", t: "Software" },
+    { mode: "construir" as Mode, t: "Construir una sede", d: "De la obra al primer día." },
+    { mode: "modernizar" as Mode, t: "Modernizar la operación", d: "Equipos, identidad y nube." },
+    { mode: "operar" as Mode, t: "Operar con soporte", d: "Continuidad y mesa de ayuda." },
   ],
   servicios: [
-    { id: "oficina", t: "Consultoría" },
-    { id: "oficina", t: "Levantamiento" },
-    { id: "red", t: "Diseño" },
-    { id: "oficina", t: "Implementación" },
-    { id: "oficina", t: "Cableado" },
-    { id: "equipos", t: "Configuración" },
-    { id: "incidencias", t: "Soporte" },
-    { id: "msp", t: "Servicios administrados" },
+    { mode: "construir" as Mode, t: "Cableado e implementación" },
+    { mode: "modernizar" as Mode, t: "Configuración y licencias" },
+    { mode: "operar" as Mode, t: "Soporte y operación" },
+  ],
+  productos: [
+    { mode: "construir" as Mode, t: "Redes y servidores" },
+    { mode: "modernizar" as Mode, t: "Equipos y software" },
+    { mode: "operar" as Mode, t: "Impresión y energía" },
   ],
   industrias: [
-    { id: "oficina", t: "Sede y sucursales", d: "Una operación en varios puntos." },
-    { id: "equipos", t: "Puestos de trabajo", d: "Equipos listos para operar." },
-    { id: "red", t: "Infraestructura", d: "Rack, red y continuidad." },
+    { mode: "construir" as Mode, t: "Sede y sucursales" },
+    { mode: "modernizar" as Mode, t: "Puestos de trabajo" },
+    { mode: "operar" as Mode, t: "Operación diaria" },
   ],
 } as const;
 
-const megaPhoto: Record<keyof typeof mega, string> = {
-  soluciones: "/visual/v8/v8-scene-network.jpg",
-  servicios: "/visual/v8/v8-scene-soporte.jpg",
-  productos: "/visual/v8/v8-scene-puesto.jpg",
-  industrias: "/visual/v7/v7-hero.jpg",
-};
-
-const labs = [
-  { t: "Redes", demo: "falla" as DemoId },
-  { t: "Equipos", scene: "equipos" as SceneId },
-  { t: "Licenciamiento", scene: "licencias" as SceneId },
-  { t: "Nube", scene: "migrar" as SceneId },
-  { t: "Seguridad", scene: "proteger" as SceneId },
-  { t: "Soporte", scene: "incidencias" as SceneId },
-  { t: "Infraestructura", demo: "sede" as DemoId },
-];
-
-const needs = ["Equipos", "Redes", "Cableado", "Licencias", "Seguridad", "Nube", "Soporte", "Proyecto integral"];
-const views: { id: View; t: string }[] = [
-  { id: "inicio", t: "Inicio" },
-  { id: "explorar", t: "Explorar" },
-  { id: "demo", t: "Operación" },
-  { id: "metodo", t: "Método" },
-  { id: "hablar", t: "Conversar" },
-];
+function stepsOf(mode: Mode) {
+  if (mode === "construir") return construir;
+  if (mode === "modernizar") return modernizar;
+  return operar;
+}
 
 export function ExperienceV8() {
-  const [view, setView] = useState<View>("inicio");
-  const [open, setOpen] = useState(false);
-  const [panel, setPanel] = useState<keyof typeof mega | null>(null);
-  const [layer, setLayer] = useState<(typeof heroLayers)[number]["id"] | null>(null);
-  const [scene, setScene] = useState<SceneId>("oficina");
-  const [demoId, setDemoId] = useState<DemoId>("sede");
+  const [menu, setMenu] = useState(false);
+  const [megaKey, setMegaKey] = useState<Mega>(null);
+  const [heroBeat, setHeroBeat] = useState(0);
+  const [heroPlay, setHeroPlay] = useState(true);
+  const [heroRest, setHeroRest] = useState(false);
+  const [mode, setMode] = useState<Mode>("construir");
   const [beat, setBeat] = useState(0);
   const [playing, setPlaying] = useState(true);
-  const [focus, setFocus] = useState<(typeof nodes)[number]["id"] | null>(null);
-  const [need, setNeed] = useState<string | null>(null);
-  const [step, setStep] = useState(0);
+  const [focus, setFocus] = useState(false);
   const [sent, setSent] = useState(false);
   const [reduce, setReduce] = useState(false);
+  const [ready, setReady] = useState(false);
 
-  const current = scenarios.find((s) => s.id === scene) ?? scenarios[0];
-  const demo = demos.find((d) => d.id === demoId) ?? demos[0];
-  const frame = demo.beats[Math.min(beat, demo.beats.length - 1)];
-  const heroHint = heroLayers.find((h) => h.id === layer);
+  const current = modes.find((m) => m.id === mode) ?? modes[0];
+  const steps = stepsOf(mode);
+  const frame = Math.min(beat, steps.length - 1);
 
-  function syncUrl(next: View, nextScene = scene, nextDemo = demoId) {
-    const q = new URLSearchParams({ vista: next });
-    if (next === "explorar") q.set("resolver", nextScene);
-    if (next === "demo") q.set("demo", nextDemo);
-    window.history.replaceState(null, "", `?${q.toString()}`);
-  }
-
-  function show(next: View) {
-    setView(next);
-    setPanel(null);
-    setOpen(false);
-    syncUrl(next);
-  }
-
-  function goScene(id: SceneId) {
-    setScene(id);
-    setView("explorar");
-    setPanel(null);
-    setOpen(false);
-    syncUrl("explorar", id);
-  }
-
-  function goDemo(id: DemoId) {
-    setDemoId(id);
+  function go(next: Mode, open = false) {
+    setMode(next);
     setBeat(0);
     setPlaying(!reduce);
-    setView("demo");
-    setPanel(null);
-    setOpen(false);
-    syncUrl("demo", scene, id);
+    setMegaKey(null);
+    setMenu(false);
+    setFocus(open);
+    if (open) setPlaying(!reduce);
+    const q = new URLSearchParams({ experiencia: next });
+    if (open) q.set("demo", "1");
+    window.history.replaceState(null, "", `?${q}`);
+    if (!open) document.getElementById("experiencias")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }
+
+  function closeFocus() {
+    setFocus(false);
+    window.history.replaceState(null, "", `?experiencia=${mode}`);
   }
 
   useEffect(() => {
-    document.body.classList.add("landing-mode", "v8-shell");
+    document.body.classList.add("landing-mode");
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const apply = () => {
       setReduce(mq.matches);
-      if (mq.matches) setPlaying(false);
+      if (mq.matches) {
+        setHeroPlay(false);
+        setHeroRest(true);
+        setPlaying(false);
+        setHeroBeat(heroBeats.length - 1);
+      }
     };
     apply();
     mq.addEventListener("change", apply);
     const params = new URLSearchParams(window.location.search);
-    const vista = params.get("vista") as View | null;
-    const resolver = params.get("resolver");
-    const demoParam = params.get("demo");
-    if (vista && views.some((v) => v.id === vista)) setView(vista);
-    if (resolver && scenarios.some((s) => s.id === resolver)) {
-      setScene(resolver as SceneId);
-      if (!vista) setView("explorar");
-    }
-    if (demoParam && demos.some((d) => d.id === demoParam)) {
-      setDemoId(demoParam as DemoId);
-      if (!vista) setView("demo");
-    }
+    const exp = params.get("experiencia") as Mode | null;
+    if (exp && modes.some((m) => m.id === exp)) setMode(exp);
+    if (params.get("demo") === "1") setFocus(true);
+    setReady(true);
     return () => {
-      document.body.classList.remove("landing-mode", "v8-shell");
+      document.body.classList.remove("landing-mode");
       mq.removeEventListener("change", apply);
     };
   }, []);
 
   useEffect(() => {
-    if (!playing || reduce || view !== "demo") return;
-    const id = window.setInterval(() => setBeat((n) => (n + 1) % demo.beats.length), 1600);
+    if (!heroPlay || reduce || heroRest || focus) return;
+    const id = window.setInterval(() => {
+      setHeroBeat((n) => {
+        if (n >= heroBeats.length - 1) {
+          setHeroRest(true);
+          setHeroPlay(false);
+          return n;
+        }
+        return n + 1;
+      });
+    }, HERO_MS);
     return () => window.clearInterval(id);
-  }, [playing, reduce, demo.beats.length, view]);
+  }, [heroPlay, reduce, heroRest, focus]);
 
-  useEffect(() => setBeat(0), [demoId]);
+  useEffect(() => {
+    if (focus) return;
+    const el = document.getElementById("experiencias");
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (reduce) return;
+        setPlaying(entry.isIntersecting);
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [focus, reduce]);
 
-  const activeNodes = useMemo(() => new Set(frame.on), [frame]);
+  useEffect(() => {
+    if (!playing || reduce) return;
+    const id = window.setInterval(() => setBeat((n) => (n + 1) % steps.length), SCENE_MS);
+    return () => window.clearInterval(id);
+  }, [playing, reduce, steps.length, mode]);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        if (megaKey || menu) {
+          setMegaKey(null);
+          setMenu(false);
+          return;
+        }
+        if (focus) closeFocus();
+      }
+      if (e.code === "Space" && focus) {
+        const tag = (e.target as HTMLElement).tagName;
+        if (tag === "INPUT" || tag === "BUTTON" || tag === "A" || tag === "TEXTAREA") return;
+        e.preventDefault();
+        setPlaying((v) => !v);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [focus, megaKey, menu, mode]);
+
+  function replayHero() {
+    setHeroBeat(0);
+    setHeroRest(false);
+    setHeroPlay(!reduce);
+  }
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     setSent(true);
   }
 
-  useEffect(() => {
-    function onKey(e: globalThis.KeyboardEvent) {
-      const tag = (e.target as HTMLElement).tagName;
-      const typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
-      if (e.key === "Escape") {
-        if (panel || open) {
-          setPanel(null);
-          setOpen(false);
-          return;
-        }
-        if (view !== "inicio") show("inicio");
-      }
-      if (typing) return;
-      if (e.code === "Space" && view === "demo" && tag !== "BUTTON" && tag !== "A") {
-        e.preventDefault();
-        setPlaying((v) => !v);
-      }
-      if (view === "demo" && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
-        e.preventDefault();
-        setBeat((n) => {
-          const len = demo.beats.length;
-          return e.key === "ArrowRight" ? (n + 1) % len : (n - 1 + len) % len;
-        });
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- show() only uses setters
-  }, [view, panel, open, demo.beats.length]);
+  const showTicket = mode === "operar" && frame >= 6;
 
   return (
-    <div className={styles.app}>
+    <div className={styles.page} data-ready={ready ? "1" : "0"}>
       <header className={styles.head}>
-        <div className={styles.headInner}>
-          <button type="button" className={styles.brand} onClick={() => show("inicio")} aria-label="Justech, inicio">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={withBase("/brand/justech-mark-white.png")} alt="" width={28} height={20} />
-            Justech
+        <a className={styles.brand} href="#inicio" onClick={() => setFocus(false)}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={withBase("/brand/justech-mark-white.png")} alt="" width={28} height={20} />
+          Justech
+        </a>
+        <nav className={styles.nav} aria-label="Principal">
+          {(
+            [
+              ["soluciones", "Soluciones"],
+              ["servicios", "Servicios"],
+              ["productos", "Productos"],
+              ["industrias", "Industrias"],
+            ] as const
+          ).map(([key, label]) => (
+            <button
+              key={key}
+              type="button"
+              aria-expanded={megaKey === key}
+              onClick={() => setMegaKey((p) => (p === key ? null : key))}
+            >
+              {label}
+            </button>
+          ))}
+          <a href="#metodo" onClick={() => setMegaKey(null)}>
+            Nosotros
+          </a>
+          <a href={company.supportUrl}>Soporte</a>
+        </nav>
+        <div className={styles.headActions}>
+          <a className={styles.cta} href="#conversar">
+            Hablar con un especialista
+          </a>
+          <button type="button" className={styles.menu} aria-expanded={menu} onClick={() => setMenu((v) => !v)}>
+            {menu ? "Cerrar" : "Menú"}
           </button>
-          <nav className={styles.nav} aria-label="Principal">
-            {(
-              [
-                ["soluciones", "Soluciones"],
-                ["servicios", "Servicios"],
-                ["productos", "Productos"],
-                ["industrias", "Industrias"],
-              ] as const
-            ).map(([key, label]) => (
-              <button key={key} type="button" className={panel === key ? styles.on : ""} aria-expanded={panel === key} onClick={() => setPanel((p) => (p === key ? null : key))}>
-                {label}
+        </div>
+        {megaKey ? (
+          <div className={styles.mega}>
+            {mega[megaKey].map((item) => (
+              <button key={item.t} type="button" onClick={() => go(item.mode)}>
+                <strong>{item.t}</strong>
+                {"d" in item ? <span>{item.d}</span> : null}
               </button>
             ))}
-            <button type="button" onClick={() => show("metodo")}>
-              Recursos
-            </button>
-            <button type="button" onClick={() => show("metodo")}>
-              Nosotros
-            </button>
-            <a href={company.supportUrl}>Soporte</a>
-          </nav>
-          <div className={styles.actions}>
-            <a className={styles.phone} href={`tel:${company.phoneTel}`}>
-              {company.phoneDisplay}
-            </a>
-            <button type="button" className={styles.cta} onClick={() => show("hablar")}>
-              Hablar con un especialista
-            </button>
-            <button type="button" className={styles.menu} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
-              {open ? "Cerrar" : "Menú"}
-            </button>
-          </div>
-        </div>
-        {panel ? (
-          <div className={styles.mega}>
-            <div className={styles.megaGrid}>
-              {mega[panel].map((item) => (
-                <button key={item.t} type="button" onClick={() => goScene(item.id)}>
-                  <strong>{item.t}</strong>
-                  {"d" in item ? <span>{item.d}</span> : null}
-                </button>
-              ))}
-            </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={withBase(megaPhoto[panel])} alt="" />
           </div>
         ) : null}
-        {open ? (
+        {menu ? (
           <div className={styles.drawer}>
-            {views.map((v) => (
-              <button key={v.id} type="button" onClick={() => show(v.id)}>
-                {v.t}
+            {modes.map((m) => (
+              <button key={m.id} type="button" onClick={() => go(m.id)}>
+                {m.t}
               </button>
             ))}
-            {jump.map((item) => (
-              <button
-                key={`m-${item.t}`}
-                type="button"
-                onClick={() => {
-                  if (item.scene) goScene(item.scene);
-                  else if (item.demo) goDemo(item.demo);
-                  else show(item.view);
-                }}
-              >
-                {item.t}
-              </button>
-            ))}
+            <a href="#metodo" onClick={() => setMenu(false)}>
+              Nosotros
+            </a>
+            <a href={company.supportUrl}>Soporte</a>
+            <a href="#conversar" onClick={() => setMenu(false)}>
+              Hablar con un especialista
+            </a>
           </div>
         ) : null}
       </header>
 
-      <nav className={styles.rail} aria-label="Experiencia">
-        {views.map((v) => (
-          <button key={v.id} type="button" className={view === v.id ? styles.on : ""} aria-current={view === v.id ? "page" : undefined} onClick={() => show(v.id)}>
-            {v.t}
-          </button>
-        ))}
-        <span className={styles.railJump}>
-          {jump.map((item) => (
-            <button
-              key={item.t}
-              type="button"
-              onClick={() => {
-                if (item.scene) goScene(item.scene);
-                else if (item.demo) goDemo(item.demo);
-                else show(item.view);
-              }}
-            >
-              {item.t}
-            </button>
-          ))}
-        </span>
-      </nav>
-
-      <main id="contenido" className={styles.stage} data-view={view}>
-        {view === "inicio" ? (
-          <section className={styles.hero} aria-label="Hero">
-            <div className={styles.heroCopy}>
-              <p className={styles.kicker}>Justech Technology Experience</p>
-              <h1>Tecnología empresarial, conectada de extremo a extremo.</h1>
-              <p className={styles.lead}>Equipos, infraestructura, redes, licencias, nube, seguridad y soporte bajo una sola estrategia.</p>
-              <div className={styles.row}>
-                <button type="button" className={styles.cta} onClick={() => show("explorar")}>
-                  Diseñar mi solución
-                </button>
-                <button type="button" className={styles.ghost} onClick={() => show("demo")}>
-                  Explorar lo que hacemos
-                </button>
-              </div>
-              <p className={styles.hint} aria-live="polite">
-                {heroHint ? `${heroHint.t}: ${heroHint.hint}` : "Recorra los puntos de la instalación. Cada capa responde."}
-              </p>
-            </div>
-            <div className={styles.heroVisual}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={withBase("/visual/v7/v7-hero.jpg")} alt="Instalación empresarial: rack, operación y ciudad." width={1536} height={1024} fetchPriority="high" />
-              <div className={styles.heroShade} data-layer={layer ?? ""} />
-              <svg className={styles.heroNet} viewBox="0 0 100 56" preserveAspectRatio="none" aria-hidden="true">
-                <path className={`${styles.flow} ${layer === "red" || layer === "rack" ? styles.flowOn : ""}`} d="M12 40 L28 32 L44 30 L70 22 L86 16" />
-                <path className={`${styles.flow} ${layer === "seguridad" ? styles.flowBlock : ""}`} d="M70 22 L78 34" />
-                <path className={`${styles.flow} ${layer === "nube" ? styles.flowOn : ""}`} d="M70 22 L88 12" />
-                <path className={`${styles.flow} ${layer === "soporte" ? styles.flowAlert : ""}`} d="M44 30 L80 46" />
-              </svg>
-              <ul className={styles.hotspots} aria-label="Capas de la instalación">
-                {heroLayers.map((h) => (
-                  <li key={h.id} style={{ left: h.x, top: h.y }}>
-                    <button
-                      type="button"
-                      className={layer === h.id ? styles.hotOn : ""}
-                      aria-pressed={layer === h.id}
-                      onMouseEnter={() => setLayer(h.id)}
-                      onFocus={() => setLayer(h.id)}
-                      onClick={() => setLayer((v) => (v === h.id ? null : h.id))}
-                    >
-                      <span className={styles.dot} />
-                      <span className={styles.hotLabel}>{h.t}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        ) : null}
-
-        {view === "explorar" ? (
-          <section className={styles.explorer} aria-label="Explorador">
-            <div className={styles.side}>
-              <p className={styles.kicker}>¿Qué necesita resolver?</p>
-              <div className={styles.sceneList} role="tablist" aria-label="Escenarios">
-                {scenarios.map((s) => (
-                  <button key={s.id} type="button" role="tab" aria-selected={scene === s.id} className={scene === s.id ? styles.on : ""} onClick={() => goScene(s.id)}>
-                    {s.t}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <figure className={styles.canvas}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={withBase(current.photo)} alt={current.alt} width={1536} height={1024} />
-              <ol className={styles.parts}>
-                {current.parts.map((p) => (
-                  <li key={p}>{p}</li>
-                ))}
-              </ol>
-            </figure>
-            <div className={styles.panel}>
-              <h2>{current.t}</h2>
-              <p>{current.sit}</p>
-              <p>
-                <strong>Servicio.</strong> {current.svc}
-              </p>
-              <p className={styles.kicker}>Proceso</p>
-              <ol className={styles.process}>
-                {current.parts.map((p) => (
-                  <li key={p}>{p}</li>
-                ))}
-              </ol>
-              <p>
-                <strong>Resultado.</strong> {current.result}
-              </p>
-              <button type="button" className={styles.cta} onClick={() => show("hablar")}>
-                {current.cta}
-              </button>
-              <button type="button" className={styles.ghostDark} onClick={() => show("inicio")}>
-                Volver al inicio
-              </button>
-            </div>
-          </section>
-        ) : null}
-
-        {view === "demo" ? (
-          <section className={styles.demo} aria-label="Demostración">
-            <div className={styles.transport} role="toolbar" aria-label="Controles">
-              <p className={styles.kicker}>Una operación conectada</p>
+      {focus ? (
+        <div className={styles.focus} role="dialog" aria-modal="true" aria-label={current.t}>
+          <Scene mode={mode} beat={frame} focused />
+          <aside className={styles.sheet}>
+            <p className={styles.kicker}>{current.t}</p>
+            <p className={styles.state} aria-live="polite">
+              {steps[frame]}
+            </p>
+            <div className={styles.sheetActions}>
               <button type="button" onClick={() => setPlaying((v) => !v)}>
                 {playing ? "Pausar" : "Reproducir"}
               </button>
               <button
                 type="button"
                 onClick={() => {
-                  setBeat(0);
-                  setPlaying(!reduce);
+                  setBeat((n) => (n + 1) % steps.length);
+                  setPlaying(false);
                 }}
               >
-                Reiniciar
+                Siguiente
               </button>
-              {demos.map((d) => (
-                <button key={d.id} type="button" className={demoId === d.id ? styles.on : ""} onClick={() => goDemo(d.id)}>
-                  {d.t}
+              <a className={styles.cta} href="#conversar" onClick={closeFocus}>
+                {current.cta}
+              </a>
+            </div>
+            <button type="button" className={styles.quiet} onClick={closeFocus}>
+              Cerrar · Esc
+            </button>
+          </aside>
+          {showTicket ? <Ticket /> : null}
+        </div>
+      ) : null}
+
+      <main id="contenido" hidden={focus}>
+        <section className={styles.hero} id="inicio" aria-label="Hero">
+          <div className={styles.heroCopy}>
+            <h1>Tecnología empresarial, conectada de extremo a extremo.</h1>
+            <p>Equipos, infraestructura, redes, licencias, nube, seguridad y soporte bajo una sola estrategia.</p>
+            <div className={styles.heroCtas}>
+              <a className={styles.cta} href="#conversar">
+                Diseñar mi solución
+              </a>
+              <a className={styles.text} href="#experiencias">
+                Explorar lo que hacemos
+              </a>
+            </div>
+            <p className={styles.caption} aria-live="polite">
+              {heroRest ? "Operación en reposo." : heroBeats[heroBeat]}
+            </p>
+            {heroRest ? (
+              <button type="button" className={styles.quiet} onClick={replayHero}>
+                Reproducir de nuevo
+              </button>
+            ) : null}
+          </div>
+          <div className={styles.heroStage} data-beat={heroRest ? "rest" : heroBeat} data-motion={reduce ? "reduce" : "ok"}>
+            <picture>
+              <source media="(max-width: 720px)" srcSet={withBase("/visual/v8/v81-hero-mobile.webp")} type="image/webp" />
+              <source media="(max-width: 720px)" srcSet={withBase("/visual/v8/v81-hero-mobile.jpg")} />
+              <source srcSet={withBase("/visual/v8/v81-hero.webp")} type="image/webp" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={withBase("/visual/v8/v81-hero.jpg")}
+                alt="Instalación empresarial: rack, puestos y ciudad. Sin textos en la imagen."
+                width={1600}
+                height={1066}
+                fetchPriority="high"
+              />
+            </picture>
+            <HeroDemo beat={heroRest ? -1 : heroBeat} />
+          </div>
+        </section>
+
+        <section className={styles.proposal} aria-labelledby="propuesta">
+          <p className={styles.kicker}>Propuesta</p>
+          <h2 id="propuesta">Una sola estrategia para lo que hoy está separado.</h2>
+          <p>
+            Justech integra equipos, obra, red, licenciamiento, nube, seguridad y soporte. Santo Domingo, desde {company.founded}.
+            Sin cifras inventadas. El portal de casos vive en otro host.
+          </p>
+        </section>
+
+        <section className={styles.experiences} id="experiencias" aria-labelledby="exp-title">
+          <div className={styles.expHead}>
+            <p className={styles.kicker}>Cómo entra</p>
+            <h2 id="exp-title">Tres caminos. Una escena.</h2>
+            <div className={styles.tabs} role="tablist" aria-label="Experiencias">
+              {modes.map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={mode === m.id}
+                  className={mode === m.id ? styles.on : undefined}
+                  onClick={() => {
+                    setMode(m.id);
+                    setBeat(0);
+                    setPlaying(!reduce);
+                    window.history.replaceState(null, "", `?experiencia=${m.id}`);
+                  }}
+                >
+                  {m.t}
                 </button>
               ))}
             </div>
-            <div className={styles.theater}>
-              <figure className={styles.canvas}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={withBase("/visual/v8/v8-scene-network.jpg")} alt="Operación conectada: sede, sucursal y nube." width={1536} height={1024} />
-                <svg className={styles.topo} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                  <path className={`${styles.link} ${activeNodes.has("isp") ? styles.linkOn : ""} ${"fail" in frame && frame.fail ? styles.linkFail : ""}`} d="M8 18 L22 20 L40 16" />
-                  <path className={`${styles.link} ${activeNodes.has("acceso") ? styles.linkOn : ""}`} d="M40 16 L58 40 L46 32 L36 52" />
-                  <path className={`${styles.link} ${activeNodes.has("srv") ? styles.linkOn : ""}`} d="M40 16 L34 76" />
-                  <path className={`${styles.link} ${activeNodes.has("cloud") ? styles.linkOn : ""}`} d="M40 16 L78 16" />
-                  <path className={`${styles.link} ${"backup" in frame && frame.backup ? styles.linkBackup : ""}`} d="M22 20 C48 88 70 88 84 74" />
-                </svg>
-                <ul className={styles.pins}>
-                  {nodes.map((n) => (
-                    <li key={n.id} style={{ left: `${n.x}%`, top: `${n.y}%` }}>
-                      <button type="button" className={`${activeNodes.has(n.id) ? styles.pinOn : ""} ${focus === n.id ? styles.pinFocus : ""}`} onClick={() => setFocus(n.id)}>
-                        {n.t}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                {"ticket" in frame && frame.ticket ? <p className={styles.flag}>Caso abierto · sucursal sin enlace primario</p> : null}
-              </figure>
-              <aside className={styles.panel}>
-                <p className={styles.count}>
-                  {String(beat + 1).padStart(2, "0")} / {String(demo.beats.length).padStart(2, "0")}
-                </p>
-                <h2>{frame.t}</h2>
-                <p>{frame.d}</p>
-                <p className={styles.hint}>Pulse un equipo para inspeccionarlo. Espacio pausa.</p>
-                {focus ? (
-                  <p>
-                    <strong>{nodes.find((n) => n.id === focus)?.t}.</strong> Activo en esta operación.
-                  </p>
-                ) : null}
-                <ol className={styles.beats}>
-                  {demo.beats.map((b, i) => (
-                    <li key={b.t}>
-                      <button type="button" className={i === beat ? styles.on : ""} onClick={() => setBeat(i)}>
-                        {b.t}
-                      </button>
-                    </li>
-                  ))}
-                </ol>
-                <button type="button" className={styles.ghostDark} onClick={() => show("inicio")}>
-                  Volver al inicio
-                </button>
-              </aside>
-            </div>
-          </section>
-        ) : null}
-
-        {view === "metodo" ? (
-          <section className={styles.method}>
-            <div>
-              <p className={styles.kicker}>Cómo trabajamos</p>
-              <h2>Ver. Diseñar. Poner en marcha. Acompañar.</h2>
-              <ol>
-                <li>
-                  <strong>Ver</strong> Levantamiento de lo que ya existe.
-                </li>
-                <li>
-                  <strong>Diseñar</strong> Una solución con dueño y alcance.
-                </li>
-                <li>
-                  <strong>Poner en marcha</strong> Obra, equipos, red y software en el mismo plan.
-                </li>
-                <li>
-                  <strong>Acompañar</strong> Mesa y portal. {company.hours.split("(")[0].trim()}.
-                </li>
-              </ol>
-            </div>
-            <aside className={styles.panel}>
-              <p className={styles.kicker}>Confianza</p>
-              <h2>
-                {company.city}, desde {company.founded}.
-              </h2>
-              <p>
-                Integradora tecnológica. Sin cifras inventadas. Portal:{" "}
-                <a href={company.supportUrl}>{company.supportUrl.replace("https://", "")}</a>
+          </div>
+          <div className={styles.expBody}>
+            <Scene mode={mode} beat={frame} />
+            <div className={styles.expCopy}>
+              <h3>{current.t}</h3>
+              <p>{current.d}</p>
+              <p className={styles.state} aria-live="polite">
+                {steps[frame]}
               </p>
-              <p className={styles.kicker}>Laboratorios futuros</p>
-              <div className={styles.labs}>
-                {labs.map((lab) => (
-                  <button key={lab.t} type="button" onClick={() => (lab.demo ? goDemo(lab.demo) : lab.scene ? goScene(lab.scene) : show("demo"))}>
-                    {lab.t}
-                  </button>
-                ))}
-              </div>
-              <button type="button" className={styles.ghostDark} onClick={() => show("inicio")}>
-                Volver al inicio
+              <button type="button" className={styles.cta} onClick={() => go(mode, true)}>
+                {mode === "operar" ? "Ver falla y respaldo" : "Ver la demostración"}
               </button>
-            </aside>
-          </section>
-        ) : null}
-
-        {view === "hablar" ? (
-          <section className={styles.talk}>
-            <div>
-              <p className={styles.kicker}>Conversación</p>
-              <h2>Diseñar mi solución</h2>
-              <p>
-                {company.phoneDisplay} · {company.email}
-              </p>
             </div>
-            {sent ? (
-              <p role="status">
-                Registrado en este entorno de prueba. En el sitio público responde {company.email}. Aquí no se envía correo.
-              </p>
-            ) : (
-              <form className={styles.form} onSubmit={onSubmit}>
-                {step === 0 ? (
-                  <>
-                    <p>¿Qué necesita resolver?</p>
-                    <div className={styles.needs}>
-                      {needs.map((n) => (
-                        <button key={n} type="button" className={need === n ? styles.on : ""} onClick={() => setNeed(n)}>
-                          {n}
-                        </button>
-                      ))}
-                    </div>
-                    <button type="button" className={styles.cta} disabled={!need} onClick={() => setStep(1)}>
-                      Continuar
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <p>
-                      Tema: <strong>{need}</strong>
-                    </p>
-                    <label>
-                      Nombre
-                      <input name="name" autoComplete="name" required />
-                    </label>
-                    <label>
-                      Empresa
-                      <input name="company" autoComplete="organization" required />
-                    </label>
-                    <label>
-                      Correo corporativo
-                      <input name="email" type="email" autoComplete="email" required />
-                    </label>
-                    <p className={styles.legal}>Formulario de demostración. No hay envío real en staging.</p>
-                    <div className={styles.row}>
-                      <button type="button" className={styles.ghostDark} onClick={() => setStep(0)}>
-                        Atrás
-                      </button>
-                      <button type="submit" className={styles.cta}>
-                        Enviar en este entorno
-                      </button>
-                    </div>
-                  </>
-                )}
-              </form>
-            )}
-          </section>
-        ) : null}
+          </div>
+        </section>
+
+        <section className={styles.method} id="metodo">
+          <p className={styles.kicker}>Método</p>
+          <h2>Ver. Diseñar. Poner en marcha. Acompañar.</h2>
+          <ol>
+            <li>Levantamiento de lo que ya existe.</li>
+            <li>Una solución con dueño y alcance.</li>
+            <li>Obra, equipos, red y software en el mismo plan.</li>
+            <li>
+              Mesa y portal. {company.hours.split("(")[0].trim()}.
+            </li>
+          </ol>
+        </section>
+
+        <section className={styles.talk} id="conversar">
+          <h2>Diseñar mi solución</h2>
+          <p>
+            {company.phoneDisplay} · {company.email}
+          </p>
+          {sent ? (
+            <p role="status">Registrado en este entorno de prueba. En el sitio público responde {company.email}. Aquí no se envía correo.</p>
+          ) : (
+            <form onSubmit={onSubmit}>
+              <label>
+                Nombre
+                <input name="name" autoComplete="name" required />
+              </label>
+              <label>
+                Empresa
+                <input name="company" autoComplete="organization" required />
+              </label>
+              <label>
+                Correo corporativo
+                <input name="email" type="email" autoComplete="email" required />
+              </label>
+              <p className={styles.legal}>Formulario de demostración. No hay envío real en staging.</p>
+              <button type="submit" className={styles.cta}>
+                Enviar en este entorno
+              </button>
+            </form>
+          )}
+        </section>
       </main>
 
-      <footer className={styles.foot}>
-        <p>
-          {company.legalName} · {company.city} ·{" "}
-          <a href={`mailto:${company.email}`}>{company.email}</a>
-        </p>
-        <p>
-          <Link href="/legal/">Legal</Link>
-          <Link href="/politica-de-privacidad/">Privacidad</Link>
-          <span>Concepto V8. El sitio público permanece en www.justech.do.</span>
-        </p>
-      </footer>
+      {focus ? null : (
+        <footer className={styles.foot}>
+          <div>
+            <strong>{company.legalName}</strong>
+            <p>
+              {company.city} · {company.phoneDisplay}
+            </p>
+            <a href={`mailto:${company.email}`}>{company.email}</a>
+            <a href={company.supportUrl}>Soporte</a>
+          </div>
+          <div>
+            <a href="#experiencias">Construir</a>
+            <a href="#experiencias">Modernizar</a>
+            <a href="#experiencias">Operar</a>
+            <Link href="/legal/">Legal</Link>
+            <Link href="/politica-de-privacidad/">Privacidad</Link>
+          </div>
+          <p>Concepto V8. El sitio público permanece en www.justech.do.</p>
+        </footer>
+      )}
     </div>
+  );
+}
+
+function HeroDemo({ beat }: { beat: number }) {
+  return (
+    <svg className={styles.heroSvg} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <g className={beat >= 0 ? styles.on : undefined}>
+        <rect className={styles.rackGlow} x="6" y="12" width="22" height="78" rx="1.2" />
+      </g>
+      <g className={beat >= 1 ? styles.on : undefined}>
+        {Array.from({ length: 8 }).map((_, i) => (
+          <rect key={i} className={styles.port} x={8.5 + (i % 2) * 8} y={18 + Math.floor(i / 2) * 14} width="5.2" height="1.6" rx="0.3" />
+        ))}
+      </g>
+      <path className={`${styles.heroFlow} ${beat >= 2 ? styles.on : ""}`} d="M28 48 C40 46 48 52 58 62" />
+      <circle className={`${styles.pkt} ${beat >= 2 && beat < 8 ? styles.on : ""}`} r="0.7">
+        <animateMotion dur="1.1s" repeatCount="indefinite" path="M28 48 C40 46 48 52 58 62" />
+      </circle>
+      <g className={beat >= 3 ? styles.on : undefined}>
+        <rect className={styles.desk} x="54" y="58" width="28" height="16" rx="0.8" />
+      </g>
+      <g className={beat >= 4 ? styles.on : undefined}>
+        <rect className={styles.screen} x="62" y="61" width="12" height="8" rx="0.4" />
+      </g>
+      <g className={beat >= 5 ? styles.on : undefined}>
+        <path className={styles.shield} d="M72 44 l4 1.6 v4.2 c0 3-1.8 5.2-4 6.2 c-2.2-1-4-3.2-4-6.2 v-4.2z" />
+      </g>
+      <g className={beat >= 6 ? styles.on : undefined}>
+        <path className={styles.cloud} d="M78 18 c2-4 10-4 12 0 c3 0 5 3 4 5 h-18 c-2-1-1-4 2-5z" />
+      </g>
+      <g className={beat >= 7 ? styles.on : undefined}>
+        <circle className={styles.ok} cx="86" cy="78" r="2.4" />
+      </g>
+    </svg>
+  );
+}
+
+function Scene({ mode, beat, focused }: { mode: Mode; beat: number; focused?: boolean }) {
+  const usePuesto = mode === "modernizar" && beat >= 1;
+  return (
+    <figure className={styles.scene} data-mode={mode} data-beat={beat} data-focus={focused ? "1" : "0"}>
+      <picture>
+        <source srcSet={withBase(usePuesto ? "/visual/v8/v81-puesto.webp" : "/visual/v8/v81-campus.webp")} type="image/webp" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={withBase(usePuesto ? "/visual/v8/v81-puesto.jpg" : "/visual/v8/v81-campus.jpg")}
+          alt={usePuesto ? "Puesto empresarial: laptop, monitor y dock. Sin textos en la imagen." : "Campus empresarial con cuarto técnico, rack y sucursal. Sin textos en la imagen."}
+          width={usePuesto ? 1400 : 1600}
+          height={usePuesto ? 934 : 1066}
+          loading={focused ? "eager" : "lazy"}
+        />
+      </picture>
+      {mode === "construir" ? <BuildOverlay beat={beat} /> : null}
+      {mode === "modernizar" ? <DeskOverlay beat={beat} /> : null}
+      {mode === "operar" ? <Network beat={beat} /> : null}
+    </figure>
+  );
+}
+
+function BuildOverlay({ beat }: { beat: number }) {
+  return (
+    <svg className={styles.overlay} viewBox="0 0 100 62" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g className={beat >= 0 ? styles.on : undefined}>
+        <path className={styles.plan} d="M18 40 h22 v14 h-22z M42 36 h28 v18 h-28z M72 38 h16 v12 h-16z" />
+      </g>
+      <path className={`${styles.cable} ${beat >= 1 ? styles.on : ""}`} d="M30 48 C38 44 46 40 54 38 C62 36 70 40 78 44" />
+      <g className={beat >= 2 ? styles.on : undefined}>
+        <rect className={styles.rackGlow} x="44" y="28" width="8" height="16" rx="0.4" />
+        {Array.from({ length: 5 }).map((_, i) => (
+          <rect key={i} className={styles.port} x="45.2" y={30 + i * 2.4} width="5.4" height="1.1" rx="0.2" />
+        ))}
+      </g>
+      <g className={beat >= 3 ? styles.on : undefined}>
+        <circle className={styles.ap} cx="58" cy="34" r="1.1" />
+        <circle className={styles.ap} cx="66" cy="34" r="1.1" />
+      </g>
+      {beat >= 2 ? (
+        <text className={styles.label} x="44" y="26">
+          Rack
+        </text>
+      ) : null}
+      {beat >= 3 ? (
+        <text className={styles.label} x="72" y="37">
+          Sucursal
+        </text>
+      ) : null}
+    </svg>
+  );
+}
+
+function DeskOverlay({ beat }: { beat: number }) {
+  return (
+    <svg className={styles.overlay} viewBox="0 0 100 67" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect className={`${styles.screenFill} ${beat >= 0 ? styles.on : ""}`} x="38" y="22" width="28" height="18" rx="0.6" />
+      <g className={beat >= 1 ? styles.on : undefined}>
+        <circle className={styles.id} cx="72" cy="18" r="3.2" />
+      </g>
+      <g className={beat >= 2 ? styles.on : undefined}>
+        <path className={styles.shield} d="M22 20 l5 2 v6 c0 4-2.4 7-5 8.4 c-2.6-1.4-5-4.4-5-8.4 v-6z" />
+      </g>
+      <rect className={`${styles.app} ${beat >= 3 ? styles.on : ""}`} x="42" y="26" width="8" height="6" rx="0.4" />
+      <rect className={`${styles.app} ${beat >= 3 ? styles.on : ""}`} x="52" y="26" width="8" height="6" rx="0.4" />
+      <path className={`${styles.cable} ${beat >= 4 ? styles.on : ""}`} d="M68 48 C78 50 84 46 90 40" />
+      {beat >= 5 ? (
+        <text className={styles.label} x="38" y="14">
+          Listo
+        </text>
+      ) : null}
+    </svg>
+  );
+}
+
+function Network({ beat }: { beat: number }) {
+  const fail = beat >= 1 && beat < 4;
+  const backup = beat >= 3;
+  const okUsers = beat >= 5 || beat === 0;
+  return (
+    <svg className={styles.net} viewBox="0 0 640 320" role="img" aria-label="Topología: ISP, borde, firewall, core, acceso, puestos y sucursal.">
+      <path id="p-isp1" className={`${styles.link} ${beat === 0 || beat >= 5 ? styles.live : ""} ${fail ? styles.dead : ""}`} d="M70 70 L150 110" />
+      <path id="p-isp2" className={`${styles.link} ${backup ? styles.backup : ""}`} d="M70 190 L150 130" />
+      <path className={`${styles.link} ${beat >= 0 ? styles.live : ""} ${fail && !backup ? styles.dim : ""}`} d="M170 120 L250 120 L330 120 L420 120" />
+      <path className={`${styles.link} ${beat >= 0 ? styles.live : ""}`} d="M440 120 L520 70" />
+      <path className={`${styles.link} ${okUsers ? styles.live : styles.dim}`} d="M440 120 L520 150" />
+      <path className={`${styles.link} ${beat >= 0 ? styles.live : ""}`} d="M420 140 L420 210" />
+      <path className={`${styles.link} ${beat >= 0 ? styles.live : ""}`} d="M330 100 L330 48" />
+      <path className={`${styles.link} ${backup || beat === 0 ? styles.live : styles.dim}`} d="M520 170 C560 200 580 220 600 250" />
+      {beat === 0 || (backup && beat >= 4) ? (
+        <circle className={styles.dot} r="3">
+          <animateMotion dur="1.4s" repeatCount="indefinite" path={backup && beat >= 4 ? "M70 190 L150 130 L250 120 L330 120 L420 120 L520 150" : "M70 70 L150 110 L250 120 L330 120 L420 120 L520 150"} />
+        </circle>
+      ) : null}
+      <g className={styles.node} transform="translate(40 54)">
+        <rect width="44" height="28" rx="3" className={fail ? styles.bad : styles.box} />
+        <text x="22" y="18">ISP 1</text>
+      </g>
+      <g className={styles.node} transform="translate(40 176)">
+        <rect width="44" height="28" rx="3" className={backup ? styles.box : styles.idle} />
+        <text x="22" y="18">ISP 2</text>
+      </g>
+      <g className={styles.node} transform="translate(140 104)">
+        <rect width="52" height="32" rx="3" className={styles.box} />
+        <text x="26" y="20">Borde</text>
+      </g>
+      <g className={styles.node} transform="translate(236 104)">
+        <rect width="64" height="32" rx="3" className={styles.box} />
+        <text x="32" y="20">Firewall</text>
+      </g>
+      <g className={styles.node} transform="translate(318 104)">
+        <rect width="48" height="32" rx="3" className={styles.box} />
+        <text x="24" y="20">Core</text>
+      </g>
+      <g className={styles.node} transform="translate(404 104)">
+        <rect width="52" height="32" rx="3" className={styles.box} />
+        <text x="26" y="20">Acceso</text>
+      </g>
+      <g className={styles.node} transform="translate(496 54)">
+        <rect width="40" height="28" rx="3" className={styles.box} />
+        <text x="20" y="18">AP</text>
+      </g>
+      <g className={styles.node} transform="translate(490 136)">
+        <rect width="56" height="28" rx="3" className={okUsers ? styles.box : styles.idle} />
+        <text x="28" y="18">Puestos</text>
+      </g>
+      <g className={styles.node} transform="translate(392 200)">
+        <rect width="72" height="28" rx="3" className={styles.box} />
+        <text x="36" y="18">Servidores</text>
+      </g>
+      <g className={styles.node} transform="translate(300 20)">
+        <rect width="56" height="26" rx="3" className={styles.idle} />
+        <text x="28" y="17">Nube</text>
+      </g>
+      <g className={styles.node} transform="translate(560 248)">
+        <rect width="64" height="28" rx="3" className={styles.box} />
+        <text x="32" y="18">Sucursal</text>
+      </g>
+    </svg>
+  );
+}
+
+function Ticket() {
+  return (
+    <aside className={styles.ticket} aria-label="Caso de soporte">
+      <p>Caso 1042 · Enlace primario</p>
+      <ol>
+        <li className={styles.done}>Asignado</li>
+        <li className={styles.done}>Diagnóstico</li>
+        <li>Resuelto</li>
+      </ol>
+    </aside>
   );
 }
