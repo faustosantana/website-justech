@@ -9,6 +9,19 @@ export function HomeHero() {
   const mobile = withBase("/visual/v8/v83-hero-mobile");
   return (
     <section className={styles.hero} id="inicio" aria-label="Hero" data-lcp="86">
+      <div className={styles.heroCopy}>
+        <p className={styles.trustLine}>{V85.hero.kicker}</p>
+        <h1>{V85.hero.h1}</h1>
+        <p>{V85.hero.lead}</p>
+        <div className={styles.heroCtas}>
+          <a className={styles.cta} href={V85.hero.primary.href}>
+            {V85.hero.primary.label}
+          </a>
+          <a className={styles.text} href="#capacidades">
+            {V85.hero.secondary.label}
+          </a>
+        </div>
+      </div>
       <div className={styles.heroStage} data-motion="ok">
         <picture className={`${styles.plate} ${styles.lcp} ${styles.plateOn}`}>
           <source media="(max-width: 720px)" srcSet={`${mobile}.avif`} type="image/avif" />
@@ -29,19 +42,6 @@ export function HomeHero() {
           />
         </picture>
         <HeroMotion />
-      </div>
-      <div className={styles.heroCopy}>
-        <p className={styles.trustLine}>{V85.hero.kicker}</p>
-        <h1>{V85.hero.h1}</h1>
-        <p>{V85.hero.lead}</p>
-        <div className={styles.heroCtas}>
-          <a className={styles.cta} href={V85.hero.primary.href}>
-            {V85.hero.primary.label}
-          </a>
-          <a className={styles.text} href="#capacidades">
-            {V85.hero.secondary.label}
-          </a>
-        </div>
       </div>
     </section>
   );

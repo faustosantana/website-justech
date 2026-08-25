@@ -145,7 +145,7 @@ export function ExperienceV8() {
   }
 
   return (
-    <div className={styles.body} data-ready={ready ? "1" : "0"} data-v="86">
+    <div className={styles.body} data-ready={ready ? "1" : "0"}>
       <section className={styles.trust} aria-label="Hechos confirmados">
         <ul>
           {facts.map((item) => (

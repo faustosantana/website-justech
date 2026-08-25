@@ -9,7 +9,7 @@ test("V8.6 home has one H1, needs and v86 shell", async ({ page }) => {
   await expect(page.getByRole("tab", { name: "Abrir o renovar una sede" })).toBeVisible();
   await expect(page.getByRole("tab", { name: "Actualizar tecnología y plataformas" })).toBeVisible();
   await expect(page.getByRole("tab", { name: "Mantener la operación funcionando" })).toBeVisible();
-  await expect(page.locator("[data-v='86']")).toBeVisible();
+  await expect(page.locator("[data-v='86']").first()).toBeVisible();
   await expect(page.locator("[data-lcp='86']")).toBeVisible();
   await expect(page.locator("body")).not.toContainText("PENDIENTE_VALIDACION");
   await expect(page.locator("body")).not.toContainText("Comprar ahora");

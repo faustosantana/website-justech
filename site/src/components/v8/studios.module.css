@@ -42,7 +42,7 @@
 .labHead p,
 .note {
   margin: 8px 0 0;
-  color: rgba(232, 238, 244, 0.62);
+  color: #d5dee6;
   font-size: 0.86rem;
 }
 .liveLine {
@@ -73,7 +73,7 @@
   cursor: pointer;
 }
 .layers button {
-  color: rgba(232, 238, 244, 0.7);
+  color: #e8eef4;
 }
 .layers button[aria-pressed="true"] {
   background: #152028;
@@ -966,6 +966,10 @@
   display: grid;
   gap: 10px;
   font-size: 0.82rem;
+}
+.netHud p,
+.netHud strong {
+  color: #e8eef4;
 }
 .netHud p {
   margin: 0;

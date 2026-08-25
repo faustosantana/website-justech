@@ -1182,14 +1182,12 @@
   }
   .heroStage {
     position: relative;
-    order: 2;
     aspect-ratio: 16 / 10;
     min-height: 0;
-    max-height: 32vh;
-    height: 32vh;
+    max-height: 24vh;
+    height: 24vh;
   }
   .heroCopy {
-    order: 1;
     padding: 24px 20px 16px;
     max-width: none;
   }
@@ -1197,8 +1195,8 @@
     display: none;
   }
   .hero h1 {
-    max-width: 14ch;
-    font-size: clamp(1.75rem, 7.4vw, 2.2rem);
+    max-width: 16ch;
+    font-size: clamp(2rem, 8vw, 2.55rem);
   }
   .heroCopy p {
     margin-top: 12px;

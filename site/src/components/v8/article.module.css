@@ -36,7 +36,9 @@
 }
 .article :global(.studio) p,
 .article :global(.lab) p,
-.article :global(.ticket) p {
+.article :global(.ticket) p,
+.article :global(.netHud) p,
+.article :global(.netHud) strong {
   color: inherit;
 }
 .lead {
