@@ -1,18 +1,36 @@
 import { ExperienceV8 } from "@/components/v8/Experience";
+import { company } from "@/content/site";
 import { withBase } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
-  "Tecnología empresarial conectada",
-  "Justech integra infraestructura, equipos, redes, licenciamiento, nube, seguridad y soporte bajo una sola estrategia tecnológica.",
+  "Tecnología empresarial de extremo a extremo",
+  "Diseñamos, suministramos, conectamos y soportamos la infraestructura, los equipos y las plataformas que mantienen su negocio operando. Justech SRL, Santo Domingo.",
   "/concepto-v8/",
 );
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: company.legalName,
+  foundingDate: String(company.founded),
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: company.city,
+    addressCountry: "DO",
+  },
+  telephone: company.phoneTel,
+  email: company.email,
+  areaServed: "DO",
+  url: "https://www.justech.do/",
+};
+
 export default function Page() {
-  const desk = withBase("/visual/v8/v82-hero-rest");
-  const mobile = withBase("/visual/v8/v82-hero-mobile");
+  const desk = withBase("/visual/v8/v83-hero-day");
+  const mobile = withBase("/visual/v8/v83-hero-mobile");
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <link rel="preload" as="image" href={`${desk}.avif`} type="image/avif" media="(min-width: 721px)" />
       <link rel="preload" as="image" href={`${mobile}.avif`} type="image/avif" media="(max-width: 720px)" />
       <ExperienceV8 />

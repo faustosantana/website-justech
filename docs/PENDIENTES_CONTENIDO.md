@@ -37,3 +37,10 @@ Leyenda de impacto: **P0** bloquea confianza/seguridad · **P1** bloquea página
 | C29 | Usuarios WP enumerables: cuáles son del equipo vs. proveedores | Incidente P0 | P0 | Propietario | Confirmar **en el chat**, no en Git |
 | C30 | Enjaular FTP a un directorio ≠ `public_html`; rotar la clave expuesta en el chat | Staging | P0 | Propietario / hosting | Bloquea deploys |
 | C31 | Crear `staging.justech.do` (DNS + TLS + auth) o autorizar preview PaaS | Staging | P1 | Propietario | Tras C30 |
+| C32 | Autorización de logos de fabricantes (Microsoft, Google, Adobe, Autodesk, Action1, Huawei, Lenovo, Dell, HP, AWS, Cisco, Fortinet) | Tecnologías / home V8.3 | P1 | Comercial | Abierto. Páginas draft; logos ocultos |
+| C33 | Casos nominativos con permiso, alcance y resultado verificable | `/casos/`, home | P1 | Comercial | Plantilla lista, array vacío |
+| C34 | Destino real de formularios: Odoo CRM, correo, WhatsApp | Contacto / concepto | P1 | Operaciones | Staging simulado |
+| C35 | Publicar recursos editoriales propios (guías listadas en `v83.ts` proposedResources) | `/recursos/` | P2 | Marketing | Solo 3 URLs live |
+| C36 | Search Console + GA4 + ranking: activar medición cuando se autorice | SEO | P2 | Marketing | Apagado en staging |
+| C37 | Cuenta Ads, conversiones y consentimiento antes de SEM | `/l/*` | P2 | Marketing | Landings noindex |
+| C38 | RNC, dirección de calle, WhatsApp oficial, cobertura exacta | Footer / schema | P1 | Gerencia | Oculto hasta verified |

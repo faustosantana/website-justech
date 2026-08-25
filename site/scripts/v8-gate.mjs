@@ -47,20 +47,28 @@ async function interact(page, mobile) {
     await page.waitForTimeout(500);
     await page.getByRole("button", { name: "Cerrar" }).click().catch(() => {});
   }
-  await page.getByRole("link", { name: "Explorar lo que hacemos" }).click();
+  await page.getByRole("link", { name: "Explorar capacidades" }).click();
   await page.waitForTimeout(900);
   for (const name of ["Construir", "Modernizar", "Operar"]) {
     await page.getByRole("tab", { name, exact: true }).click();
     await page.waitForTimeout(1600);
   }
   await page.getByRole("button", { name: "Ver falla y respaldo" }).click();
-  await page.waitForTimeout(12000);
+  await page.waitForTimeout(4000);
+  await page.getByRole("button", { name: "Fallar enlace" }).click().catch(() => {});
+  await page.waitForTimeout(800);
+  await page.getByRole("button", { name: "Activar respaldo" }).click().catch(() => {});
+  await page.waitForTimeout(800);
+  await page.getByRole("button", { name: "Abrir caso" }).click().catch(() => {});
+  await page.waitForTimeout(1200);
   await page.getByRole("button", { name: "Siguiente" }).click().catch(() => {});
   await page.waitForTimeout(600);
   await page.getByRole("button", { name: /Cerrar/ }).click();
   await page.waitForTimeout(400);
+  await page.locator("#cableado").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(800);
   await page.locator("#conversar").scrollIntoViewIfNeeded();
-  await page.getByText("Construir una sede.").click();
+  await page.getByText("Diseñar solución").click();
   await page.waitForTimeout(400);
 }
 
@@ -77,45 +85,51 @@ async function stills() {
   const page = await desk.newPage();
   await page.goto(base, { waitUntil: "networkidle" });
   await page.waitForTimeout(1200);
-  await shot(page, "v82-hero-desktop.png");
-  await page.evaluate(() => document.getElementById("experiencias")?.scrollIntoView({ block: "start" }));
+  await shot(page, "v83-hero-desktop.png");
+  await page.evaluate(() => document.getElementById("capacidades")?.scrollIntoView({ block: "start" }));
   await page.waitForTimeout(800);
   await page.getByRole("tab", { name: "Construir", exact: true }).click();
   await page.waitForTimeout(1400);
-  await shot(page, "v82-construir-desktop.png");
+  await shot(page, "v83-construir-desktop.png");
   await page.getByRole("tab", { name: "Modernizar", exact: true }).click();
   await page.waitForTimeout(1400);
-  await shot(page, "v82-modernizar-desktop.png");
+  await shot(page, "v83-modernizar-desktop.png");
   await page.getByRole("tab", { name: "Operar", exact: true }).click();
   await page.waitForTimeout(1400);
-  await shot(page, "v82-operar-desktop.png");
+  await shot(page, "v83-operar-desktop.png");
   await page.getByRole("button", { name: "Ver falla y respaldo" }).click();
   await page.waitForTimeout(5500);
-  await shot(page, "v82-falla-desktop.png");
+  await shot(page, "v83-falla-desktop.png");
   await page.getByRole("button", { name: /Cerrar/ }).click();
+  await page.locator("#productos").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(400);
+  await shot(page, "v83-productos-desktop.png");
+  await page.locator("#cableado").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(400);
+  await shot(page, "v83-cableado-desktop.png");
   await page.locator("#conversar").scrollIntoViewIfNeeded();
   await page.waitForTimeout(300);
-  await shot(page, "v82-form-desktop.png");
+  await shot(page, "v83-form-desktop.png");
 
   const mob = await browser.newContext({ ...devices["Pixel 7"], locale: "es-DO" });
   const m = await mob.newPage();
   await m.goto(base, { waitUntil: "networkidle" });
   await m.waitForTimeout(1000);
-  await shot(m, "v82-hero-mobile.png");
-  await m.getByRole("link", { name: "Explorar lo que hacemos" }).click();
+  await shot(m, "v83-hero-mobile.png");
+  await m.getByRole("link", { name: "Explorar capacidades" }).click();
   await m.waitForTimeout(800);
-  await shot(m, "v82-experiencias-mobile.png");
+  await shot(m, "v83-experiencias-mobile.png");
   await m.getByRole("tab", { name: "Operar", exact: true }).click();
   await m.getByRole("button", { name: "Ver falla y respaldo" }).click();
   await m.waitForTimeout(2000);
-  await shot(m, "v82-falla-mobile.png");
+  await shot(m, "v83-falla-mobile.png");
   await browser.close();
 }
 
 async function video(kind) {
   const isMobile = kind === "mobile";
   const viewport = isMobile ? { width: 390, height: 844 } : { width: 1440, height: 900 };
-  const videoDir = join(artVids, `v82-${kind}-raw`);
+  const videoDir = join(artVids, `v83-${kind}-raw`);
   mkdirSync(videoDir, { recursive: true });
   const browser = await chromium.launch({ args: ["--no-sandbox"] });
   const context = await browser.newContext({
@@ -130,11 +144,11 @@ async function video(kind) {
   await interact(page, isMobile);
   await context.close();
   await browser.close();
-  await convert(videoDir, `v82-experience-${kind}.mp4`);
+  await convert(videoDir, `v83-experience-${kind}.mp4`);
 }
 
 await stills();
 await video("desktop");
 await video("mobile");
-writeFileSync(join(artShots, "v82-gate.txt"), "V8.2 captures listos\n");
-console.log("V8.2 gate capture listo.");
+writeFileSync(join(artShots, "v83-gate.txt"), "V8.3 captures listos\n");
+console.log("V8.3 gate capture listo.");
