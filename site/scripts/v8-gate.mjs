@@ -3,7 +3,8 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { chromium, devices } from "@playwright/test";
 
-const base = "http://127.0.0.1:4173/concepto-v8/";
+const origin = "http://127.0.0.1:4173";
+const base = `${origin}/concepto-v8/`;
 const artShots = "/opt/cursor/artifacts/screenshots";
 const artVids = "/opt/cursor/artifacts/videos";
 const shots = "/workspace/docs/fase-c/captures";
@@ -41,53 +42,27 @@ async function convert(videoDir, outName) {
 async function interact(page, mobile) {
   await page.goto(base, { waitUntil: "networkidle" });
   await page.locator("h1").waitFor();
-  await page.waitForTimeout(mobile ? 4000 : 12000);
+  await page.waitForTimeout(mobile ? 3000 : 8000);
   if (mobile) {
     await page.getByRole("button", { name: "Menú" }).click().catch(() => {});
     await page.waitForTimeout(700);
     await page.getByRole("button", { name: "Cerrar" }).click().catch(() => {});
   }
   await page.getByRole("link", { name: "Explorar capacidades" }).click();
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(1000);
   for (const name of ["Abrir o renovar una sede", "Actualizar tecnología y plataformas", "Mantener la operación funcionando"]) {
     await page.getByRole("tab", { name }).click();
-    await page.waitForTimeout(2200);
+    await page.waitForTimeout(1600);
   }
-  await page.getByRole("tab", { name: "Mantener la operación funcionando" }).click();
-  await page.getByRole("button", { name: "Ver la red" }).click();
-  await page.waitForTimeout(mobile ? 2500 : 12000);
-  await page.getByRole("button", { name: "Fallar enlace" }).click().catch(() => {});
-  await page.waitForTimeout(1400);
-  await page.getByRole("button", { name: "Activar respaldo" }).click().catch(() => {});
-  await page.waitForTimeout(1400);
-  await page.getByRole("button", { name: "Abrir caso" }).click().catch(() => {});
-  await page.waitForTimeout(1800);
-  await page.locator("#equipos").scrollIntoViewIfNeeded();
-  await page.getByRole("tab", { name: "Ejecutivo" }).click().catch(() => {});
-  await page.waitForTimeout(1200);
-  await page.getByRole("tab", { name: "Ingeniería" }).click().catch(() => {});
-  await page.waitForTimeout(1200);
-  await page.locator("#licencias").scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Finanzas" }).click().catch(() => {});
-  await page.getByLabel("Añadir usuario").click().catch(() => {});
-  await page.getByRole("button", { name: "Archivos" }).click().catch(() => {});
-  await page.getByRole("button", { name: "Activar política de acceso (conceptual)" }).click().catch(() => {});
-  await page.waitForTimeout(1200);
-  await page.locator("#soporte-demo").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(1600);
-  await page.locator("#cableado").scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Siguiente" }).first().click().catch(() => {});
-  await page.getByRole("button", { name: "Siguiente" }).first().click().catch(() => {});
-  await page.getByRole("button", { name: "Siguiente" }).first().click().catch(() => {});
-  await page.waitForTimeout(1000);
-  await page.locator("#seguridad-demo").scrollIntoViewIfNeeded();
-  await page.locator("#seguridad-demo").getByRole("button", { name: "Siguiente" }).click().catch(() => {});
-  await page.waitForTimeout(800);
-  await page.locator("#nube-demo").scrollIntoViewIfNeeded();
-  await page.locator("#nube-demo").getByRole("button", { name: "Siguiente" }).click().catch(() => {});
+  await page.locator("#operacion").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(mobile ? 1800 : 4000);
+  for (const name of ["Sede", "Red", "Puestos", "Plataformas", "Seguridad", "Nube", "Soporte"]) {
+    await page.getByRole("tab", { name, exact: true }).click();
+    await page.waitForTimeout(900);
+  }
+  await page.locator("#casos-title").scrollIntoViewIfNeeded().catch(() => {});
   await page.waitForTimeout(800);
   await page.locator("#conversar").scrollIntoViewIfNeeded();
-  await page.getByText("Redes", { exact: true }).click().catch(() => {});
   await page.waitForTimeout(800);
 }
 
@@ -104,55 +79,38 @@ async function stills() {
   const page = await desk.newPage();
   await page.goto(base, { waitUntil: "networkidle" });
   await page.waitForTimeout(1200);
-  await shot(page, "v86-hero-desktop.png");
+  await shot(page, "v87-hero-desktop.png");
   await page.evaluate(() => document.getElementById("necesidades")?.scrollIntoView({ block: "start" }));
   await page.waitForTimeout(800);
   await page.getByRole("tab", { name: "Abrir o renovar una sede" }).click();
-  await page.waitForTimeout(1000);
-  await shot(page, "v86-sede-desktop.png");
+  await page.waitForTimeout(800);
+  await shot(page, "v87-sede-desktop.png");
   await page.getByRole("tab", { name: "Actualizar tecnología y plataformas" }).click();
-  await page.waitForTimeout(1000);
-  await shot(page, "v86-modernizar-desktop.png");
+  await page.waitForTimeout(800);
+  await shot(page, "v87-modernizar-desktop.png");
   await page.getByRole("tab", { name: "Mantener la operación funcionando" }).click();
+  await page.waitForTimeout(800);
+  await shot(page, "v87-operar-desktop.png");
+  await page.locator("#operacion").scrollIntoViewIfNeeded();
   await page.waitForTimeout(1000);
-  await shot(page, "v86-operar-desktop.png");
-  await page.getByRole("button", { name: "Ver la red" }).click();
-  await page.waitForTimeout(1800);
-  await shot(page, "v86-red-desktop.png");
-  await page.getByRole("button", { name: "Fallar enlace" }).click();
-  await page.waitForTimeout(600);
-  await shot(page, "v86-red-falla-desktop.png");
-  await page.locator("#equipos").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(400);
-  await shot(page, "v86-equipos-desktop.png");
-  await page.locator("#licencias").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(400);
-  await shot(page, "v86-licencias-desktop.png");
-  await page.locator("#soporte-demo").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(400);
-  await shot(page, "v86-soporte-desktop.png");
-  await page.locator("#cableado").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(400);
-  await shot(page, "v86-cableado-desktop.png");
-  await page.locator("#seguridad-demo").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(400);
-  await shot(page, "v86-seguridad-desktop.png");
-  await page.locator("#nube-demo").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(400);
-  await shot(page, "v86-nube-desktop.png");
+  await shot(page, "v87-ops-desktop.png");
+  await page.getByRole("tab", { name: "Red", exact: true }).click();
+  await page.waitForTimeout(700);
+  await shot(page, "v87-ops-red-desktop.png");
   await page.locator("#conversar").scrollIntoViewIfNeeded();
   await page.waitForTimeout(300);
-  await shot(page, "v86-form-desktop.png");
+  await shot(page, "v87-form-desktop.png");
   for (const [path, name] of [
-    ["/concepto-v8/cableado-estructurado/", "v86-page-cableado.png"],
-    ["/concepto-v8/redes-empresariales/", "v86-page-redes.png"],
-    ["/concepto-v8/equipos-empresariales/", "v86-page-equipos.png"],
-    ["/concepto-v8/licenciamiento/", "v86-page-licencias.png"],
-    ["/concepto-v8/soporte-tecnico-empresarial/", "v86-page-soporte.png"],
-    ["/concepto-v8/contacto/", "v86-page-contacto.png"],
+    ["/concepto-v8/cableado-estructurado/", "v87-page-cableado.png"],
+    ["/concepto-v8/redes-empresariales/", "v87-page-redes.png"],
+    ["/concepto-v8/equipos-empresariales/", "v87-page-equipos.png"],
+    ["/concepto-v8/licenciamiento/", "v87-page-licencias.png"],
+    ["/concepto-v8/soporte-tecnico-empresarial/", "v87-page-soporte.png"],
+    ["/concepto-v8/contacto/", "v87-page-contacto.png"],
+    ["/concepto-v8/recursos/cableado/", "v87-page-recurso-cableado.png"],
   ]) {
-    await page.goto("http://127.0.0.1:4173" + path, { waitUntil: "networkidle" });
-    await page.waitForTimeout(500);
+    await page.goto(origin + path, { waitUntil: "networkidle" });
+    await page.waitForTimeout(600);
     await shot(page, name);
   }
 
@@ -160,34 +118,30 @@ async function stills() {
   const t = await tablet.newPage();
   await t.goto(base, { waitUntil: "networkidle" });
   await t.waitForTimeout(800);
-  await shot(t, "v86-hero-tablet.png");
-  await t.locator("#red").scrollIntoViewIfNeeded();
+  await shot(t, "v87-hero-tablet.png");
+  await t.locator("#operacion").scrollIntoViewIfNeeded();
   await t.waitForTimeout(400);
-  await shot(t, "v86-red-tablet.png");
+  await shot(t, "v87-ops-tablet.png");
 
   const mob = await browser.newContext({ ...devices["Pixel 7"], locale: "es-DO" });
   const m = await mob.newPage();
   await m.goto(base, { waitUntil: "networkidle" });
   await m.waitForTimeout(1000);
-  await shot(m, "v86-hero-mobile.png");
+  await shot(m, "v87-hero-mobile.png");
   await m.getByRole("link", { name: "Explorar capacidades" }).click();
   await m.waitForTimeout(800);
-  await shot(m, "v86-experiencias-mobile.png");
-  await m.getByRole("tab", { name: "Mantener la operación funcionando" }).click();
-  await m.getByRole("button", { name: "Ver la red" }).click();
-  await m.waitForTimeout(1500);
-  await shot(m, "v86-red-mobile.png");
-  await m.locator("#equipos").scrollIntoViewIfNeeded();
-  await m.waitForTimeout(400);
-  await shot(m, "v86-equipos-mobile.png");
+  await shot(m, "v87-experiencias-mobile.png");
+  await m.locator("#operacion").scrollIntoViewIfNeeded();
+  await m.waitForTimeout(800);
+  await shot(m, "v87-ops-mobile.png");
   await m.locator("#conversar").scrollIntoViewIfNeeded();
   await m.waitForTimeout(300);
-  await shot(m, "v86-form-mobile.png");
+  await shot(m, "v87-form-mobile.png");
   await browser.close();
 }
 
 async function demo(name, run) {
-  const videoDir = join(artVids, `v86-${name}-raw`);
+  const videoDir = join(artVids, `v87-${name}-raw`);
   mkdirSync(videoDir, { recursive: true });
   const browser = await chromium.launch({ args: ["--no-sandbox"] });
   const context = await browser.newContext({
@@ -199,13 +153,13 @@ async function demo(name, run) {
   await run(page);
   await context.close();
   await browser.close();
-  await convert(videoDir, `v86-${name}.mp4`);
+  await convert(videoDir, `v87-${name}.mp4`);
 }
 
 async function video(kind) {
   const isMobile = kind === "mobile";
   const viewport = isMobile ? { width: 390, height: 844 } : { width: 1440, height: 900 };
-  const videoDir = join(artVids, `v86-${kind}-raw`);
+  const videoDir = join(artVids, `v87-${kind}-raw`);
   mkdirSync(videoDir, { recursive: true });
   const browser = await chromium.launch({ args: ["--no-sandbox"] });
   const context = await browser.newContext({
@@ -220,58 +174,33 @@ async function video(kind) {
   await interact(page, isMobile);
   await context.close();
   await browser.close();
-  await convert(videoDir, `v86-experience-${kind}.mp4`);
+  await convert(videoDir, `v87-experience-${kind}.mp4`);
 }
 
 await stills();
 await video("desktop");
 await video("mobile");
-await demo("red", async (page) => {
+await demo("ops", async (page) => {
   await page.goto(base, { waitUntil: "networkidle" });
-  await page.locator("#red").scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Reproducir", exact: true }).click();
-  await page.waitForTimeout(8000);
-  await page.getByRole("button", { name: "Fallar enlace" }).click();
+  await page.locator("#operacion").scrollIntoViewIfNeeded();
+  await page.getByRole("button", { name: "Reproducir" }).click().catch(() => {});
+  await page.waitForTimeout(6000);
+  await page.getByRole("tab", { name: "Soporte", exact: true }).click();
   await page.waitForTimeout(1600);
-  await page.getByRole("button", { name: "Activar respaldo" }).click();
-  await page.waitForTimeout(1600);
-  await page.getByRole("button", { name: "Abrir caso" }).click();
-  await page.waitForTimeout(1200);
 });
-await demo("equipos", async (page) => {
-  await page.goto(base, { waitUntil: "networkidle" });
-  await page.locator("#equipos").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(400);
-  for (const name of ["Ejecutivo", "Ingeniería", "Administrativo"]) {
-    await page.getByRole("tab", { name }).click();
-    await page.waitForTimeout(900);
+await demo("pages", async (page) => {
+  for (const path of [
+    "/concepto-v8/cableado-estructurado/",
+    "/concepto-v8/redes-empresariales/",
+    "/concepto-v8/equipos-empresariales/",
+    "/concepto-v8/licenciamiento/",
+    "/concepto-v8/soporte-tecnico-empresarial/",
+  ]) {
+    await page.goto(origin + path, { waitUntil: "networkidle" });
+    await page.waitForTimeout(1400);
+    await page.mouse.wheel(0, 900);
+    await page.waitForTimeout(700);
   }
-  await page.getByRole("button", { name: "Configuración" }).click();
-  await page.waitForTimeout(600);
-  await page.getByRole("button", { name: "Entrega", exact: true }).click();
-  await page.waitForTimeout(800);
 });
-await demo("licencias", async (page) => {
-  await page.goto(base, { waitUntil: "networkidle" });
-  await page.locator("#licencias").scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Finanzas" }).click();
-  await page.getByLabel("Añadir usuario").click();
-  await page.getByLabel("Añadir usuario").click();
-  await page.getByRole("button", { name: "Identidad" }).click();
-  await page.getByRole("button", { name: "Archivos" }).click();
-  await page.getByRole("button", { name: "Reuniones" }).click();
-  await page.getByRole("button", { name: "Activar política de acceso (conceptual)" }).click();
-  await page.waitForTimeout(1200);
-});
-await demo("soporte", async (page) => {
-  await page.goto(base, { waitUntil: "networkidle" });
-  await page.locator("#red").scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Fallar enlace" }).click();
-  await page.waitForTimeout(800);
-  await page.getByRole("button", { name: "Activar respaldo" }).click();
-  await page.waitForTimeout(800);
-  await page.getByRole("button", { name: "Abrir caso" }).click();
-  await page.waitForTimeout(2000);
-});
-writeFileSync(join(artShots, "v86-gate.txt"), "V8.6 captures listos\n");
-console.log("V8.6 gate capture listo.");
+writeFileSync(join(artShots, "v87-gate.txt"), "V8.7 captures listos\n");
+console.log("V8.7 gate capture listo.");

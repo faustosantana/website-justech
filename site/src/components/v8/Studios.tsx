@@ -4,12 +4,12 @@ import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { CableDemo } from "@/components/v8/CableDemo";
 import { company } from "@/content/site";
-import { HIRE_STEPS, QUOTE_NEEDS, V85_BASE } from "@/content/v85";
+import { HIRE_STEPS, LICENSE_RESULTS, QUOTE_NEEDS, V85_BASE, type QuoteNeed } from "@/content/v85";
+import { LICENSE_CATALOG, LICENSE_FILTERS, TECH_LICENSE_HEADING } from "@/content/technologies";
 import {
   deviceProfiles,
   licenseApps,
   licenseDepts,
-  licenseKinds,
 } from "@/content/v84";
 import { withBase } from "@/lib/paths";
 import { track } from "@/lib/events";
@@ -19,6 +19,7 @@ export { CableDemo };
 
 type Layer = "general" | "red" | "seguridad" | "sucursales";
 type NodeState = "live" | "dead" | "wait";
+type Scenario = "oficina" | "multi" | "wifi" | "continuidad";
 
 const netStages = [
   "Tráfico por el enlace principal",
@@ -44,7 +45,7 @@ export function NetworkDemo({
   onPlay: () => void;
   onBeat: (n: number) => void;
 }) {
-  const [layer, setLayer] = useState<Layer>("general");
+  const [scenario, setScenario] = useState<Scenario>("oficina");
   const [compact, setCompact] = useState(false);
   const primaryDead = beat >= 6 && beat < 9;
   const backup = beat >= 7;
@@ -59,8 +60,10 @@ export function NetworkDemo({
   }, []);
 
   const vis = (group: Layer | "all") => {
-    if (layer === "general" || group === "all") return 1;
-    return layer === group ? 1 : 0.16;
+    if (group === "all") return 1;
+    if (scenario === "oficina") return group === "sucursales" ? 0.22 : 1;
+    if (scenario === "wifi") return group === "seguridad" ? 0.35 : 1;
+    return 1;
   };
 
   const st = {
@@ -73,7 +76,7 @@ export function NetworkDemo({
     edgeAccess: beat >= 4 || backup ? "live" : "wait",
     cloud: beat >= 6 || backup ? "live" : "wait",
     mon: beat >= 7 ? "live" : "wait",
-    branch: backup ? "live" : beat >= 4 ? "wait" : "wait",
+    branch: scenario === "oficina" ? "wait" : backup ? "live" : beat >= 4 ? "wait" : "wait",
   } as const;
 
   return (
@@ -82,8 +85,8 @@ export function NetworkDemo({
         <div className={styles.labHead}>
           <div>
             <p className={styles.kicker}>Acto técnico</p>
-            <h2 id="red-title">Una sede con enlace principal y respaldo.</h2>
-            <p className={styles.note}>Demostración conceptual de arquitectura · ISP, borde, firewall, core, acceso, Wi-Fi, servidores, sucursal y nube.</p>
+            <h2 id="red-title">Visualización del proceso de continuidad de conectividad.</h2>
+            <p className={styles.note}>Borde, firewall, switching, Wi-Fi y sucursal. Una topología activa.</p>
             <p>
               <Link href={`${V85_BASE}/redes-empresariales/`}>Ver redes empresariales</Link>
             </p>
@@ -91,10 +94,17 @@ export function NetworkDemo({
               {netStages[Math.min(beat, netStages.length - 1)]}
             </p>
           </div>
-          <div className={styles.layers} role="group" aria-label="Capas">
-            {(["general", "red", "seguridad", "sucursales"] as Layer[]).map((id) => (
-              <button key={id} type="button" aria-pressed={layer === id} onClick={() => setLayer(id)}>
-                {id === "general" ? "General" : id === "red" ? "Red" : id === "seguridad" ? "Seguridad" : "Sucursales"}
+          <div className={styles.layers} role="tablist" aria-label="Escenarios">
+            {(
+              [
+                ["oficina", "Oficina"],
+                ["multi", "Multisucursal"],
+                ["wifi", "Wi-Fi empresarial"],
+                ["continuidad", "Continuidad del enlace"],
+              ] as const
+            ).map(([id, label]) => (
+              <button key={id} type="button" role="tab" aria-selected={scenario === id} onClick={() => setScenario(id)}>
+                {label}
               </button>
             ))}
           </div>
@@ -121,10 +131,18 @@ export function NetworkDemo({
               <span data-k={live || backup ? "live" : "wait"}>{live || backup ? "Operativo" : "En espera"}</span>
             </p>
             <p>
-              <strong>Sucursal</strong>
-              <span data-k={backup ? "live" : beat >= 4 ? "wait" : "wait"}>{backup ? "Continúa por respaldo" : "Observación"}</span>
+              <strong>Escenario</strong>
+              <span data-k="live">
+                {scenario === "oficina"
+                  ? "Sede única"
+                  : scenario === "multi"
+                    ? "Sucursal conectada"
+                    : scenario === "wifi"
+                      ? "Cobertura inalámbrica"
+                      : "Failover del enlace"}
+              </span>
             </p>
-            <p className={styles.hudNote}>Demostración conceptual. Sin cifras de disponibilidad.</p>
+            <p className={styles.hudNote}>Visualización conceptual del proceso</p>
           </aside>
         </div>
         <div className={styles.legend} aria-hidden="true">
@@ -467,16 +485,17 @@ export function DeviceDemo({ compact = false }: { compact?: boolean }) {
   const [profile, setProfile] = useState(0);
   const [step, setStep] = useState(0);
   const item = deviceProfiles[profile];
-  const pipeline = compact ? HIRE_STEPS.filter((_, i) => i % 2 === 0) : HIRE_STEPS;
+  const pipeline = HIRE_STEPS;
   const stage = pipeline[Math.min(step, pipeline.length - 1)];
+  const names = ["Puesto administrativo", "Puesto ejecutivo", "Puesto de ingeniería"];
   return (
     <section className={styles.studio} id="equipos" aria-labelledby="eq-title">
-      <p className={styles.kickerLight}>Suministro</p>
-      <h2 id="eq-title">Incorporación de un nuevo colaborador.</h2>
-      <div className={styles.profiles} role="tablist" aria-label="Perfiles de puesto">
+      <p className={styles.kickerLight}>Puestos de trabajo</p>
+      <h2 id="eq-title">Del perfil a la entrega, con inventario y garantía.</h2>
+      <div className={styles.profiles} role="tablist" aria-label="Ambientes de puesto">
         {deviceProfiles.map((p, i) => (
           <button key={p.id} type="button" role="tab" aria-selected={profile === i} onClick={() => { setProfile(i); setStep(0); }}>
-            {p.t}
+            {names[i]}
           </button>
         ))}
       </div>
@@ -484,7 +503,7 @@ export function DeviceDemo({ compact = false }: { compact?: boolean }) {
         <figure className={styles.photo}>
           <picture>
             <source srcSet={withBase(`/visual/v8/${item.photo}.webp`)} type="image/webp" />
-            <img src={withBase(`/visual/v8/${item.photo}.jpg`)} alt={`Puesto ${item.t}`} width={1400} height={788} loading="lazy" />
+            <img src={withBase(`/visual/v8/${item.photo}.jpg`)} alt={`Puesto ${names[profile]}`} width={1400} height={788} loading="lazy" />
           </picture>
           <ol className={styles.hireOverlay} aria-hidden="true">
             {pipeline.map((s, i) => (
@@ -494,11 +513,11 @@ export function DeviceDemo({ compact = false }: { compact?: boolean }) {
             ))}
           </ol>
           <figcaption>
-            {item.t} · {stage}
+            {names[profile]} · {stage}
           </figcaption>
         </figure>
         <div className={styles.meta}>
-          <div className={styles.pipe} aria-label="Proceso de incorporación">
+          <div className={styles.pipe} aria-label="Ciclo de incorporación">
             {pipeline.map((s, i) => (
               <button key={s} type="button" aria-current={i === step ? "step" : undefined} onClick={() => setStep(i)}>
                 {s}
@@ -510,65 +529,73 @@ export function DeviceDemo({ compact = false }: { compact?: boolean }) {
           </p>
           <dl className={styles.dl}>
             <div>
-              <dt>Movilidad</dt>
-              <dd>{item.mobility}</dd>
+              <dt>Equipo</dt>
+              <dd>Laptop o desktop según movilidad</dd>
             </div>
             <div>
-              <dt>Seguridad</dt>
-              <dd>{item.security}</dd>
+              <dt>Estación</dt>
+              <dd>Monitor, dock y accesorios del perfil</dd>
             </div>
             <div>
-              <dt>Aplicaciones</dt>
+              <dt>Plataforma</dt>
               <dd>{item.apps}</dd>
             </div>
             <div>
-              <dt>Accesorios</dt>
-              <dd>{item.extras}</dd>
+              <dt>Identidad e inventario</dt>
+              <dd>{item.security}</dd>
             </div>
           </dl>
-          <p className={styles.noteLight}>Recomendación conceptual. Sin modelos ni precios. Cotizamos; no hay «comprar ahora».</p>
-          {compact ? (
-            <p>
-              <Link href={`${V85_BASE}/equipos-empresariales/`}>Ver equipos empresariales</Link>
-            </p>
-          ) : null}
+          <p className={styles.noteLight}>La recomendación se confirma en cotización según carga de trabajo y cantidad.</p>
+          <p>
+            <Link href={`${V85_BASE}/contacto/?motivo=equipos`}>{compact ? "Ver equipos empresariales" : "Solicitar recomendación de equipos"}</Link>
+          </p>
         </div>
       </div>
     </section>
   );
 }
 
-const licenseSteps = [
-  "Organización",
-  "Usuarios",
-  "Departamentos",
-  "Licencias",
-  "Asignación",
-  "Aplicaciones",
-  "Políticas",
-  "Utilización",
-  "Renovación",
-];
-
 export function LicenseDemo({ compact = false }: { compact?: boolean }) {
   const [dept, setDept] = useState(0);
   const [users, setUsers] = useState(10);
-  const [kind, setKind] = useState(0);
   const [apps, setApps] = useState<string[]>(["Correo"]);
   const [policy, setPolicy] = useState(false);
   const [phase, setPhase] = useState(0);
-  const assigned = Math.min(users, kind === 2 ? users : Math.max(users - 1, 1));
+  const [filter, setFilter] = useState<(typeof LICENSE_FILTERS)[number] | "Todas">("Todas");
+  const assigned = Math.max(users - 1, 1);
+  const catalog = LICENSE_CATALOG.filter(
+    (item) => filter === "Todas" || (item.filters as readonly string[]).includes(filter),
+  );
   return (
     <section className={styles.studio} id="licencias" aria-labelledby="lic-title">
-      <p className={styles.kickerLight}>Demostración del proceso</p>
-      <h2 id="lic-title">Incorporar diez usuarios a un departamento.</h2>
-      <ol className={styles.stepper} aria-label="Etapas">
-        {licenseSteps.map((s, i) => (
+      <p className={styles.kickerLight}>Resultados</p>
+      <h2 id="lic-title">Organizar usuarios, aplicaciones e identidad.</h2>
+      <ol className={styles.stepper} aria-label="Resultados">
+        {LICENSE_RESULTS.map((s, i) => (
           <li key={s} data-on={i <= phase ? "1" : "0"}>
             {s}
           </li>
         ))}
       </ol>
+      <p className={styles.noteLight}>{TECH_LICENSE_HEADING}</p>
+      <div className={styles.depts} role="group" aria-label="Filtro de tecnologías">
+        <button type="button" aria-pressed={filter === "Todas"} onClick={() => setFilter("Todas")}>
+          Todas
+        </button>
+        {LICENSE_FILTERS.map((item) => (
+          <button key={item} type="button" aria-pressed={filter === item} onClick={() => setFilter(item)}>
+            {item}
+          </button>
+        ))}
+      </div>
+      <ul className={styles.dirGrid} aria-label="Tecnologías">
+        {catalog.map((item) => (
+          <li key={item.name}>
+            <strong>{item.name}</strong>
+            <span>{item.role}</span>
+          </li>
+        ))}
+      </ul>
       <div className={styles.split}>
         <div>
           <p className={styles.org}>Organización de demostración · {licenseDepts[dept]}</p>
@@ -580,7 +607,7 @@ export function LicenseDemo({ compact = false }: { compact?: boolean }) {
                 aria-pressed={dept === i}
                 onClick={() => {
                   setDept(i);
-                  setPhase(2);
+                  setPhase(0);
                 }}
               >
                 {d}
@@ -592,18 +619,18 @@ export function LicenseDemo({ compact = false }: { compact?: boolean }) {
               type="button"
               onClick={() => {
                 setUsers((n) => Math.max(3, n - 1));
-                setPhase(1);
+                setPhase(0);
               }}
               aria-label="Quitar usuario"
             >
               −
             </button>
-            <span>{users} usuarios de demostración</span>
+            <span>{users} usuarios</span>
             <button
               type="button"
               onClick={() => {
                 setUsers((n) => Math.min(16, n + 1));
-                setPhase(1);
+                setPhase(0);
               }}
               aria-label="Añadir usuario"
             >
@@ -615,29 +642,6 @@ export function LicenseDemo({ compact = false }: { compact?: boolean }) {
               <span key={i} data-on={i < assigned ? "1" : "0"} />
             ))}
           </div>
-          <ul className={styles.dirGrid} aria-label="Directorio de demostración">
-            {Array.from({ length: users }, (_, i) => (
-              <li key={i} data-on={i < assigned ? "1" : "0"}>
-                <strong>U-{String(i + 1).padStart(2, "0")}</strong>
-                <span>{i < assigned ? licenseKinds[kind] : "Sin asiento"}</span>
-              </li>
-            ))}
-          </ul>
-          <div className={styles.depts}>
-            {licenseKinds.map((k, i) => (
-              <button
-                key={k}
-                type="button"
-                aria-pressed={kind === i}
-                onClick={() => {
-                  setKind(i);
-                  setPhase(3);
-                }}
-              >
-                {k}
-              </button>
-            ))}
-          </div>
           <div className={styles.apps}>
             {licenseApps.map((a) => (
               <button
@@ -646,7 +650,7 @@ export function LicenseDemo({ compact = false }: { compact?: boolean }) {
                 aria-pressed={apps.includes(a)}
                 onClick={() => {
                   setApps((list) => (list.includes(a) ? list.filter((x) => x !== a) : [...list, a]));
-                  setPhase(5);
+                  setPhase(1);
                 }}
               >
                 {a}
@@ -659,15 +663,15 @@ export function LicenseDemo({ compact = false }: { compact?: boolean }) {
             aria-pressed={policy}
             onClick={() => {
               setPolicy((v) => !v);
-              setPhase(6);
+              setPhase(2);
             }}
           >
-            {policy ? "Política de acceso activa" : "Activar política de acceso (conceptual)"}
+            {policy ? "Identidad con política de acceso" : "Activar control de identidad"}
           </button>
         </div>
         <div className={styles.meta}>
           <p>
-            {licenseDepts[dept]} con {licenseKinds[kind]}. Aplicaciones: {apps.join(", ") || "ninguna"}.
+            {licenseDepts[dept]}. Aplicaciones: {apps.join(", ") || "ninguna"}.
           </p>
           <p>
             Asignadas {assigned} · disponibles {users - assigned}.
@@ -675,8 +679,8 @@ export function LicenseDemo({ compact = false }: { compact?: boolean }) {
           <div className={styles.meter} aria-hidden="true">
             <span style={{ width: `${(assigned / users) * 100}%` }} />
           </div>
-          <p>Revisión de utilización en esta demostración: {Math.round((assigned / users) * 100)}%.</p>
-          <p className={styles.noteLight}>Renovación: próximo ciclo de revisión. Sin precios ni sello de partner.</p>
+          <p>Utilización en esta vista: {Math.round((assigned / users) * 100)}%.</p>
+          <p className={styles.noteLight}>La selección final depende del alcance, los usuarios y las plataformas requeridas.</p>
           {compact ? (
             <p>
               <Link href={`${V85_BASE}/licenciamiento/`}>Ver licenciamiento</Link>
@@ -690,47 +694,43 @@ export function LicenseDemo({ compact = false }: { compact?: boolean }) {
 
 export function SupportDemo({ beat, onWatchNet }: { beat: number; onWatchNet: () => void }) {
   const steps = [
-    "Falla el enlace",
-    "Entra el respaldo",
-    "Se registra el incidente",
-    "Se crea el ticket",
+    "El usuario reporta",
+    "El equipo recibe",
     "Se clasifica",
     "Se asigna",
     "Se diagnostica",
-    "Se corrige",
+    "Se resuelve",
     "El usuario valida",
-    "Se documenta y cierra",
+    "Se documenta",
   ];
-  const idx = Math.min(Math.max(beat - 6, 0), 9);
-  const status = idx >= 9 ? "Cerrado" : idx >= 2 ? "En curso" : "Detectado";
+  const idx = Math.min(Math.max(beat - 6, 0), 7);
+  const status = idx >= 7 ? "Cerrado" : idx >= 2 ? "En curso" : "Recibido";
   const activity =
-    idx >= 9
-      ? "Caso documentado y cerrado. La sucursal opera por el enlace de respaldo o el principal restablecido."
-      : idx >= 7
-        ? "Corrección aplicada. Pendiente de validación con el usuario de la sucursal."
-        : idx >= 5
-          ? "Especialista de redes en diagnóstico. Cruza topología, ISP y último cambio."
-          : idx >= 2
-            ? "Incidente registrado. Continuidad por ISP de respaldo."
-            : "Enlace principal fuera de servicio.";
+    idx >= 7
+      ? "Cierre documentado. Otro técnico puede retomar el caso."
+      : idx >= 5
+        ? "Corrección aplicada. Pendiente de validación con el usuario."
+        : idx >= 3
+          ? "Especialista de redes en diagnóstico."
+          : idx >= 1
+            ? "Caso recibido y clasificado por impacto."
+            : "El usuario reporta pérdida de conectividad en sucursal.";
   const log = [
-    "Evento de conectividad en sucursal Norte.",
-    "Tráfico conmutado al ISP secundario.",
-    "Ticket JT-1042 abierto desde la red.",
-    "Prioridad: operación de sucursal.",
+    "Usuario reporta: no hay acceso en sucursal Norte.",
+    "Mesa de ayuda recibe el caso JT-1042.",
+    "Clasificación: operación de sucursal.",
     "Asignado a especialista de redes.",
     "Diagnóstico: enlace primario inalcanzable.",
-    "Coordinación con ISP / validación de borde.",
+    "Corrección coordinada con borde y respaldo.",
     "Usuario confirma acceso a sistemas.",
-    "Cierre con nota y topología adjunta.",
+    "Nota de cierre y topología adjunta.",
   ];
+  const recent = log.slice(Math.max(0, idx - 1), idx + 1);
   return (
     <section className={styles.studio} id="soporte-demo" aria-labelledby="sup-title">
-      <p className={styles.kickerLight}>Caso de demostración</p>
-      <h2 id="sup-title">Sucursal sin conectividad.</h2>
-      <p className={styles.noteLight}>
-        El ticket nace del evento de red. No es un chat suelto: hay responsable, diagnóstico, validación y cierre.
-      </p>
+      <p className={styles.kickerLight}>Caso</p>
+      <h2 id="sup-title">Del reporte al cierre documentado.</h2>
+      <p className={styles.noteLight}>Se muestra la etapa actual y la actividad reciente.</p>
       <article className={styles.ticket}>
         <header>
           <div>
@@ -764,20 +764,9 @@ export function SupportDemo({ beat, onWatchNet }: { beat: number; onWatchNet: ()
           <path d="M230 36 H272" stroke={beat >= 7 ? "#38bdf8" : "#5b6d7c"} strokeWidth="3" />
           <path d="M372 36 H412" stroke={beat >= 8 ? "#12b3ad" : "#5b6d7c"} strokeWidth="3" />
         </svg>
-        <p className={styles.netLink} data-on={beat >= 6 ? "1" : "0"}>
-          Origen: laboratorio de red · ISP principal {beat >= 6 && beat < 9 ? "fuera de servicio" : "en observación"}
-        </p>
         <dl className={styles.ticketMeta}>
           <div>
-            <dt>Sede</dt>
-            <dd>Sucursal Norte</dd>
-          </div>
-          <div>
-            <dt>Categoría</dt>
-            <dd>Enlace</dd>
-          </div>
-          <div>
-            <dt>Etapa</dt>
+            <dt>Etapa actual</dt>
             <dd>{steps[idx]}</dd>
           </div>
           <div>
@@ -788,27 +777,34 @@ export function SupportDemo({ beat, onWatchNet }: { beat: number; onWatchNet: ()
         <p className={styles.activity} aria-live="polite">
           {activity}
         </p>
-        <ol>
-          {steps.map((s, i) => (
-            <li key={s} data-on={i <= idx ? "1" : "0"} data-now={i === idx ? "1" : "0"}>
-              {s}
-            </li>
-          ))}
-        </ol>
-        <ul className={styles.activityLog} aria-label="Actividad">
-          {log.slice(0, Math.min(idx + 1, log.length)).map((line) => (
+        <ul className={styles.activityLog} aria-label="Actividad reciente">
+          {recent.map((line) => (
             <li key={line}>{line}</li>
           ))}
         </ul>
-        <p>
-          <Link href={`${V85_BASE}/soporte-tecnico-empresarial/`}>Ver soporte técnico empresarial</Link>
-        </p>
       </article>
+      <div className={styles.row}>
+        <a className={styles.cta} href={company.supportUrl} rel="noreferrer">
+          Ya soy cliente
+        </a>
+        <Link className={styles.ghost} href={`${V85_BASE}/contacto/?motivo=soporte`}>
+          Necesito soporte para mi empresa
+        </Link>
+      </div>
     </section>
   );
 }
 
-export function QuoteFlow({ initial, onDone }: { initial?: string; onDone: () => void }) {
+export function QuoteFlow({
+  initial,
+  onDone,
+  intents,
+}: {
+  initial?: string;
+  onDone: () => void;
+  intents?: readonly QuoteNeed[];
+}) {
+  const catalog = intents ?? QUOTE_NEEDS;
   const [step, setStep] = useState(0);
   const [need, setNeed] = useState(initial ?? "");
   const [name, setName] = useState("");
@@ -816,7 +812,7 @@ export function QuoteFlow({ initial, onDone }: { initial?: string; onDone: () =>
   const [email, setEmail] = useState("");
   const [extra, setExtra] = useState("");
   const [err, setErr] = useState("");
-  const cfg = QUOTE_NEEDS.find((n) => n.id === need);
+  const cfg = catalog.find((n) => n.id === need) ?? QUOTE_NEEDS.find((n) => n.id === need);
   const labels = ["Necesidad", "Datos", "Confirmar"];
 
   useEffect(() => {
@@ -866,7 +862,7 @@ export function QuoteFlow({ initial, onDone }: { initial?: string; onDone: () =>
       <form onSubmit={next} data-step={step} noValidate>
         {step === 0 ? (
           <div className={styles.needs} role="radiogroup" aria-label="Necesidad">
-            {QUOTE_NEEDS.map((n) => (
+            {catalog.map((n) => (
               <label key={n.id} data-on={need === n.id ? "1" : "0"}>
                 <input
                   type="radio"

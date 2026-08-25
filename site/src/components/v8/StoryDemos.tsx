@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { V85_BASE } from "@/content/v85";
+import { CLOUD_COPY, SECURITY_COPY, V85_BASE } from "@/content/v85";
 import styles from "./studios.module.css";
 
 const secBeats = [
   { t: "Identidad y dispositivo en política", d: "El usuario autenticado y el equipo inscrito cumplen el control acordado." },
-  { t: "Se detecta un equipo no conforme", d: "Falta cifrado, actualización o inscripción. No se inventa un SIEM propio." },
-  { t: "Aislamiento conceptual", d: "Se limita el acceso a red o aplicación sin apagar el resto de la empresa." },
+  { t: "Se detecta un equipo no conforme", d: "Falta cifrado, actualización o inscripción. Se aplica el control del alcance." },
+  { t: "Aislamiento conceptual", d: "Se limita el acceso a red o aplicación sin detener el resto de la empresa." },
   { t: "Corrección", d: "Se aplica la política: parche, cifrado o retiro del acceso." },
   { t: "Acceso restablecido", d: "El usuario vuelve a trabajar. El evento queda documentado." },
 ];
@@ -17,7 +17,7 @@ const cloudBeats = [
   { t: "Usuario y archivos en uso", d: "El trabajo ocurre en el puesto, con identidad corporativa." },
   { t: "Copia en la plataforma acordada", d: "Los archivos y el correo tienen una copia según el diseño del servicio." },
   { t: "Incidente o borrado", d: "Un archivo crítico deja de estar disponible en el puesto." },
-  { t: "Recuperación", d: "Se restaura desde la copia. Sin cifras de RPO ni RTO inventadas." },
+  { t: "Recuperación", d: "Se restaura desde la copia acordada." },
   { t: "Estado operativo", d: "El usuario continúa. Queda registro de lo recuperado." },
 ];
 
@@ -27,10 +27,9 @@ export function SecurityDemo({ compact = true }: { compact?: boolean }) {
   return (
     <section className={styles.story} id="seguridad-demo" aria-labelledby="sec-title" data-demo="sec-86">
       <p className={styles.kickerLight}>Demostración resumida</p>
-      <h2 id="sec-title">Bloquear un dispositivo no conforme sin detener la empresa.</h2>
-      <p className={styles.noteLight}>
-        Controles de identidad, endpoint, red y aplicación. No es una plataforma propia de Justech ni un SOC 24/7.
-      </p>
+      <h2 id="sec-title">{SECURITY_COPY.title}</h2>
+      <p className={styles.noteLight}>{SECURITY_COPY.body}</p>
+      <p className={styles.noteLight}>{SECURITY_COPY.label}</p>
       <div className={styles.storyScene}>
         <SecurityScene beat={i} />
         <ol className={styles.storyRail} aria-label="Capas">
@@ -148,8 +147,9 @@ export function CloudDemo({ compact = true }: { compact?: boolean }) {
   return (
     <section className={styles.story} id="nube-demo" aria-labelledby="cloud-title" data-demo="cloud-86">
       <p className={styles.kickerLight}>Demostración resumida</p>
-      <h2 id="cloud-title">Proteger y recuperar información empresarial.</h2>
-      <p className={styles.noteLight}>Nube con un propósito operativo claro. Sin métricas de disponibilidad, RPO o RTO inventadas.</p>
+      <h2 id="cloud-title">{CLOUD_COPY.title}</h2>
+      <p className={styles.noteLight}>{CLOUD_COPY.body}</p>
+      <p className={styles.noteLight}>{CLOUD_COPY.label}</p>
       <div className={styles.storyScene}>
         <CloudScene beat={i} />
         <ol className={styles.storyRail} aria-label="Historia">

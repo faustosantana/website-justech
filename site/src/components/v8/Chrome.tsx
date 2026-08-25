@@ -2,12 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { company } from "@/content/site";
 import { NAV, V85_BASE, type NeedId } from "@/content/v85";
 import { withBase } from "@/lib/paths";
 import styles from "./experience.module.css";
 
 type Mega = "soluciones" | "servicios" | "productos" | null;
+
+function onHome(path: string) {
+  return path === V85_BASE || path === `${V85_BASE}/`;
+}
 
 export function Chrome({
   onNeed,
@@ -16,8 +21,10 @@ export function Chrome({
   onNeed?: (id: NeedId) => void;
   onTalk?: () => void;
 }) {
+  const path = usePathname();
   const [menu, setMenu] = useState(false);
   const [megaKey, setMegaKey] = useState<Mega>(null);
+  const [solid, setSolid] = useState(!onHome(path));
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -30,13 +37,34 @@ export function Chrome({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  useEffect(() => {
+    if (!onHome(path)) {
+      setSolid(true);
+      return;
+    }
+    const onScroll = () => setSolid(window.scrollY > 36);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [path]);
+
   function close() {
     setMegaKey(null);
     setMenu(false);
   }
 
+  const serviciosOpen =
+    path.includes("/cableado") ||
+    path.includes("/redes") ||
+    path.includes("/soporte-tecnico") ||
+    path.includes("motivo=seguridad") ||
+    path.includes("motivo=nube");
+  const productosOpen = path.includes("/equipos") || path.includes("/licenciamiento");
+  const recursosOpen = path.includes("/recursos");
+  const contactoOpen = path.includes("/contacto") || path.includes("/solicitar");
+
   return (
-    <header className={styles.head}>
+    <header className={`${styles.head} ${solid ? styles.headSolid : ""}`}>
       <Link className={styles.brand} href={`${V85_BASE}/`} aria-label="Justech" onClick={close}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -50,29 +78,37 @@ export function Chrome({
         />
       </Link>
       <nav className={styles.nav} aria-label="Principal">
-        {(
-          [
-            ["soluciones", "Soluciones"],
-            ["servicios", "Servicios"],
-            ["productos", "Productos"],
-          ] as const
-        ).map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            aria-expanded={megaKey === key}
-            onClick={() => setMegaKey((p) => (p === key ? null : key))}
-          >
-            {label}
-          </button>
-        ))}
+        <button
+          type="button"
+          aria-expanded={megaKey === "soluciones"}
+          data-active={onHome(path) && path.includes("necesidad") ? "1" : undefined}
+          onClick={() => setMegaKey((p) => (p === "soluciones" ? null : "soluciones"))}
+        >
+          Soluciones
+        </button>
+        <button
+          type="button"
+          aria-expanded={megaKey === "servicios"}
+          data-active={serviciosOpen ? "1" : undefined}
+          onClick={() => setMegaKey((p) => (p === "servicios" ? null : "servicios"))}
+        >
+          Servicios
+        </button>
+        <button
+          type="button"
+          aria-expanded={megaKey === "productos"}
+          data-active={productosOpen ? "1" : undefined}
+          onClick={() => setMegaKey((p) => (p === "productos" ? null : "productos"))}
+        >
+          Productos
+        </button>
         <Link href={`${V85_BASE}/contacto/?motivo=industrias`} onClick={close}>
           Industrias
         </Link>
-        <Link href={`${V85_BASE}/recursos/`} onClick={close}>
+        <Link href={`${V85_BASE}/recursos/`} aria-current={recursosOpen ? "page" : undefined} onClick={close}>
           Recursos
         </Link>
-        <Link href={`${V85_BASE}/#metodo`} onClick={close}>
+        <Link href={`${V85_BASE}/#ecosistema`} onClick={close}>
           Nosotros
         </Link>
         <a href={company.supportUrl} rel="noreferrer">
@@ -85,7 +121,7 @@ export function Chrome({
             {NAV.cta.label}
           </a>
         ) : (
-          <Link className={styles.cta} href={NAV.cta.href}>
+          <Link className={styles.cta} href={NAV.cta.href} aria-current={contactoOpen ? "page" : undefined}>
             {NAV.cta.label}
           </Link>
         )}
@@ -94,7 +130,7 @@ export function Chrome({
         </button>
       </div>
       {megaKey ? (
-        <div className={styles.mega} data-cols={megaKey === "soluciones" ? "4" : "3"}>
+        <div className={styles.mega} data-cols={megaKey === "soluciones" ? "3" : "3"}>
           {megaKey === "soluciones"
             ? NAV.soluciones.needs.map((item) => (
                 <Link
@@ -103,22 +139,25 @@ export function Chrome({
                   onClick={() => {
                     if (onNeed && item.label.startsWith("Abrir")) onNeed("sede");
                     if (onNeed && item.label.startsWith("Actualizar")) onNeed("modernizar");
+                    if (onNeed && item.label.startsWith("Mantener")) onNeed("operar");
                     close();
                   }}
                 >
                   <strong>{item.label}</strong>
+                  <span>{item.hint}</span>
                 </Link>
               ))
             : megaKey === "servicios"
               ? NAV.servicios.map((item) => (
                   <Link key={item.label} href={item.href} onClick={close}>
                     <strong>{item.label}</strong>
+                    <span>{item.hint}</span>
                   </Link>
                 ))
               : NAV.productos.map((item) => (
                   <Link key={item.label} href={item.href} onClick={close}>
                     <strong>{item.label}</strong>
-                    <span>Solicitar cotización</span>
+                    <span>{item.hint}</span>
                   </Link>
                 ))}
         </div>
@@ -194,7 +233,7 @@ export function Foot() {
 
 export function ConceptShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className={styles.page} data-v="86">
+    <div className={styles.page} data-v="87">
       <Chrome />
       {children}
       <Foot />

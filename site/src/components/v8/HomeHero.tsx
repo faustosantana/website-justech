@@ -8,7 +8,7 @@ export function HomeHero() {
   const desk = withBase("/visual/v8/v83-hero-day");
   const mobile = withBase("/visual/v8/v83-hero-mobile");
   return (
-    <section className={styles.hero} id="inicio" aria-label="Hero" data-lcp="86">
+    <section className={styles.hero} id="inicio" aria-label="Hero" data-lcp="87">
       <div className={styles.heroCopy}>
         <p className={styles.trustLine}>{V85.hero.kicker}</p>
         <h1>{V85.hero.h1}</h1>

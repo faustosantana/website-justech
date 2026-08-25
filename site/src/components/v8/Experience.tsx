@@ -5,32 +5,17 @@ import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState } from "react";
 import { QuoteFlow } from "@/components/v8/Studios";
 import { company } from "@/content/site";
-import { publicEvidence } from "@/content/evidence";
-import { publishedAnonCases } from "@/content/cases-anonymized";
-import { publicClaims } from "@/content/justech-source-of-truth";
+import { CASES, CASES_HEADING, CASES_INTRO } from "@/content/cases-anonymized";
+import { TECH_GROUPS, TECH_HEADING } from "@/content/technologies";
 import { trustStrip } from "@/content/v83";
-import {
-  AREAS,
-  BRANDS,
-  BRANDS_COPY,
-  BRANDS_NOTE,
-  NEEDS,
-  RELATION_LABEL,
-  RESOURCES,
-  V85,
-  V85_BASE,
-  type NeedId,
-} from "@/content/v85";
+import { AREAS, NEEDS, RESOURCES, V85, V85_BASE, type NeedId } from "@/content/v85";
 import { withBase } from "@/lib/paths";
 import styles from "./experience.module.css";
 
-const CableDemo = dynamic(() => import("@/components/v8/CableDemo").then((m) => m.CableDemo), { ssr: false });
-const CloudDemo = dynamic(() => import("@/components/v8/StoryDemos").then((m) => m.CloudDemo), { ssr: false });
-const SecurityDemo = dynamic(() => import("@/components/v8/StoryDemos").then((m) => m.SecurityDemo), { ssr: false });
-const DeviceDemo = dynamic(() => import("@/components/v8/Studios").then((m) => m.DeviceDemo), { ssr: false });
-const LicenseDemo = dynamic(() => import("@/components/v8/Studios").then((m) => m.LicenseDemo), { ssr: false });
-const NetworkDemo = dynamic(() => import("@/components/v8/Studios").then((m) => m.NetworkDemo), { ssr: false });
-const SupportDemo = dynamic(() => import("@/components/v8/Studios").then((m) => m.SupportDemo), { ssr: false });
+const OperationsDemo = dynamic(
+  () => import("@/components/v8/OperationsDemo").then((m) => m.OperationsDemo),
+  { ssr: false },
+);
 
 const SCENE_MS = 1400;
 
@@ -65,8 +50,6 @@ export function ExperienceV8() {
   const [reduce, setReduce] = useState(false);
   const [ready, setReady] = useState(false);
   const [sceneExtra, setSceneExtra] = useState(false);
-  const [netBeat, setNetBeat] = useState(0);
-  const [netPlay, setNetPlay] = useState(false);
   const [quoteNeed, setQuoteNeed] = useState("");
 
   const current = NEEDS[need];
@@ -75,9 +58,6 @@ export function ExperienceV8() {
   const plate = frames[frame];
   const progress = ((frame + 1) / frames.length) * 100;
   const facts = useMemo(() => trustStrip(), []);
-  const verifiedSlots = useMemo(() => publicEvidence(), []);
-  const cases = useMemo(() => publishedAnonCases(), []);
-  const corporate = useMemo(() => publicClaims(), []);
 
   function talk(id?: string) {
     if (id) setQuoteNeed(id);
@@ -95,10 +75,7 @@ export function ExperienceV8() {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const apply = () => {
       setReduce(mq.matches);
-      if (mq.matches) {
-        setPlaying(false);
-        setNetPlay(false);
-      }
+      if (mq.matches) setPlaying(false);
     };
     apply();
     mq.addEventListener("change", apply);
@@ -127,26 +104,14 @@ export function ExperienceV8() {
   }, [reduce]);
 
   useEffect(() => {
-    if (!netPlay || reduce) return;
-    const id = window.setInterval(() => setNetBeat((n) => (n + 1) % 10), 1400);
-    return () => window.clearInterval(id);
-  }, [netPlay, reduce]);
-
-  useEffect(() => {
     if (!playing || reduce) return;
     const id = window.setInterval(() => setBeat((n) => (n + 1) % frames.length), SCENE_MS);
     return () => window.clearInterval(id);
   }, [playing, reduce, frames.length, need]);
 
-  function startNet(n = 0) {
-    setNetBeat(n);
-    setNetPlay(!reduce);
-    document.getElementById("red")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
-  }
-
   return (
     <div className={styles.body} data-ready={ready ? "1" : "0"}>
-      <section className={styles.trust} aria-label="Hechos confirmados">
+      <section className={styles.trust} id="confianza" aria-label="Confianza verificable">
         <ul>
           {facts.map((item) => (
             <li key={item.id}>
@@ -162,33 +127,12 @@ export function ExperienceV8() {
         </ul>
       </section>
 
-      <section className={styles.proposal} aria-labelledby="propuesta">
-        <div className={styles.proposalCopy}>
-          <p className={styles.kicker}>Propuesta</p>
-          <h2 id="propuesta">{V85.corporate.title}</h2>
-          <p>{V85.corporate.body}</p>
-          <p className={styles.quiet}>
-            {corporate.find((c) => c.id === "capability")?.text}. Atención local en República Dominicana.
-          </p>
-        </div>
-        <ol className={styles.cycle} aria-label="Cinco áreas de oferta">
-          {AREAS.map((a) => (
-            <li key={a.id}>
-              <Link href={a.href}>
-                <strong>{a.title}</strong>
-              </Link>
-            </li>
-          ))}
-        </ol>
-      </section>
-
       <section className={styles.experiences} id="necesidades" aria-labelledby="exp-title">
         <div className={styles.expHead}>
           <p className={styles.kicker}>Necesidades</p>
           <h2 id="exp-title">Tres formas de empezar. Un solo equipo.</h2>
           <p className={styles.expIntro} id="capacidades">
-            Elija la necesidad. Cambian el problema, la solución, el proceso, los servicios y el siguiente paso. Las
-            listas completas no se muestran a la vez.
+            Elija la necesidad. Cambian el problema, la solución, el proceso y el siguiente paso.
           </p>
           <div className={styles.paths} role="tablist" aria-label="Necesidades">
             {(Object.keys(NEEDS) as NeedId[]).map((id) => (
@@ -221,18 +165,11 @@ export function ExperienceV8() {
               <strong>Solución. </strong>
               {current.solution}
             </p>
-            <p>
-              <strong>Proceso. </strong>
-            </p>
             <ol className={styles.process}>
               {current.process.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ol>
-            <p>
-              <strong>Caso de uso. </strong>
-              {current.useCase}
-            </p>
             <ul className={styles.related}>
               {current.related.map((item) => (
                 <li key={item.href}>
@@ -244,121 +181,69 @@ export function ExperienceV8() {
               <a className={styles.cta} href={current.cta.href} onClick={() => talk(quoteByNeed[need])}>
                 {current.cta.label}
               </a>
-              {need === "operar" ? (
-                <button type="button" className={styles.text} onClick={() => startNet(0)}>
-                  Ver la red
-                </button>
-              ) : need === "sede" ? (
-                <a className={styles.text} href="#cableado">
-                  Ver el cableado
-                </a>
-              ) : (
-                <a className={styles.text} href="#equipos">
-                  Ver la incorporación
-                </a>
-              )}
+              <a className={styles.text} href="#operacion">
+                Ver cómo se conecta
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      <CableDemo compact />
-
-      <NetworkDemo
-        beat={netBeat}
-        playing={netPlay}
-        onPlay={() => setNetPlay((v) => !v)}
-        onBeat={(n) => {
-          setNetBeat(n);
-          setNetPlay(false);
-        }}
-      />
-
-      <div className={styles.summaries}>
-        <DeviceDemo compact />
-        <LicenseDemo compact />
-      </div>
-      <div className={styles.summaries}>
-        <SecurityDemo />
-        <CloudDemo />
-      </div>
-
-      <SupportDemo beat={netBeat} onWatchNet={() => startNet(6)} />
-
-      <section className={styles.cases} aria-labelledby="casos-title">
-        <p className={styles.kicker}>Alcances tipo</p>
-        <h2 id="casos-title">Ejemplos de alcance, sin identificar organizaciones.</h2>
-        <p className={styles.expIntro}>
-          Patrones de servicio preparados a partir de trabajo típico. No son testimonios ni clientes publicados. Los
-          nombres reales permanecen fuera de este entorno hasta haber permiso escrito.
-        </p>
-        <ul className={styles.caseGrid}>
-          {cases.map((item) => (
-            <li key={item.id}>
-              <p className={styles.caseNeed}>{item.need}</p>
-              <strong>{item.sector}</strong>
-              <p>
-                <span>Situación. </span>
-                {item.problem}
-              </p>
-              <p>
-                <span>Trabajo. </span>
-                {item.work}
-              </p>
-              <p>
-                <span>Resultado. </span>
-                {item.outcome}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className={styles.method} id="metodo">
-        <p className={styles.kicker}>{V85.methodInternal.label}</p>
-        <h2>Cómo entregamos, por dentro.</h2>
-        <ol>
-          {V85.methodInternal.steps.map((s) => (
-            <li key={s.id}>
-              <strong>{s.title}. </strong>
-              {s.text}
+      <section className={styles.proposal} id="ecosistema" aria-labelledby="propuesta">
+        <div className={styles.proposalCopy}>
+          <p className={styles.kicker}>Capacidades</p>
+          <h2 id="propuesta">{V85.corporate.title}</h2>
+          <p>{V85.corporate.body}</p>
+        </div>
+        <ol className={styles.cycle} aria-label="Cinco áreas de oferta">
+          {AREAS.map((a) => (
+            <li key={a.id}>
+              <Link href={a.href}>
+                <strong>{a.title}</strong>
+              </Link>
             </li>
           ))}
         </ol>
+        <div className={styles.techBlock} aria-labelledby="brands-title">
+          <p className={styles.kicker}>Tecnologías</p>
+          <h3 id="brands-title">{TECH_HEADING}</h3>
+          <div className={styles.techGroups}>
+            {TECH_GROUPS.map((group) => (
+              <div key={group.id}>
+                <p className={styles.techLabel}>{group.label}</p>
+                <ul className={styles.brandList}>
+                  {group.names.map((name) => (
+                    <li key={name}>
+                      <strong>{name}</strong>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
-      <section className={styles.brands} aria-labelledby="brands-title">
-        <p className={styles.kicker}>Tecnologías</p>
-        <h2 id="brands-title">Tecnologías con las que trabajamos</h2>
-        <p>{BRANDS_COPY}</p>
-        <ul className={styles.brandList}>
-          {BRANDS.filter((b) => b.public).map((b) => (
-            <li key={b.name}>
-              <strong>{b.name}</strong>
-              <span>{RELATION_LABEL[b.relation]}</span>
+      <div className={styles.opsSlot}>
+        {ready ? <OperationsDemo /> : <div className={styles.opsReserve} aria-hidden="true" />}
+      </div>
+
+      <section className={styles.cases} aria-labelledby="casos-title">
+        <p className={styles.kicker}>Experiencia</p>
+        <h2 id="casos-title">{CASES_HEADING}</h2>
+        <p className={styles.expIntro}>{CASES_INTRO}</p>
+        <ul className={styles.caseGrid}>
+          {CASES.map((item) => (
+            <li key={item.id}>
+              <p className={styles.caseNeed}>{item.title}</p>
+              <strong>{item.lead}</strong>
+              <p>{item.service}</p>
+              <p>
+                <Link href={item.href}>Ver el servicio relacionado</Link>
+              </p>
             </li>
           ))}
         </ul>
-        <p className={styles.quiet}>{BRANDS_NOTE}</p>
-      </section>
-
-      <section className={styles.evidence} id="confianza" aria-labelledby="ev-title">
-        <p className={styles.kicker}>Confianza verificable</p>
-        <h2 id="ev-title">Publicamos hechos con fuente. Nada más.</h2>
-        <ul className={styles.evList}>
-          {verifiedSlots
-            .filter((item) => item.kind === "fact" || item.kind === "channel" || item.kind === "legal")
-            .map((item) => (
-              <li key={item.id}>
-                <strong>{item.label}</strong>
-                {item.detail ? <span>{item.detail}</span> : null}
-              </li>
-            ))}
-        </ul>
-        <p>
-          Clientes, logos, testimonios y partnerships aparecen cuando exista permiso escrito, evidencia y fecha. Los
-          componentes existen y permanecen desactivados.
-        </p>
       </section>
 
       <section className={styles.resources} aria-labelledby="res-title">

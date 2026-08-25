@@ -1,10 +1,9 @@
 import { ConceptShell } from "@/components/v8/Chrome";
-import { CableDemo } from "@/components/v8/CableDemo";
-import { IntentQuote } from "@/components/v8/IntentQuote";
-import { Crumbs, ServiceArticle } from "@/components/v8/ServiceArticle";
-import { PAGES, V85_BASE } from "@/content/v85";
+import { CableDemo, CableHandover } from "@/components/v8/CableDemo";
+import { ServiceExperience } from "@/components/v8/ServiceExperience";
+import { CASES } from "@/content/cases-anonymized";
+import { PAGE_QUOTES, PAGES, V85_BASE } from "@/content/v85";
 import { pageMeta } from "@/lib/seo";
-import styles from "@/components/v8/article.module.css";
 
 const page = PAGES.cableado;
 
@@ -14,33 +13,32 @@ export default function Page() {
   return (
     <ConceptShell>
       <main id="contenido">
-        <Crumbs
-          items={[
-            { href: `${V85_BASE}/`, label: "Inicio" },
-            { href: page.path, label: "Cableado estructurado" },
-          ]}
-        />
-        <ServiceArticle
-          kicker="Infraestructura y conectividad · Santo Domingo"
+        <ServiceExperience
+          kicker="Infraestructura"
           title={page.title}
           lead={page.description}
           problem={page.problem}
+          result={page.result}
           who={page.who}
           includes={page.includes}
           how={page.how}
-          delivers={page.delivers}
           faq={page.faq}
           path={page.path}
           hero={{ image: "v82-sede-rack", alt: "Cuarto técnico empresarial con rack organizado." }}
-          demo={
-            <div className={styles.demoSlot}>
-              <CableDemo />
-            </div>
-          }
+          crumbs={[
+            { href: `${V85_BASE}/`, label: "Inicio" },
+            { href: page.path, label: "Cableado estructurado" },
+          ]}
+          demo={<CableDemo />}
+          afterDemo={<CableHandover />}
+          technologies={["Cobre", "Fibra óptica", "Racks", "Patch panels", "Certificación según alcance"]}
+          caseTitle={CASES[0].title}
+          caseLead={CASES[0].lead}
           nextHref={`${V85_BASE}/solicitar-levantamiento/`}
           nextLabel="Solicitar un levantamiento"
+          quotes={PAGE_QUOTES.cableado}
+          dark
         />
-        <IntentQuote initial="cableado" />
       </main>
     </ConceptShell>
   );

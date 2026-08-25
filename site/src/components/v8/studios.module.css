@@ -97,7 +97,13 @@
     #101820;
   overflow: auto;
   margin-top: 14px;
-  min-height: 280px;
+  min-height: 320px;
+}
+.svgWrap[data-compact="0"] {
+  aspect-ratio: 1020 / 560;
+}
+.svgWrap[data-compact="1"] {
+  min-height: 520px;
 }
 .svgWrap svg {
   display: block;
@@ -667,8 +673,8 @@
   min-height: 420px;
 }
 .cableBoard {
-  aspect-ratio: auto;
-  min-height: 560px;
+  aspect-ratio: 16 / 10;
+  min-height: 420px;
 }
 .cableDual {
   position: relative;

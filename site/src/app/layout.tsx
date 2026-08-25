@@ -52,12 +52,15 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "ProfessionalService",
   name: company.legalName,
+  legalName: company.legalName,
   url: company.production,
+  logo: "https://www.justech.do/brand/justech-logo.png",
+  taxID: "1-31-98224-3",
   foundingDate: String(company.founded),
   address: { "@type": "PostalAddress", addressLocality: company.city, addressCountry: "DO" },
-  telephone: company.phoneDisplay,
+  telephone: company.phoneTel,
   email: company.email,
   sameAs: [company.facebook, company.instagram],
 };

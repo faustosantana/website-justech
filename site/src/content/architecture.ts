@@ -29,6 +29,10 @@ export const PRODUCTION_MAP: { staging: string; production: string; intent: stri
   { staging: "/concepto-v8/solicitar-levantamiento/", production: "/solicitar-levantamiento/", intent: "Campaña levantamiento" },
   { staging: "/concepto-v8/solicitar-diagnostico/", production: "/solicitar-diagnostico/", intent: "Campaña diagnóstico" },
   { staging: "/concepto-v8/solicitar-soporte/", production: "/solicitar-soporte/", intent: "Campaña soporte" },
+  { staging: "/concepto-v8/recursos/", production: "/recursos/", intent: "Centro de recursos" },
+  { staging: "/concepto-v8/recursos/cableado/", production: "/recursos/cableado/", intent: "Guía de entrega de cableado" },
+  { staging: "/concepto-v8/recursos/wifi/", production: "/recursos/wifi/", intent: "Guía de evaluación Wi-Fi" },
+  { staging: "/concepto-v8/recursos/equipos/", production: "/recursos/equipos/", intent: "Guía de renovación de equipos" },
 ];
 
 export const FUTURE_PILLARS = [

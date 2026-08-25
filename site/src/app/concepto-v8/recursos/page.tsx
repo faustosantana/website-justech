@@ -2,12 +2,12 @@ import { ConceptShell } from "@/components/v8/Chrome";
 import { Crumbs } from "@/components/v8/ServiceArticle";
 import { RESOURCES, V85_BASE } from "@/content/v85";
 import { pageMeta } from "@/lib/seo";
-import styles from "@/components/v8/article.module.css";
+import styles from "@/components/v8/premium.module.css";
 import Link from "next/link";
 
 export const metadata = pageMeta(
   "Recursos técnicos para decidir con criterio",
-  "Guías originales de Justech sobre cableado, Wi-Fi y renovación de equipos. Sin recetas copiadas ni promesas vacías.",
+  "Guías originales de Justech sobre cableado estructurado, evaluación de Wi-Fi y renovación de equipos.",
   `${V85_BASE}/recursos/`,
 );
 
@@ -24,16 +24,18 @@ export default function Page() {
         <article className={styles.article}>
           <p className={styles.kicker}>Recursos</p>
           <h1>Tres guías para preparar una conversación útil.</h1>
-          <p className={styles.lead}>
-            Material propio. No es un blog de premios ni un recorte de fichas de fabricante.
+          <p>
+            Material propio para decidir alcance, entregables y el momento de renovar. Cada guía enlaza al servicio
+            correspondiente.
           </p>
-          <ul>
+          <ul className={styles.signals}>
             {RESOURCES.map((r) => (
               <li key={r.slug}>
                 <Link href={`${V85_BASE}/recursos/${r.slug}/`}>
                   <strong>{r.title}</strong>
                 </Link>
-                <span> — {r.description}</span>
+                {" — "}
+                {r.description}
               </li>
             ))}
           </ul>

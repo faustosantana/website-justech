@@ -23,7 +23,7 @@ const Motivo: Record<string, string> = {
   nosotros: "sede",
 };
 
-export function IntentQuote({ initial }: { initial?: string }) {
+export function IntentQuote({ initial, intents }: { initial?: string; intents?: readonly { id: string; t: string; extra: string; options: readonly string[] }[] }) {
   const [need, setNeed] = useState(initial ?? "");
   const [sent, setSent] = useState(false);
   useEffect(() => {
@@ -40,5 +40,5 @@ export function IntentQuote({ initial }: { initial?: string }) {
       </section>
     );
   }
-  return <QuoteFlow initial={need} onDone={() => setSent(true)} />;
+  return <QuoteFlow initial={need} intents={intents} onDone={() => setSent(true)} />;
 }

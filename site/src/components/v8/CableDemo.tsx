@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useId, useState } from "react";
-import { CABLE_STAGES, V85_BASE } from "@/content/v85";
+import { CABLE_HOME, CABLE_STAGES, V85_BASE } from "@/content/v85";
+import { CABLE_DELIVERABLES } from "@/content/cable-deliverables";
 import { withBase } from "@/lib/paths";
 import styles from "./studios.module.css";
+import premium from "./premium.module.css";
 
 const plates = [
   "v82-sede-vacio",
@@ -19,7 +21,9 @@ export function CableDemo({ compact = false }: { compact?: boolean }) {
   const [step, setStep] = useState(0);
   const [reduce, setReduce] = useState(false);
   const uid = useId().replace(/:/g, "");
-  const stage = CABLE_STAGES[step];
+  const stages = compact ? CABLE_HOME : CABLE_STAGES;
+  const stage = stages[step];
+  const visual = compact ? CABLE_HOME[step].visual : step;
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -30,26 +34,27 @@ export function CableDemo({ compact = false }: { compact?: boolean }) {
   }, []);
 
   function go(n: number) {
-    setStep(Math.max(0, Math.min(CABLE_STAGES.length - 1, n)));
+    setStep(Math.max(0, Math.min(stages.length - 1, n)));
   }
 
   return (
-    <section className={styles.studio} id="cableado" aria-labelledby="cab-title" data-demo="cable-86">
-      <p className={styles.kickerLight}>Demostración principal</p>
-      <h2 id="cab-title">De un plano a una infraestructura documentada.</h2>
+    <section className={styles.studio} id="cableado" aria-labelledby="cab-title" data-demo={compact ? "cable-home" : "cable-87"}>
+      <p className={styles.kickerLight}>{compact ? "Resumen" : "Demostración principal"}</p>
+      <h2 id="cab-title">{compact ? "Plano, instalación y entrega documentada." : "De un plano a una infraestructura documentada."}</h2>
       <p className={styles.lead}>
-        Seis etapas de ingeniería. Plano arquitectónico e isometría de la planta. Lo construido permanece. No es un
-        dibujo escolar ni un rack genérico.
+        {compact
+          ? "Tres estados de la planta. El detalle de ingeniería vive en la página de cableado."
+          : "Plano técnico de referencia con distribución, rutas, puntos y cuarto de comunicaciones. Seis etapas de ingeniería."}
       </p>
       <div className={styles.cableLayout}>
-        <figure className={styles.cableBoard} data-step={step} data-motion={reduce ? "reduce" : "ok"}>
-          {Array.from(new Set(plates.slice(0, step + 1))).map((name) => (
-            <picture key={name} className={name === plates[step] ? styles.cablePlateOn : styles.cablePlate}>
+        <figure className={styles.cableBoard} data-step={visual} data-motion={reduce ? "reduce" : "ok"}>
+          {Array.from(new Set(plates.slice(0, visual + 1))).map((name) => (
+            <picture key={name} className={name === plates[visual] ? styles.cablePlateOn : styles.cablePlate}>
               <source srcSet={withBase(`/visual/v8/${name}.webp`)} type="image/webp" />
               <img
                 src={withBase(`/visual/v8/${name}.jpg`)}
                 alt={
-                  name === plates[step]
+                  name === plates[visual]
                     ? "Sede empresarial: planta, cuarto técnico y puestos usados como referencia de la demostración."
                     : ""
                 }
@@ -61,8 +66,8 @@ export function CableDemo({ compact = false }: { compact?: boolean }) {
             </picture>
           ))}
           <div className={styles.cableDual}>
-            <PlanOverlay step={step} uid={uid} />
-            <IsoOverlay step={step} uid={uid} />
+            <PlanOverlay step={visual} uid={uid} />
+            <IsoOverlay step={visual} uid={uid} />
           </div>
           <figcaption className={styles.cableCap}>
             JT-PL-01 · {stage.n} · {stage.title}
@@ -70,7 +75,7 @@ export function CableDemo({ compact = false }: { compact?: boolean }) {
         </figure>
         <div className={styles.cableCopy}>
           <ol className={styles.cableSteps} aria-label="Etapas del proyecto">
-            {CABLE_STAGES.map((s, i) => (
+            {stages.map((s, i) => (
               <li key={s.id}>
                 <button type="button" aria-current={i === step ? "step" : undefined} onClick={() => go(i)}>
                   <span>{s.n}</span>
@@ -93,9 +98,9 @@ export function CableDemo({ compact = false }: { compact?: boolean }) {
               Anterior
             </button>
             <span>
-              {step + 1} / {CABLE_STAGES.length}
+              {step + 1} / {stages.length}
             </span>
-            <button type="button" onClick={() => go(step + 1)} disabled={step === CABLE_STAGES.length - 1}>
+            <button type="button" onClick={() => go(step + 1)} disabled={step === stages.length - 1}>
               Siguiente
             </button>
           </div>
@@ -106,6 +111,25 @@ export function CableDemo({ compact = false }: { compact?: boolean }) {
           ) : null}
         </div>
       </div>
+    </section>
+  );
+}
+
+export function CableHandover() {
+  return (
+    <section className={premium.handover} id="entrega-cliente" aria-labelledby="handover-title">
+      <p className={premium.kicker}>Entrega</p>
+      <h2 id="handover-title">Qué recibe el cliente</h2>
+      <p>Documentación técnica organizada para operar, mantener y ampliar la planta.</p>
+      <ul className={premium.docs}>
+        {CABLE_DELIVERABLES.map((item) => (
+          <li key={item.id}>
+            <b>{item.kind}</b>
+            <strong>{item.title}</strong>
+            <span>{item.note}</span>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

@@ -24,7 +24,7 @@ const landings = {
   },
   "microsoft-365": {
     title: "Organizar Microsoft 365 alrededor de usuarios reales",
-    lead: "Selección, asignación, identidad y renovación. Sin sello de partner hasta tener documento.",
+    lead: "Selección, asignación, identidad y renovación según usuarios y plataformas.",
     need: "licencias",
   },
   "google-workspace": {

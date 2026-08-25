@@ -3,7 +3,7 @@ import { publicText } from "./justech-source-of-truth";
 export const V85_BASE = "/concepto-v8";
 
 export const V85 = {
-  version: "8.6",
+  version: "8.7",
   hero: {
     kicker: "Justech · Integradora tecnológica · Santo Domingo",
     h1: "Integramos la tecnología que mantiene operando su empresa.",
@@ -212,10 +212,10 @@ export const BRANDS: {
 ];
 
 export const BRANDS_COPY =
-  "Diseñamos soluciones sobre tecnologías empresariales reconocidas, seleccionadas según las necesidades técnicas, operativas y presupuestarias de cada organización.";
+  "Tecnologías que comercializamos, implementamos o administramos según el alcance.";
 
 export const BRANDS_NOTE =
-  "Los nombres describen tecnologías con las que trabajamos. No implican partnership, certificación ni distribución autorizada hasta que exista documento y permiso de publicación.";
+  "Los nombres describen el ecosistema con el que diseñamos e implementamos. La selección final depende del alcance, los usuarios y las plataformas requeridas.";
 
 export const CABLE_STAGES = [
   {
@@ -269,39 +269,33 @@ export const NAV = {
   cta: { href: `${V85_BASE}/contacto/`, label: "Hablar con un especialista" },
   soluciones: {
     needs: [
-      { href: `${V85_BASE}/#necesidades`, label: "Abrir o renovar una sede" },
-      { href: `${V85_BASE}/#necesidades`, label: "Actualizar infraestructura" },
-      { href: `${V85_BASE}/equipos-empresariales/`, label: "Renovar equipos" },
-      { href: `${V85_BASE}/licenciamiento/`, label: "Organizar licencias" },
-      { href: `${V85_BASE}/contacto/?motivo=nube`, label: "Migrar a la nube" },
-      { href: `${V85_BASE}/contacto/?motivo=seguridad`, label: "Mejorar seguridad" },
-      { href: `${V85_BASE}/soporte-tecnico-empresarial/`, label: "Resolver problemas de soporte" },
-      { href: `${V85_BASE}/soporte-tecnico-empresarial/`, label: "Operar tecnología con acompañamiento" },
+      {
+        href: `${V85_BASE}/#necesidades`,
+        label: "Abrir o renovar una sede",
+        hint: "Cableado, red y puestos para iniciar operaciones.",
+      },
+      {
+        href: `${V85_BASE}/#necesidades`,
+        label: "Actualizar tecnología y plataformas",
+        hint: "Equipos, identidad, aplicaciones y licencias.",
+      },
+      {
+        href: `${V85_BASE}/#necesidades`,
+        label: "Mantener la operación funcionando",
+        hint: "Soporte, continuidad y gestión documentada.",
+      },
     ],
   },
   servicios: [
-    { href: `${V85_BASE}/cableado-estructurado/`, label: "Infraestructura y cableado" },
-    { href: `${V85_BASE}/redes-empresariales/`, label: "Redes y conectividad" },
-    { href: `${V85_BASE}/contacto/?motivo=implementacion`, label: "Implementación" },
-    { href: `${V85_BASE}/licenciamiento/`, label: "Licenciamiento" },
-    { href: `${V85_BASE}/contacto/?motivo=nube`, label: "Nube" },
-    { href: `${V85_BASE}/contacto/?motivo=seguridad`, label: "Seguridad" },
-    { href: `${V85_BASE}/soporte-tecnico-empresarial/`, label: "Soporte" },
-    { href: `${V85_BASE}/contacto/?motivo=administrado`, label: "Servicios administrados" },
-    { href: `${V85_BASE}/contacto/?motivo=consultoria`, label: "Consultoría" },
-    { href: `${V85_BASE}/contacto/?motivo=levantamiento`, label: "Levantamientos" },
+    { href: `${V85_BASE}/cableado-estructurado/`, label: "Cableado estructurado", hint: "Planta documentada y mantenible." },
+    { href: `${V85_BASE}/redes-empresariales/`, label: "Redes empresariales", hint: "LAN, Wi-Fi y continuidad del enlace." },
+    { href: `${V85_BASE}/soporte-tecnico-empresarial/`, label: "Soporte técnico", hint: "Mesa de ayuda y cierre documentado." },
+    { href: `${V85_BASE}/contacto/?motivo=seguridad`, label: "Seguridad y gestión", hint: "Identidad, dispositivos y red." },
+    { href: `${V85_BASE}/contacto/?motivo=nube`, label: "Nube y continuidad", hint: "Colaboración, respaldo y recuperación." },
   ],
   productos: [
-    { href: `${V85_BASE}/equipos-empresariales/#laptops`, label: "Laptops" },
-    { href: `${V85_BASE}/equipos-empresariales/#desktops`, label: "Desktops" },
-    { href: `${V85_BASE}/equipos-empresariales/#workstations`, label: "Workstations" },
-    { href: `${V85_BASE}/equipos-empresariales/#servidores`, label: "Servidores" },
-    { href: `${V85_BASE}/equipos-empresariales/#almacenamiento`, label: "Almacenamiento" },
-    { href: `${V85_BASE}/redes-empresariales/`, label: "Networking" },
-    { href: `${V85_BASE}/redes-empresariales/#wifi`, label: "Wi-Fi" },
-    { href: `${V85_BASE}/equipos-empresariales/#accesorios`, label: "Accesorios" },
-    { href: `${V85_BASE}/contacto/?motivo=energia`, label: "Energía" },
-    { href: `${V85_BASE}/licenciamiento/`, label: "Software y licencias" },
+    { href: `${V85_BASE}/equipos-empresariales/`, label: "Equipos empresariales", hint: "Puestos listos para el primer día." },
+    { href: `${V85_BASE}/licenciamiento/`, label: "Licenciamiento y plataformas", hint: "Usuarios, aplicaciones y renovación." },
   ],
 } as const;
 
@@ -309,8 +303,9 @@ export const PAGES = {
   cableado: {
     path: `${V85_BASE}/cableado-estructurado/`,
     title: "Cableado estructurado preparado para crecer y mantenerse.",
+    result: "Una planta identificada, con rutas mantenibles y un cuarto técnico que otro equipo puede operar.",
     description:
-      "Diseñamos e instalamos infraestructura de cobre y fibra para oficinas, sucursales y cuartos técnicos en Santo Domingo. Cada punto, ruta y terminación se organiza con criterios de operación, mantenimiento y crecimiento.",
+      "Diseñamos e instalamos infraestructura de cobre y fibra para oficinas, sucursales y cuartos técnicos. Cada punto, ruta y terminación se organiza con criterios de operación, mantenimiento y crecimiento.",
     problem:
       "Un cableado improvisado se vuelve invisible hasta que falla: no hay plano, el rack no identifica puertos y ampliar un puesto implica abrir cielo raso sin criterio.",
     who: "Empresas e instituciones en República Dominicana que abren, mudan o reordenan una sede y necesitan infraestructura documentada, no solamente puntos activos.",
@@ -336,8 +331,8 @@ export const PAGES = {
     ],
     faq: [
       {
-        q: "¿El cableado incluye certificación de categoría específica?",
-        a: "Entregamos evidencia técnica según el alcance contratado. No afirmamos un estándar o instrumento concreto hasta que el proyecto lo define.",
+        q: "¿Qué evidencia técnica entrega el proyecto?",
+        a: "Según el alcance contratado: plano actualizado, nomenclatura, listado de puntos, elevación del rack y, cuando aplica, evidencia de pruebas y memoria fotográfica.",
       },
       {
         q: "¿Trabajan cobre y fibra?",
@@ -352,8 +347,9 @@ export const PAGES = {
   redes: {
     path: `${V85_BASE}/redes-empresariales/`,
     title: "Redes empresariales diseñadas para mantener la operación conectada.",
+    result: "Una topología operable, con borde, acceso y un plan claro cuando el enlace principal no responde.",
     description:
-      "Evaluamos cobertura, capacidad, segmentación, seguridad y continuidad para integrar usuarios, equipos, servidores, nube y sucursales en Santo Domingo y el resto del país.",
+      "Evaluamos cobertura, capacidad, segmentación, seguridad y continuidad para integrar usuarios, equipos, servidores, nube y sucursales.",
     problem:
       "Una red que creció por acumulación deja usuarios lentos, Wi-Fi saturado y una sucursal que depende de un solo enlace sin dueño claro.",
     who: "Organizaciones con una o varias sedes que necesitan LAN, WAN, Wi-Fi y borde coordinados, no equipos sueltos.",
@@ -379,18 +375,23 @@ export const PAGES = {
     ],
     faq: [
       {
-        q: "¿Justech opera un NOC 24/7?",
-        a: "No. Acompañamos la operación en horario hábil y con canales documentados. No prometemos un centro de operaciones propio.",
+        q: "¿Qué modalidad de acompañamiento ofrece Justech?",
+        a: "El alcance se define según la operación, los canales de atención, los horarios y los servicios contratados. Para los servicios publicados actualmente, la atención se coordina mediante el equipo local y el portal de soporte.",
       },
       {
         q: "¿Pueden trabajar con el ISP actual?",
-        a: "Sí. Integramos el enlace existente y, si hay secundario, diseñamos la conmutación. No sustituimos al proveedor de última milla.",
+        a: "Sí. Integramos el enlace existente y, si hay secundario, diseñamos la conmutación. El proveedor de última milla permanece como parte del diseño.",
+      },
+      {
+        q: "¿Cómo se evalúa el Wi-Fi de una oficina?",
+        a: "Partimos de densidad de usuarios, aplicaciones, materiales y backhaul cableado. El diseño se valida en el sitio antes de ampliar cobertura.",
       },
     ],
   },
   equipos: {
     path: `${V85_BASE}/equipos-empresariales/`,
     title: "Equipos listos para trabajar desde el primer día.",
+    result: "Un puesto configurado, inventariado y entregado según el perfil, con canal de garantía.",
     description:
       "Seleccionamos, suministramos y configuramos laptops, desktops, workstations y servidores según el perfil del usuario, con identidad, aplicaciones, inventario, accesorios y garantía.",
     problem:
@@ -418,18 +419,23 @@ export const PAGES = {
     ],
     faq: [
       {
-        q: "¿Venden al detalle como tienda en línea?",
-        a: "No. Cotizamos equipos empresariales según el proyecto. No hay carrito ni «comprar ahora».",
+        q: "¿Cómo se adquieren los equipos?",
+        a: "Cotizamos según perfil, cantidad y puesta en marcha. El siguiente paso es una recomendación y una propuesta comercial.",
       },
       {
         q: "¿Pueden incluir impresión y servidores?",
-        a: "Sí, cuando forman parte del puesto o de la sede. No los empujamos si el alcance es solo laptops.",
+        a: "Sí, cuando forman parte del puesto o de la sede. El alcance se define con el perfil de trabajo, no con un catálogo cerrado.",
+      },
+      {
+        q: "¿Qué incluye la configuración de un puesto?",
+        a: "Identidad, aplicaciones acordadas, inventario, accesorios del perfil y el canal de garantía. Los modelos se confirman en la cotización.",
       },
     ],
   },
   licencias: {
     path: `${V85_BASE}/licenciamiento/`,
     title: "Licencias organizadas alrededor de usuarios, roles y necesidades reales.",
+    result: "Usuarios con las aplicaciones que necesitan, identidad controlada y un calendario de renovación.",
     description:
       "Acompañamos la selección, asignación, migración, adopción y renovación de Microsoft 365, Google Workspace, Adobe y otras plataformas empresariales para reducir desorden y mantener continuidad.",
     problem:
@@ -456,20 +462,25 @@ export const PAGES = {
     ],
     faq: [
       {
-        q: "¿Son partner certificado de Microsoft o Google?",
-        a: "Trabajamos esas plataformas como tecnologías de la operación. No publicamos sello de partner hasta tener documento y autorización.",
+        q: "¿Cómo se relacionan con Microsoft, Google u otras plataformas?",
+        a: "Comercializamos, implementamos o administramos esas tecnologías según el alcance del proyecto. La selección final depende de los usuarios, las aplicaciones y la operación.",
       },
       {
         q: "¿Pueden mezclar Microsoft 365 y Google Workspace?",
-        a: "Sí, cuando la organización ya opera así. El diseño parte de identidad y correo reales, no de una marca única obligatoria.",
+        a: "Sí, cuando la organización ya opera así. El diseño parte de identidad y correo reales, y de cómo trabaja cada equipo.",
+      },
+      {
+        q: "¿Qué ocurre en una renovación de licencias?",
+        a: "Revisamos utilización, asientos asignados y el calendario del fabricante. Proponemos el plan que cubre el trabajo, con margen para altas y bajas.",
       },
     ],
   },
   soporte: {
     path: `${V85_BASE}/soporte-tecnico-empresarial/`,
     title: "Soporte que entiende la operación, no solamente el incidente.",
+    result: "Un caso con responsable, diagnóstico, validación del usuario y cierre que otro técnico puede retomar.",
     description:
-      "Recibimos, clasificamos, atendemos y documentamos requerimientos técnicos en Santo Domingo, conectando usuarios, equipos, redes y plataformas dentro de un mismo proceso.",
+      "Recibimos, clasificamos, atendemos y documentamos requerimientos técnicos, conectando usuarios, equipos, redes y plataformas dentro de un mismo proceso.",
     problem:
       "El usuario reporta «no hay internet» y el caso muere en un chat: no hay prioridad, responsable ni cierre que otro técnico pueda retomar.",
     who: "Empresas que necesitan mesa de ayuda, soporte remoto o presencial, mantenimiento y administración continua, en horario hábil.",
@@ -494,8 +505,8 @@ export const PAGES = {
     ],
     faq: [
       {
-        q: "¿El soporte es 24/7?",
-        a: "El horario indicado es lunes a viernes, 8:00 a. m. a 5:30 p. m., hora de República Dominicana. Fuera de ese horario no prometemos cobertura salvo un acuerdo específico, que no se publica aquí.",
+        q: "¿En qué horario atiende el soporte?",
+        a: "La atención publicada es de lunes a viernes, 8:00 a 17:30, hora de República Dominicana, a través del equipo local y el portal de soporte. Coberturas adicionales se definen en el contrato.",
       },
       {
         q: "¿Dónde abro un ticket?",
@@ -566,34 +577,114 @@ export const QUOTE_NEEDS = [
 
 export const HIRE_STEPS = [
   "Perfil",
-  "Equipo",
+  "Selección",
   "Configuración",
-  "Identidad",
-  "Cifrado",
-  "Aplicaciones",
+  "Seguridad",
   "Inventario",
-  "Accesorios",
   "Entrega",
   "Garantía",
+] as const;
+
+export const CABLE_HOME = [
+  {
+    id: "plano",
+    n: "01",
+    title: "Plano",
+    text: "Distribución, rutas previstas y cuarto de comunicaciones sobre el sitio real.",
+    visual: 0,
+  },
+  {
+    id: "instalacion",
+    n: "02",
+    title: "Instalación",
+    text: "Puntos, backbone y rack avanzan juntos. Lo construido permanece visible.",
+    visual: 3,
+  },
+  {
+    id: "entrega",
+    n: "03",
+    title: "Entrega documentada",
+    text: "Nomenclatura, listado y memoria para operar y ampliar con criterio.",
+    visual: 5,
+  },
+] as const;
+
+export const SECURITY_COPY = {
+  title: "Controles coordinados para reducir exposición.",
+  body: "Integramos identidad, dispositivos, endpoints, red, aplicaciones y protección de datos de acuerdo con las necesidades de cada organización.",
+  label: "Visualización conceptual del proceso",
+} as const;
+
+export const CLOUD_COPY = {
+  title: "Nube con un propósito operativo claro.",
+  body: "Diseñamos colaboración, migración, respaldo y recuperación alrededor de los usuarios, las aplicaciones y la continuidad requerida.",
+  label: "Visualización conceptual del proceso",
+} as const;
+
+export type QuoteNeed = {
+  id: string;
+  t: string;
+  extra: string;
+  options: readonly string[];
+};
+
+export const PAGE_QUOTES: Record<string, readonly QuoteNeed[]> = {
+  cableado: [
+    { id: "cableado", t: "Solicitar levantamiento", extra: "Sitio", options: ["Oficina nueva", "Sucursal", "Renovación de planta", "Varios pisos"] },
+    { id: "cableado-cotizar", t: "Cotizar instalación", extra: "Alcance", options: ["Puntos de usuario", "Rack y backbone", "Fibra", "Proyecto completo"] },
+    { id: "cableado-ampliar", t: "Ampliar infraestructura existente", extra: "Situación", options: ["Añadir puestos", "Reordenar rack", "Nuevo piso", "Sucursal adicional"] },
+    { id: "cableado-otro", t: "Otro requerimiento", extra: "Enfoque", options: ["Documentación", "Pruebas", "Cuarto técnico", "Otro"] },
+  ],
+  redes: [
+    { id: "redes", t: "Diagnosticar red", extra: "Síntoma", options: ["Lentitud", "Wi-Fi irregular", "Corte de enlace", "Segmentación"] },
+    { id: "redes-wifi", t: "Mejorar Wi-Fi", extra: "Espacio", options: ["Oficina", "Salas de reunión", "Varios pisos", "Sucursal"] },
+    { id: "redes-sucursales", t: "Conectar sucursales", extra: "Alcance", options: ["Dos sedes", "Varias sucursales", "Sede + remoto", "Aún no lo sé"] },
+    { id: "redes-continuidad", t: "Diseñar continuidad", extra: "Prioridad", options: ["Enlace de respaldo", "Firewall", "Servidores", "Integral"] },
+    { id: "redes-otro", t: "Otro", extra: "Enfoque", options: ["Switching", "Documentación", "Monitoreo", "Otro"] },
+  ],
+  equipos: [
+    { id: "equipos", t: "Solicitar recomendación de equipos", extra: "Perfil", options: ["Administrativo", "Ejecutivo", "Ingeniería", "Varios perfiles"] },
+    { id: "equipos-renovar", t: "Renovar una flota", extra: "Volumen", options: ["Menos de 10", "10 a 30", "Más de 30", "Aún no lo sé"] },
+    { id: "equipos-servidores", t: "Servidores o almacenamiento", extra: "Uso", options: ["Sede", "Aplicaciones internas", "Respaldo", "Aún no lo sé"] },
+    { id: "equipos-otro", t: "Otro requerimiento", extra: "Enfoque", options: ["Accesorios", "Garantía", "Inventario", "Otro"] },
+  ],
+  licencias: [
+    { id: "licencias", t: "Incorporar usuarios", extra: "Plataforma", options: ["Microsoft 365", "Google Workspace", "Adobe", "Aún no lo sé"] },
+    { id: "licencias-asignar", t: "Asignar aplicaciones", extra: "Situación", options: ["Alta de equipo", "Cambio de rol", "Departamento nuevo", "Revisión general"] },
+    { id: "licencias-identidad", t: "Controlar identidad", extra: "Enfoque", options: ["Acceso", "MFA", "Dispositivos", "Integral"] },
+    { id: "licencias-renovar", t: "Preparar renovación", extra: "Plazo", options: ["Este trimestre", "Este año", "Migración", "Aún no lo sé"] },
+    { id: "licencias-otro", t: "Otro", extra: "Enfoque", options: ["Utilización", "Migración", "Adopción", "Otro"] },
+  ],
+  soporte: [
+    { id: "soporte", t: "Necesito soporte para mi empresa", extra: "Situación", options: ["Contrato nuevo", "Incidente", "Servicio administrado", "Mantenimiento"] },
+    { id: "soporte-cliente", t: "Ya soy cliente", extra: "Canal", options: ["Portal de soporte", "Seguimiento de caso", "Ampliar cobertura", "Otro"] },
+    { id: "soporte-otro", t: "Otro requerimiento", extra: "Enfoque", options: ["Inventario", "Garantías", "Capacitación", "Otro"] },
+  ],
+};
+
+export const LICENSE_RESULTS = [
+  "Incorporar usuarios",
+  "Asignar aplicaciones",
+  "Controlar identidad",
+  "Revisar utilización",
+  "Preparar renovación",
+  "Acompañar migración",
 ] as const;
 
 export const RESOURCES = [
   {
     slug: "cableado",
     title: "Qué debe entregar un proyecto de cableado estructurado",
-    description:
-      "Lista de entregables para que una sede no quede con puntos activos y sin memoria técnica.",
+    description: "Entregables, señales de una planta incompleta y cómo preparar el levantamiento.",
   },
   {
     slug: "wifi",
-    title: "Cómo dimensionar el Wi-Fi de una oficina",
-    description:
-      "Criterios prácticos de cobertura, densidad y backhaul antes de comprar access points.",
+    title: "Cómo evaluar el Wi-Fi de una oficina",
+    description: "Cobertura, densidad, backhaul y errores frecuentes antes de ampliar access points.",
   },
   {
     slug: "equipos",
-    title: "Señales de que una empresa debe renovar sus equipos",
-    description:
-      "Indicadores operativos —no de marketing— para decidir una renovación de puestos.",
+    title: "Cuándo renovar los equipos de una empresa",
+    description: "Señales operativas, lista de verificación y datos que aceleran una cotización útil.",
   },
 ] as const;

@@ -1177,6 +1177,11 @@ body.landing-mode .cta-band {
   display: none;
 }
 
+html.landing-mode .staging-banner,
+body.landing-mode .staging-banner {
+  display: none !important;
+}
+
 .tech-scene {
   position: relative;
   min-height: 280px;
