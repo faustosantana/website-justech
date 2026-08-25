@@ -19,7 +19,11 @@ Hero diurno a composición completa (no bloque negro). H1, subtítulo y CTAs del
 | Evidencia Justech | `docs/fase-c/v83-evidencia.md` |
 | Pendientes | `docs/PENDIENTES_CONTENIDO.md`, `docs/fase-c/pendientes.md` |
 
-## 3. Limitaciones (honestas)
+## Laboratorio (Lighthouse móvil, simulate)
+
+- Performance 94 · Accessibility 100
+- LCP **3.0 s** (elemento: `v83-hero-mobile.avif`, debajo del copy en móvil). El objetivo 2.5 s no se alcanza sin poner la foto encima del titular.
+- FCP 0.9 s · CLS 0.072 · TBT 20 ms
 
 - No hay logos de fabricantes, clientes, certificaciones ni cifras: no están `verified`.
 - No hay casos nominativos publicados (`caseStudies: []`).

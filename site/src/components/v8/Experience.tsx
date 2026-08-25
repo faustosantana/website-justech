@@ -163,7 +163,7 @@ export function ExperienceV8() {
   const frames = framesOf(mode, focus);
   const frame = Math.min(beat, steps.length - 1);
   const plate = frames[Math.min(frame, frames.length - 1)];
-  const heroPlate = heroRest || reduce ? "v83-hero-day" : heroDesk[heroBeat] ?? "v83-hero-day";
+  const heroPlate = !heroExtra || heroRest || reduce ? "v83-hero-day" : heroDesk[heroBeat] ?? "v83-hero-day";
   const progress = ((frame + 1) / steps.length) * 100;
   const facts = useMemo(() => trustStrip(), []);
   const verifiedSlots = useMemo(() => publicEvidence(), []);
@@ -227,15 +227,14 @@ export function ExperienceV8() {
     if (exp && modes.some((m) => m.id === exp)) setMode(exp);
     if (params.get("demo") === "1") setFocus(true);
     setReady(true);
-    const start = window.setTimeout(() => {
+    const extras = window.setTimeout(() => {
+      setHeroExtra(true);
       if (!mq.matches) setHeroPlay(true);
-    }, 2500);
-    const extras = window.setTimeout(() => setHeroExtra(true), 4000);
+    }, 4000);
     return () => {
       document.body.classList.remove("landing-mode");
       mq.removeEventListener("change", apply);
       wideMq.removeEventListener("change", applyWide);
-      window.clearTimeout(start);
       window.clearTimeout(extras);
     };
   }, []);

@@ -6,7 +6,7 @@
   --muted: #3a4550;
   --line: rgba(12, 18, 32, 0.1);
   --navy: #06111f;
-  --teal: #0f766e;
+  --teal: #0a5c56;
   --live: #12b3ad;
   --fail: #b91c1c;
   --ok: #047857;
@@ -229,7 +229,7 @@
   position: relative;
   z-index: 2;
   padding: 72px 48px 56px;
-  max-width: 40rem;
+  max-width: 34rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -238,13 +238,13 @@
 .heroCopy::before {
   content: "";
   position: absolute;
-  inset: 0 auto 0 -8%;
-  width: 132%;
+  inset: 0 auto 0 -12%;
+  width: 124%;
   background: linear-gradient(
     90deg,
-    rgba(244, 240, 232, 0.96) 0%,
-    rgba(244, 240, 232, 0.9) 42%,
-    rgba(244, 240, 232, 0.55) 68%,
+    rgba(244, 240, 232, 0.94) 0%,
+    rgba(244, 240, 232, 0.78) 52%,
+    rgba(244, 240, 232, 0.28) 78%,
     rgba(244, 240, 232, 0) 100%
   );
   pointer-events: none;

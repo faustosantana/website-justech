@@ -68,7 +68,7 @@ async function interact(page, mobile) {
   await page.locator("#cableado").scrollIntoViewIfNeeded();
   await page.waitForTimeout(800);
   await page.locator("#conversar").scrollIntoViewIfNeeded();
-  await page.getByText("Diseñar solución").click();
+  await page.locator("#conversar").getByText("Diseñar solución", { exact: true }).click();
   await page.waitForTimeout(400);
 }
 
