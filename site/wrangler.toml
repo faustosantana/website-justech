@@ -1,0 +1,9 @@
+name = "justech-staging"
+compatibility_date = "2026-08-21"
+pages_build_output_dir = "out"
+
+# Importar el repo en Cloudflare Pages:
+# - root directory: site
+# - build: npm run build
+# - output: out
+# No conecta DNS de justech.do.

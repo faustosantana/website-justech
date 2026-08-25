@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Sitemap de staging. robots.txt Disallow: /. No enviar a Search Console.
+  El mapa de producción propuesto está en docs/fase-c/v85-sitemap.md.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>http://localhost:4173/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/cableado-estructurado/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/redes-empresariales/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/equipos-empresariales/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/licenciamiento/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/soporte-tecnico-empresarial/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/contacto/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/solicitar-cotizacion/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/solicitar-levantamiento/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/solicitar-diagnostico/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/solicitar-soporte/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/recursos/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/recursos/cableado/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/recursos/wifi/</loc></url>
+  <url><loc>http://localhost:4173/concepto-v8/recursos/equipos/</loc></url>
+  <url><loc>http://localhost:4173/contacto/</loc></url>
+  <url><loc>http://localhost:4173/soluciones/</loc></url>
+  <url><loc>http://localhost:4173/servicios/</loc></url>
+  <url><loc>http://localhost:4173/productos/</loc></url>
+</urlset>
