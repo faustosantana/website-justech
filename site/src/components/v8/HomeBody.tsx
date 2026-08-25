@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import styles from "./experience.module.css";
 
 const ExperienceV8 = dynamic(
   () => import("@/components/v8/Experience").then((m) => m.ExperienceV8),
@@ -8,5 +9,9 @@ const ExperienceV8 = dynamic(
 );
 
 export function HomeBody() {
-  return <ExperienceV8 />;
+  return (
+    <div className={styles.hydrate}>
+      <ExperienceV8 />
+    </div>
+  );
 }

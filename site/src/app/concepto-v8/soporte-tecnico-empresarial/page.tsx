@@ -56,7 +56,6 @@ export default function Page() {
           nextHref={`${V85_BASE}/solicitar-soporte/`}
           nextLabel="Diseñar un plan de soporte"
           quotes={PAGE_QUOTES.soporte}
-          dark
         />
       </main>
     </ConceptShell>

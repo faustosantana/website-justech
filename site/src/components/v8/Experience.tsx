@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { QuoteFlow } from "@/components/v8/Studios";
 import { company } from "@/content/site";
 import { CASES, CASES_HEADING, CASES_INTRO } from "@/content/cases-anonymized";
 import { TECH_GROUPS, TECH_HEADING } from "@/content/technologies";
-import { trustStrip } from "@/content/v83";
 import { AREAS, NEEDS, RESOURCES, V85, V85_BASE, type NeedId } from "@/content/v85";
 import { withBase } from "@/lib/paths";
 import styles from "./experience.module.css";
@@ -57,7 +56,6 @@ export function ExperienceV8() {
   const frame = Math.min(beat, frames.length - 1);
   const plate = frames[frame];
   const progress = ((frame + 1) / frames.length) * 100;
-  const facts = useMemo(() => trustStrip(), []);
 
   function talk(id?: string) {
     if (id) setQuoteNeed(id);
@@ -111,22 +109,6 @@ export function ExperienceV8() {
 
   return (
     <div className={styles.body} data-ready={ready ? "1" : "0"}>
-      <section className={styles.trust} id="confianza" aria-label="Confianza verificable">
-        <ul>
-          {facts.map((item) => (
-            <li key={item.id}>
-              {item.href ? (
-                <a href={item.href} rel={item.href.startsWith("http") ? "noreferrer" : undefined}>
-                  {item.label}
-                </a>
-              ) : (
-                item.label
-              )}
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <section className={styles.experiences} id="necesidades" aria-labelledby="exp-title">
         <div className={styles.expHead}>
           <p className={styles.kicker}>Necesidades</p>

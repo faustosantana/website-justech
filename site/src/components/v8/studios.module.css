@@ -37,7 +37,7 @@
   color: #12b3ad;
 }
 .kickerLight {
-  color: #0a5c56;
+  color: #06514c;
 }
 .labHead p,
 .note {
@@ -212,6 +212,8 @@
   width: min(1180px, calc(100% - 48px));
   margin: 56px auto 8px;
   scroll-margin-top: 96px;
+  color: #0b1018;
+  background: #f4f0e8;
 }
 .lab {
   scroll-margin-top: 96px;
@@ -561,8 +563,11 @@
   text-decoration: none;
 }
 .lab .cta {
-  background: #fff;
+  background: #f4f0e8;
   color: #06111f;
+}
+.lab .ghost {
+  color: #e8eef4;
 }
 .ghost {
   appearance: none;
@@ -573,7 +578,7 @@
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 4px;
-  color: inherit;
+  color: #06111f;
 }
 .users {
   display: flex;
@@ -758,6 +763,7 @@
   justify-content: space-between;
   gap: 12px;
   margin: 16px 0;
+  color: #1f2933;
 }
 .cableNav button {
   appearance: none;
@@ -938,10 +944,10 @@
   padding: 4px 8px;
   border: 1px solid rgba(12, 18, 32, 0.1);
 }
-.cableLegend li[data-k="tray"] { border-color: #0a5c56; color: #0a5c56; }
-.cableLegend li[data-k="fo"] { border-color: #c2410c; color: #9a3412; }
-.cableLegend li[data-k="mdf"] { border-color: #0a5c56; background: #e7f3f1; }
-.cableLegend li[data-k="pt"] { color: #3a4550; }
+.cableLegend li[data-k="tray"] { border-color: #06514c; color: #06514c; }
+.cableLegend li[data-k="fo"] { border-color: #9a3412; color: #7c2d12; }
+.cableLegend li[data-k="mdf"] { border-color: #06514c; background: #e7f3f1; color: #06111f; }
+.cableLegend li[data-k="pt"] { color: #1f2933; }
 
 .storyScene {
   margin: 16px 0;

@@ -1,6 +1,7 @@
 import { ConceptShell } from "@/components/v8/Chrome";
 import { HomeBody } from "@/components/v8/HomeBody";
 import { HomeHero } from "@/components/v8/HomeHero";
+import { TrustBar } from "@/components/v8/TrustBar";
 import { withBase } from "@/lib/paths";
 import { localBusinessLd, pageMeta, webPageLd } from "@/lib/seo";
 
@@ -29,6 +30,7 @@ export default function Page() {
       <ConceptShell>
         <main id="contenido">
           <HomeHero />
+          <TrustBar />
           <HomeBody />
         </main>
       </ConceptShell>

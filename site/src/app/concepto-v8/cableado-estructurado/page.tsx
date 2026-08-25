@@ -37,7 +37,6 @@ export default function Page() {
           nextHref={`${V85_BASE}/solicitar-levantamiento/`}
           nextLabel="Solicitar un levantamiento"
           quotes={PAGE_QUOTES.cableado}
-          dark
         />
       </main>
     </ConceptShell>
