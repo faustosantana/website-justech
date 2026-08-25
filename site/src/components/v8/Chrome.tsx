@@ -39,7 +39,15 @@ export function Chrome({
     <header className={styles.head}>
       <Link className={styles.brand} href={`${V85_BASE}/`} aria-label="Justech" onClick={close}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={withBase("/brand/justech-logo.png")} alt="Justech" width={300} height={72} />
+        <img
+          src={withBase("/brand/justech-logo.png")}
+          alt="Justech"
+          width={300}
+          height={72}
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
+        />
       </Link>
       <nav className={styles.nav} aria-label="Principal">
         {(
@@ -185,12 +193,8 @@ export function Foot() {
 }
 
 export function ConceptShell({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    document.body.classList.add("landing-mode");
-    return () => document.body.classList.remove("landing-mode");
-  }, []);
   return (
-    <div className={styles.page} data-v="85">
+    <div className={styles.page} data-v="86">
       <Chrome />
       {children}
       <Foot />

@@ -1166,9 +1166,11 @@ th {
   background: var(--foam);
 }
 
+html.landing-mode .site-header,
+html.landing-mode .site-footer,
 body.landing-mode .site-header,
 body.landing-mode .site-footer {
-  display: none;
+  display: none !important;
 }
 
 body.landing-mode .cta-band {

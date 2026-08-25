@@ -653,18 +653,37 @@
 
 .cableLayout {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.65fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(220px, 0.55fr);
   gap: 24px;
   margin-top: 20px;
   align-items: start;
 }
+.cableBoard,
 .cableScene {
   margin: 0;
   position: relative;
   background: #d8d2c8;
-  aspect-ratio: 16 / 10;
   overflow: hidden;
-  min-height: 320px;
+  min-height: 420px;
+}
+.cableBoard {
+  aspect-ratio: auto;
+  min-height: 560px;
+}
+.cableDual {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  min-height: 560px;
+}
+.isoSvg,
+.planSvg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 560px;
+  background: rgba(247, 244, 238, 0.72);
 }
 .cablePlate,
 .cablePlateOn {
@@ -681,12 +700,6 @@
   height: 100%;
   object-fit: cover;
   display: block;
-}
-.planSvg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 }
 .cableCap {
   position: absolute;
@@ -906,12 +919,129 @@
   color: #12b3ad;
 }
 
+.cableLegend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  font-size: 0.78rem;
+}
+.cableLegend li {
+  padding: 4px 8px;
+  border: 1px solid rgba(12, 18, 32, 0.1);
+}
+.cableLegend li[data-k="tray"] { border-color: #0a5c56; color: #0a5c56; }
+.cableLegend li[data-k="fo"] { border-color: #c2410c; color: #9a3412; }
+.cableLegend li[data-k="mdf"] { border-color: #0a5c56; background: #e7f3f1; }
+.cableLegend li[data-k="pt"] { color: #3a4550; }
+
+.storyScene {
+  margin: 16px 0;
+}
+.storySvg {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #0e161e;
+}
+.hudLbl {
+  fill: #c5d0da;
+  font-size: 12px;
+  font-family: inherit;
+  letter-spacing: 0.03em;
+}
+
+.netStage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 16px;
+  align-items: stretch;
+}
+.netHud {
+  background: #0b1018;
+  color: #e8eef4;
+  padding: 14px 16px;
+  display: grid;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+.netHud p {
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+.netHud span[data-k="live"] { color: #12b3ad; }
+.netHud span[data-k="dead"] { color: #fca5a5; }
+.netHud span[data-k="wait"] { color: #8aa0b0; }
+.hudNote {
+  color: #8aa0b0 !important;
+  font-size: 0.75rem;
+}
+
+.hireOverlay {
+  list-style: none;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 80%;
+}
+.hireOverlay li {
+  background: rgba(14, 22, 30, 0.72);
+  color: #e8eef4;
+  font-size: 0.7rem;
+  padding: 4px 7px;
+}
+.hireOverlay li[data-on="1"] { background: rgba(10, 92, 86, 0.92); }
+.hireOverlay li[data-now="1"] { box-shadow: inset 0 -2px 0 #12b3ad; }
+
+.dirGrid {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+.dirGrid li {
+  border: 1px solid rgba(12, 18, 32, 0.1);
+  padding: 6px;
+  font-size: 0.72rem;
+  display: grid;
+  gap: 2px;
+}
+.dirGrid li[data-on="1"] {
+  border-color: #0a5c56;
+  background: #e7f3f1;
+}
+
+.miniNet {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #0b1018;
+}
+
 @media (max-width: 900px) {
   .cableLayout {
     grid-template-columns: 1fr;
   }
-  .cableScene {
-    aspect-ratio: 4 / 5;
+  .cableBoard {
+    min-height: 0;
+  }
+  .cableDual {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .isoSvg,
+  .planSvg {
+    min-height: 420px;
   }
   .cableSteps {
     display: none;
@@ -919,5 +1049,11 @@
   .story {
     width: min(1180px, calc(100% - 28px));
     padding: 20px;
+  }
+  .netStage {
+    grid-template-columns: 1fr;
+  }
+  .dirGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

@@ -108,7 +108,15 @@ export function Header() {
           <Link href="/" className="brand-lockup" aria-label="Justech, inicio">
             <span className="brand-chip">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={withBase("/brand/justech-logo.png")} alt="Justech" width={150} height={36} />
+              <img
+                src={withBase("/brand/justech-logo.png")}
+                alt="Justech"
+                width={150}
+                height={36}
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+              />
             </span>
           </Link>
           <div className="header-actions">

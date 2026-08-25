@@ -8,7 +8,7 @@ import styles from "@/components/v8/article.module.css";
 
 const page = PAGES.cableado;
 
-export const metadata = pageMeta(page.title, page.description, page.path);
+export const metadata = pageMeta(page.title, page.description, page.path, "/visual/v8/v82-sede-rack.jpg");
 
 export default function Page() {
   return (
@@ -30,6 +30,8 @@ export default function Page() {
           how={page.how}
           delivers={page.delivers}
           faq={page.faq}
+          path={page.path}
+          hero={{ image: "v82-sede-rack", alt: "Cuarto técnico empresarial con rack organizado." }}
           demo={
             <div className={styles.demoSlot}>
               <CableDemo />

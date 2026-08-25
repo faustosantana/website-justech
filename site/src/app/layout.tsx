@@ -64,6 +64,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="es-DO" className={`${ibmPlex.variable} ${display.variable} ${mono.variable}`}>
       <body className="font-sans antialiased">
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{if(/\\/concepto-v8(\\/|$)/.test(location.pathname)){document.documentElement.classList.add('landing-mode');document.body.classList.add('landing-mode');}}catch(e){}})();",
+          }}
+        />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <a className="skip-link" href="#contenido">
           Saltar al contenido

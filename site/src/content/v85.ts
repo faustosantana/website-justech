@@ -3,7 +3,7 @@ import { publicText } from "./justech-source-of-truth";
 export const V85_BASE = "/concepto-v8";
 
 export const V85 = {
-  version: "8.5",
+  version: "8.6",
   hero: {
     kicker: "Justech · Integradora tecnológica · Santo Domingo",
     h1: "Integramos la tecnología que mantiene operando su empresa.",

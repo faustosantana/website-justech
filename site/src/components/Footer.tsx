@@ -51,6 +51,9 @@ export function Footer() {
             width={72}
             height={48}
             className="mb-4 h-12 w-auto"
+            loading="lazy"
+            decoding="async"
+            fetchPriority="low"
           />
           <p className="m-0 text-sm leading-relaxed">
             {company.legalName}. Integradora tecnológica desde {company.city}, {company.country}.

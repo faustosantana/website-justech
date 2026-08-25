@@ -1183,9 +1183,10 @@
   .heroStage {
     position: relative;
     order: 2;
-    aspect-ratio: 4 / 5;
-    min-height: 46vh;
-    height: auto;
+    aspect-ratio: 16 / 10;
+    min-height: 0;
+    max-height: 32vh;
+    height: 32vh;
   }
   .heroCopy {
     order: 1;
@@ -1333,5 +1334,75 @@
   .path,
   .pathOn {
     white-space: normal;
+  }
+}
+
+.heroLiveCap {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 3;
+  margin: 0;
+  padding: 6px 10px;
+  background: rgba(244, 240, 232, 0.92);
+  color: #3a4550;
+  font-size: 0.86rem;
+}
+
+.body {
+  display: block;
+}
+
+.cases {
+  width: min(1180px, calc(100% - 56px));
+  margin: 48px auto;
+}
+.cases h2 {
+  margin: 0 0 12px;
+  font-size: clamp(1.85rem, 3.1vw, 2.7rem);
+  max-width: 18ch;
+}
+.caseGrid {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.caseGrid li {
+  padding: 20px;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+.caseNeed {
+  margin: 0 0 8px;
+  color: var(--teal);
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 650;
+}
+.caseGrid strong {
+  display: block;
+  margin-bottom: 10px;
+}
+.caseGrid p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.caseGrid span {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+@media (max-width: 900px) {
+  .caseGrid {
+    grid-template-columns: 1fr;
+  }
+  .cases {
+    width: min(1180px, calc(100% - 32px));
   }
 }

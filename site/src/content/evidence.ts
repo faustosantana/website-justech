@@ -43,7 +43,7 @@ export const evidence: EvidenceItem[] = [
   { id: "local", kind: "fact", label: "Atención local", detail: "Acompañamiento desde Santo Domingo", status: "verified", verifiedOn: "2026-08-25" },
   { id: "enterprise", kind: "fact", label: "Soluciones empresariales", detail: "Infraestructura, equipos, plataformas y soporte", status: "verified", verifiedOn: "2026-08-25" },
 
-  { id: "rnc", kind: "legal", label: "RNC", status: "pending" },
+  { id: "rnc", kind: "legal", label: "RNC 1-31-98224-3", status: "verified", verifiedOn: "2026-08-25", source: "sitio público" },
   { id: "address", kind: "legal", label: "Dirección física", status: "pending" },
   { id: "whatsapp", kind: "channel", label: "WhatsApp comercial", status: "not_authorized" },
   { id: "coverage", kind: "fact", label: "Cobertura nacional exacta", status: "pending" },

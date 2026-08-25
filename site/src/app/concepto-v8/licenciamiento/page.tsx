@@ -8,7 +8,7 @@ import styles from "@/components/v8/article.module.css";
 
 const page = PAGES.licencias;
 
-export const metadata = pageMeta(page.title, page.description, page.path);
+export const metadata = pageMeta(page.title, page.description, page.path, "/visual/v8/v82-modern-apps.jpg");
 
 export default function Page() {
   return (
@@ -30,6 +30,8 @@ export default function Page() {
           how={page.how}
           delivers={page.delivers}
           faq={page.faq}
+          path={page.path}
+          hero={{ image: "v82-modern-apps", alt: "Aplicaciones de productividad en un puesto empresarial." }}
           demo={
             <div className={styles.demoSlot}>
               <LicenciasLab />

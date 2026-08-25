@@ -99,12 +99,33 @@ export function NetworkDemo({
             ))}
           </div>
         </div>
-        <div className={styles.svgWrap} data-compact={compact ? "1" : "0"}>
-          {compact ? (
-            <MobileNet vis={vis} st={st} live={live} backup={backup} primaryDead={primaryDead} beat={beat} />
-          ) : (
-            <DeskNet vis={vis} st={st} live={live} backup={backup} primaryDead={primaryDead} beat={beat} />
-          )}
+        <div className={styles.netStage}>
+          <div className={styles.svgWrap} data-compact={compact ? "1" : "0"}>
+            {compact ? (
+              <MobileNet vis={vis} st={st} live={live} backup={backup} primaryDead={primaryDead} beat={beat} />
+            ) : (
+              <DeskNet vis={vis} st={st} live={live} backup={backup} primaryDead={primaryDead} beat={beat} />
+            )}
+          </div>
+          <aside className={styles.netHud} aria-label="Estado de la demostración">
+            <p>
+              <strong>ISP principal</strong>
+              <span data-k={primaryDead ? "dead" : live ? "live" : "wait"}>{primaryDead ? "Fuera de servicio" : live ? "Activo" : "En espera"}</span>
+            </p>
+            <p>
+              <strong>ISP respaldo</strong>
+              <span data-k={backup ? "live" : "wait"}>{backup ? "Toma el tráfico" : "En espera"}</span>
+            </p>
+            <p>
+              <strong>Borde / firewall</strong>
+              <span data-k={live || backup ? "live" : "wait"}>{live || backup ? "Operativo" : "En espera"}</span>
+            </p>
+            <p>
+              <strong>Sucursal</strong>
+              <span data-k={backup ? "live" : beat >= 4 ? "wait" : "wait"}>{backup ? "Continúa por respaldo" : "Observación"}</span>
+            </p>
+            <p className={styles.hudNote}>Demostración conceptual. Sin cifras de disponibilidad.</p>
+          </aside>
         </div>
         <div className={styles.legend} aria-hidden="true">
           <span data-k="live">Enlace activo</span>
@@ -463,8 +484,15 @@ export function DeviceDemo({ compact = false }: { compact?: boolean }) {
         <figure className={styles.photo}>
           <picture>
             <source srcSet={withBase(`/visual/v8/${item.photo}.webp`)} type="image/webp" />
-            <img src={withBase(`/visual/v8/${item.photo}.jpg`)} alt={`Puesto ${item.t}`} width={1400} height={788} />
+            <img src={withBase(`/visual/v8/${item.photo}.jpg`)} alt={`Puesto ${item.t}`} width={1400} height={788} loading="lazy" />
           </picture>
+          <ol className={styles.hireOverlay} aria-hidden="true">
+            {pipeline.map((s, i) => (
+              <li key={s} data-on={i <= step ? "1" : "0"} data-now={i === step ? "1" : "0"}>
+                {s}
+              </li>
+            ))}
+          </ol>
           <figcaption>
             {item.t} · {stage}
           </figcaption>
@@ -587,6 +615,14 @@ export function LicenseDemo({ compact = false }: { compact?: boolean }) {
               <span key={i} data-on={i < assigned ? "1" : "0"} />
             ))}
           </div>
+          <ul className={styles.dirGrid} aria-label="Directorio de demostración">
+            {Array.from({ length: users }, (_, i) => (
+              <li key={i} data-on={i < assigned ? "1" : "0"}>
+                <strong>U-{String(i + 1).padStart(2, "0")}</strong>
+                <span>{i < assigned ? licenseKinds[kind] : "Sin asiento"}</span>
+              </li>
+            ))}
+          </ul>
           <div className={styles.depts}>
             {licenseKinds.map((k, i) => (
               <button
@@ -707,6 +743,27 @@ export function SupportDemo({ beat, onWatchNet }: { beat: number; onWatchNet: ()
             Ver en la red
           </button>
         </header>
+        <svg className={styles.miniNet} viewBox="0 0 520 72" aria-hidden="true">
+          <rect x="8" y="18" width="90" height="36" rx="4" fill={beat >= 6 && beat < 9 ? "#7f1d1d" : "#0a5c56"} />
+          <text x="53" y="42" textAnchor="middle" fill="#f4f1ea" fontSize="11">
+            ISP-1
+          </text>
+          <rect x="140" y="18" width="90" height="36" rx="4" fill={beat >= 7 ? "#0a5c56" : "#3a4550"} />
+          <text x="185" y="42" textAnchor="middle" fill="#f4f1ea" fontSize="11">
+            ISP-2
+          </text>
+          <rect x="272" y="18" width="100" height="36" rx="4" fill="#12263a" stroke="#12b3ad" />
+          <text x="322" y="42" textAnchor="middle" fill="#e8eef4" fontSize="11">
+            Sucursal
+          </text>
+          <rect x="412" y="18" width="96" height="36" rx="4" fill="#12263a" />
+          <text x="460" y="42" textAnchor="middle" fill="#e8eef4" fontSize="11">
+            Ticket
+          </text>
+          <path d="M98 36 H140" stroke={beat >= 6 && beat < 9 ? "#b91c1c" : "#12b3ad"} strokeWidth="3" />
+          <path d="M230 36 H272" stroke={beat >= 7 ? "#38bdf8" : "#5b6d7c"} strokeWidth="3" />
+          <path d="M372 36 H412" stroke={beat >= 8 ? "#12b3ad" : "#5b6d7c"} strokeWidth="3" />
+        </svg>
         <p className={styles.netLink} data-on={beat >= 6 ? "1" : "0"}>
           Origen: laboratorio de red · ISP principal {beat >= 6 && beat < 9 ? "fuera de servicio" : "en observación"}
         </p>

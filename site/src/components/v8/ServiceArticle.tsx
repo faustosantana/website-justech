@@ -1,7 +1,9 @@
+import { PageHero } from "@/components/v8/PageHero";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { company } from "@/content/site";
 import { V85_BASE } from "@/content/v85";
+import { webPageLd } from "@/lib/seo";
 import styles from "./article.module.css";
 
 export function Crumbs({ items }: { items: { href: string; label: string }[] }) {
@@ -12,6 +14,7 @@ export function Crumbs({ items }: { items: { href: string; label: string }[] }) 
       "@type": "ListItem",
       position: i + 1,
       name: item.label,
+      item: item.href,
     })),
   };
   return (
@@ -46,6 +49,8 @@ export function ServiceArticle({
   demo,
   nextHref,
   nextLabel,
+  hero,
+  path,
 }: {
   kicker: string;
   title: string;
@@ -59,6 +64,8 @@ export function ServiceArticle({
   demo?: ReactNode;
   nextHref: string;
   nextLabel: string;
+  hero?: { image: string; alt: string };
+  path?: string;
 }) {
   const faqLd = {
     "@context": "https://schema.org",
@@ -74,6 +81,7 @@ export function ServiceArticle({
     "@type": "Service",
     name: title,
     description: lead,
+    url: path,
     provider: {
       "@type": "ProfessionalService",
       name: company.legalName,
@@ -88,11 +96,23 @@ export function ServiceArticle({
     areaServed: "DO",
   };
   return (
-    <article className={styles.article}>
+    <article className={styles.article} data-visual={hero ? "1" : "0"}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
-      <p className={styles.kicker}>{kicker}</p>
-      <h1>{title}</h1>
-      <p className={styles.lead}>{lead}</p>
+      {path ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd(title, lead, path)) }}
+        />
+      ) : null}
+      {hero ? (
+        <PageHero kicker={kicker} title={title} lead={lead} image={hero.image} alt={hero.alt} />
+      ) : (
+        <>
+          <p className={styles.kicker}>{kicker}</p>
+          <h1>{title}</h1>
+          <p className={styles.lead}>{lead}</p>
+        </>
+      )}
       <section>
         <h2>Qué problema resuelve</h2>
         <p>{problem}</p>
