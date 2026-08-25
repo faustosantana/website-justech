@@ -4,8 +4,8 @@ import { withBase } from "@/lib/paths";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
-  "Tecnología empresarial de extremo a extremo",
-  "Diseñamos, suministramos, conectamos y soportamos la infraestructura, los equipos y las plataformas que mantienen su negocio operando. Justech SRL, Santo Domingo.",
+  "Integramos la tecnología que mantiene operando su empresa",
+  "Infraestructura, conectividad, puestos, nube, seguridad y soporte, con un responsable. Justech SRL, Santo Domingo.",
   "/concepto-v8/",
 );
 

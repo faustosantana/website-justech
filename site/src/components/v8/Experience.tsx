@@ -1,39 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  CableDemo,
+  DeviceDemo,
+  LicenseDemo,
+  NetworkDemo,
+  QuoteFlow,
+  SupportDemo,
+} from "@/components/v8/Studios";
 import { company } from "@/content/site";
 import { publicEvidence } from "@/content/evidence";
-import {
-  cableJourney,
-  featuredResources,
-  formIntents,
-  labActions,
-  labNodes,
-  licenseJourney,
-  pillars,
-  productDoors,
-  sucursalSteps,
-  trustStrip,
-  type FormIntent,
-} from "@/content/v83";
+import { featuredResources, labNodes, pillars, sucursalSteps, trustStrip } from "@/content/v83";
+import { heroStages, relatedByMode } from "@/content/v84";
 import { withBase } from "@/lib/paths";
 import styles from "./experience.module.css";
 
 type Mode = "construir" | "modernizar" | "operar";
 type Mega = "soluciones" | "servicios" | "productos" | "industrias" | null;
 
-const HERO_MS = 1400;
+const HERO_MS = 1100;
 const SCENE_MS = 1400;
-const CABLE_MS = 1200;
-
-const heroBeats = [
-  "Infraestructura en servicio.",
-  "La red llega al puesto.",
-  "Las personas trabajan.",
-  "El negocio sigue operando.",
-];
-const heroDesk = ["v83-hero-rack", "v83-hero-ops", "v83-hero-ops", "v83-hero-result"];
 
 const modes: {
   id: Mode;
@@ -71,7 +59,7 @@ const modes: {
     problem: "Cuando cae el enlace, nadie sabe quién responde ni qué quedó documentado.",
     solution: "Mesa, mantenimiento y un proceso visible: de la falla al cierre.",
     result: "El respaldo sostiene. El caso queda en el historial.",
-    cta: "Ver falla y respaldo",
+    cta: "Ver la red",
     href: "/soporte/",
     hrefLabel: "Soporte",
   },
@@ -149,38 +137,35 @@ export function ExperienceV8() {
   const [playing, setPlaying] = useState(false);
   const [focus, setFocus] = useState(false);
   const [sent, setSent] = useState(false);
-  const [intent, setIntent] = useState<FormIntent | "">("");
   const [reduce, setReduce] = useState(false);
   const [ready, setReady] = useState(false);
   const [sceneExtra, setSceneExtra] = useState(false);
   const [wide, setWide] = useState(true);
-  const [cableBeat, setCableBeat] = useState(0);
-  const [cablePlay, setCablePlay] = useState(false);
-  const [licenseBeat, setLicenseBeat] = useState(0);
+  const [netBeat, setNetBeat] = useState(0);
+  const [netPlay, setNetPlay] = useState(false);
+  const [quoteNeed, setQuoteNeed] = useState("");
 
   const current = modes.find((m) => m.id === mode) ?? modes[0];
   const steps = stepsOf(mode, focus);
   const frames = framesOf(mode, focus);
   const frame = Math.min(beat, steps.length - 1);
   const plate = frames[Math.min(frame, frames.length - 1)];
-  const heroPlate = !heroExtra || heroRest || reduce ? "v83-hero-day" : heroDesk[heroBeat] ?? "v83-hero-day";
+  const stage = heroStages[Math.min(heroBeat, heroStages.length - 1)];
+  const heroPlate = !heroExtra || heroRest || reduce ? "v83-hero-day" : stage.plate;
   const progress = ((frame + 1) / steps.length) * 100;
   const facts = useMemo(() => trustStrip(), []);
   const verifiedSlots = useMemo(() => publicEvidence(), []);
-  const intentCfg = formIntents.find((item) => item.id === intent);
-  const cable = cableJourney[Math.min(cableBeat, cableJourney.length - 1)];
-  const license = licenseJourney[Math.min(licenseBeat, licenseJourney.length - 1)];
 
   const heroDeskUniq = useMemo(
     () => ["v83-hero-day", "v83-hero-rack", "v83-hero-ops", "v83-hero-result"],
     [],
   );
 
-  function talk(next: FormIntent) {
-    setIntent(next);
+  function talk(need?: string) {
     setFocus(false);
     setMegaKey(null);
     setMenu(false);
+    if (need) setQuoteNeed(need);
     document.getElementById("conversar")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
   }
 
@@ -213,8 +198,8 @@ export function ExperienceV8() {
         setHeroPlay(false);
         setHeroRest(true);
         setPlaying(false);
-        setCablePlay(false);
-        setHeroBeat(heroBeats.length - 1);
+        setHeroBeat(heroStages.length - 1);
+        setNetPlay(false);
       }
     };
     const applyWide = () => setWide(wideMq.matches);
@@ -243,7 +228,7 @@ export function ExperienceV8() {
     if (!heroPlay || reduce || heroRest || focus) return;
     const id = window.setInterval(() => {
       setHeroBeat((n) => {
-        if (n >= heroBeats.length - 1) {
+        if (n >= heroStages.length - 1) {
           setHeroRest(true);
           setHeroPlay(false);
           return n;
@@ -271,36 +256,16 @@ export function ExperienceV8() {
   }, [focus, reduce]);
 
   useEffect(() => {
-    const el = document.getElementById("cableado");
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (reduce) return;
-        setCablePlay(entry.isIntersecting);
-      },
-      { threshold: 0.25 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [reduce]);
+    if (!netPlay || reduce) return;
+    const id = window.setInterval(() => setNetBeat((n) => (n + 1) % 10), 1400);
+    return () => window.clearInterval(id);
+  }, [netPlay, reduce]);
 
   useEffect(() => {
     if (!playing || reduce) return;
     const id = window.setInterval(() => setBeat((n) => (n + 1) % steps.length), SCENE_MS);
     return () => window.clearInterval(id);
   }, [playing, reduce, steps.length, mode, focus]);
-
-  useEffect(() => {
-    if (!cablePlay || reduce) return;
-    const id = window.setInterval(() => setCableBeat((n) => (n + 1) % cableJourney.length), CABLE_MS);
-    return () => window.clearInterval(id);
-  }, [cablePlay, reduce]);
-
-  useEffect(() => {
-    if (mode !== "modernizar" || reduce || focus) return;
-    const id = window.setInterval(() => setLicenseBeat((n) => (n + 1) % licenseJourney.length), 1600);
-    return () => window.clearInterval(id);
-  }, [mode, reduce, focus]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -330,16 +295,17 @@ export function ExperienceV8() {
     setHeroPlay(!reduce);
   }
 
-  function onSubmit(e: FormEvent) {
-    e.preventDefault();
-    setSent(true);
+  function startNet(n = 0) {
+    setNetBeat(n);
+    setNetPlay(!reduce);
+    document.getElementById("red")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
   }
 
   const showTicket = focus && mode === "operar" && frame >= 4;
   const failBeat = focus && mode === "operar" ? frame : -1;
 
   return (
-    <div className={styles.page} data-ready={ready ? "1" : "0"} data-v="83">
+    <div className={styles.page} data-ready={ready ? "1" : "0"} data-v="84">
       <header className={styles.head}>
         <a className={styles.brand} href="#inicio" aria-label="Justech" onClick={() => setFocus(false)}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -369,7 +335,7 @@ export function ExperienceV8() {
           <a href={company.supportUrl}>Soporte</a>
         </nav>
         <div className={styles.headActions}>
-          <a className={styles.cta} href="#conversar" onClick={() => setIntent("especialista")}>
+          <a className={styles.cta} href="#conversar" onClick={() => talk()}>
             Hablar con un especialista
           </a>
           <button type="button" className={styles.menu} aria-expanded={menu} onClick={() => setMenu((v) => !v)}>
@@ -399,8 +365,8 @@ export function ExperienceV8() {
                 {m.t}
               </button>
             ))}
-            <a href="#productos" onClick={() => setMenu(false)}>
-              Productos
+            <a href="#equipos" onClick={() => setMenu(false)}>
+              Equipos
             </a>
             <a href="#cableado" onClick={() => setMenu(false)}>
               Cableado
@@ -427,15 +393,8 @@ export function ExperienceV8() {
             </p>
             {mode === "operar" ? (
               <>
-                <p className={styles.demoNote}>Demostración de arquitectura y proceso.</p>
+                <p className={styles.demoNote}>Demostración conceptual de arquitectura</p>
                 <RouteRead beat={failBeat} />
-                <LabActions
-                  current={frame}
-                  onPick={(step) => {
-                    setBeat(step);
-                    setPlaying(false);
-                  }}
-                />
               </>
             ) : null}
             <div className={styles.sheetActions}>
@@ -451,7 +410,7 @@ export function ExperienceV8() {
               >
                 Siguiente
               </button>
-              <button type="button" className={styles.cta} onClick={() => talk("especialista")}>
+              <button type="button" className={styles.cta} onClick={() => talk()}>
                 Conversar
               </button>
             </div>
@@ -494,28 +453,42 @@ export function ExperienceV8() {
               : null}
           </div>
           <div className={styles.heroCopy}>
-            <p className={styles.trustLine}>Integración tecnológica empresarial desde Santo Domingo.</p>
-            <h1>Tecnología empresarial de extremo a extremo.</h1>
+            <p className={styles.trustLine}>Santo Domingo · desde 2018 · atención local</p>
+            <h1>Integramos la tecnología que mantiene operando su empresa.</h1>
             <p>
-              Diseñamos, suministramos, conectamos y soportamos la infraestructura, los equipos y las plataformas que
-              mantienen su negocio operando.
+              Infraestructura, conectividad, puestos, nube, seguridad y soporte, con un responsable.
             </p>
             <div className={styles.heroCtas}>
-              <a className={styles.cta} href="#conversar" onClick={() => setIntent("disenar")}>
+              <a className={styles.cta} href="#conversar" onClick={() => talk("integral")}>
                 Diseñar mi solución
               </a>
               <a className={styles.text} href="#capacidades">
                 Explorar capacidades
               </a>
             </div>
+            <ol className={styles.heroRail} aria-hidden="true">
+              {heroStages.map((s, i) => (
+                <li key={s.t} data-on={heroRest || reduce || i <= heroBeat ? "1" : "0"} />
+              ))}
+            </ol>
             <p className={styles.caption} aria-live="polite">
-              {heroRest ? "Operación en curso." : heroBeats[heroBeat]}
+              {heroRest || reduce ? "Operación estable." : stage.t}
             </p>
-            {heroRest ? (
-              <button type="button" className={styles.quiet} onClick={replayHero}>
-                Reproducir de nuevo
-              </button>
+            {heroRest || reduce ? (
+              <p className={styles.stack}>
+                Infraestructura · Conectividad · Puestos · Servicios · Seguridad · Nube · Soporte
+              </p>
             ) : null}
+            <button
+              type="button"
+              className={styles.quiet}
+              onClick={() => {
+                if (heroRest) replayHero();
+                else setHeroPlay((v) => !v);
+              }}
+            >
+              {heroPlay ? "Pausar escena" : "Reproducir escena"}
+            </button>
           </div>
         </section>
 
@@ -600,21 +573,22 @@ export function ExperienceV8() {
               <p className={styles.state} aria-live="polite">
                 {steps[frame]}
               </p>
-              {mode === "modernizar" ? (
-                <LicensePath beat={licenseBeat} onPick={setLicenseBeat} current={license} />
-              ) : null}
-              {mode === "operar" ? <p className={styles.demoNote}>Demostración de arquitectura y proceso.</p> : null}
+              <ul className={styles.related}>
+                {relatedByMode[mode].map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
               <div className={styles.doorCtas}>
                 {mode === "operar" ? (
-                  <button type="button" className={styles.cta} onClick={() => go(mode, true)}>
-                    Ver falla y respaldo
+                  <button type="button" className={styles.cta} onClick={() => startNet(0)}>
+                    Ver la red
                   </button>
                 ) : (
                   <>
                     <button
                       type="button"
                       className={styles.cta}
-                      onClick={() => talk(mode === "construir" ? "levantamiento" : "disenar")}
+                      onClick={() => talk(mode === "construir" ? "integral" : "equipos")}
                     >
                       {current.cta}
                     </button>
@@ -629,80 +603,22 @@ export function ExperienceV8() {
           </div>
         </section>
 
-        <section className={styles.products} id="productos" aria-labelledby="prod-title">
-          <p className={styles.kicker}>Suministro</p>
-          <h2 id="prod-title">Productos y equipos, con criterio. No un catálogo de precios.</h2>
-          <p>
-            Explore, compare perfiles, pida una recomendación o cotice. La puesta en marcha forma parte del mismo
-            responsable.
-          </p>
-          <ul className={styles.prodGrid}>
-            {productDoors.map((p) => (
-              <li key={p.t}>
-                <Link href={p.href}>
-                  <strong>{p.t}</strong>
-                  <span>{p.d}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <div className={styles.rowCtas}>
-            <button type="button" className={styles.cta} onClick={() => talk("equipos")}>
-              Cotizar equipos
-            </button>
-            <button type="button" className={styles.text} onClick={() => talk("disenar")}>
-              Diseñar solución
-            </button>
-          </div>
-        </section>
-
-        <section className={styles.cable} id="cableado" aria-labelledby="cable-title">
-          <div className={styles.cableCopy}>
-            <p className={styles.kicker}>Infraestructura física</p>
-            <h2 id="cable-title">Cableado que se puede mantener.</h2>
-            <p>
-              Plano, rutas, puntos, rack, certificación, documentación y entrega. Una ventaja que el mercado local
-              casi no demuestra.
-            </p>
-            <ol className={styles.cableSteps} aria-label="Proceso de cableado">
-              {cableJourney.map((step, i) => (
-                <li key={step.t}>
-                  <button
-                    type="button"
-                    aria-current={i === cableBeat ? "step" : undefined}
-                    onClick={() => {
-                      setCableBeat(i);
-                      setCablePlay(false);
-                    }}
-                  >
-                    {step.t}
-                  </button>
-                </li>
-              ))}
-            </ol>
-            <p className={styles.state} aria-live="polite">
-              {cable.t}: {cable.d}
-            </p>
-            <div className={styles.rowCtas}>
-              <button type="button" className={styles.cta} onClick={() => talk("levantamiento")}>
-                Solicitar levantamiento
-              </button>
-              <Link href="/l/cableado-estructurado/">Cotizar proyecto</Link>
-              <button type="button" className={styles.text} onClick={() => talk("especialista")}>
-                Hablar con especialista
-              </button>
-            </div>
-          </div>
-          <figure className={styles.scene}>
-            <Plate
-              name={cable.frame}
-              alt="Obra de cableado e infraestructura en una sede empresarial."
-              width={1600}
-              height={900}
-              active
-            />
-          </figure>
-        </section>
+        <NetworkDemo
+          beat={netBeat}
+          playing={netPlay}
+          onPlay={() => setNetPlay((v) => !v)}
+          onBeat={(n) => {
+            setNetBeat(n);
+            setNetPlay(false);
+          }}
+        />
+        <DeviceDemo />
+        <LicenseDemo />
+        <SupportDemo
+          beat={netBeat}
+          onWatchNet={() => startNet(6)}
+        />
+        <CableDemo />
 
         <section className={styles.method} id="metodo">
           <p className={styles.kicker}>Método</p>
@@ -751,89 +667,14 @@ export function ExperienceV8() {
           </ul>
         </section>
 
-        <section className={styles.talk} id="conversar">
-          <h2>Cuéntenos la intención. El formulario se adapta.</h2>
-          <p>
-            {company.phoneDisplay} · {company.email}
-          </p>
-          {sent ? (
+        {sent ? (
+          <section className={styles.talk} id="conversar">
+            <h2>Solicitud registrada</h2>
             <p role="status">Gracias. Un especialista le escribe a {company.email}.</p>
-          ) : (
-            <form onSubmit={onSubmit}>
-              <fieldset className={styles.need}>
-                <legend>¿Qué necesita?</legend>
-                {formIntents.map((item) => (
-                  <label key={item.id} className={intent === item.id ? styles.needOn : undefined}>
-                    <input
-                      type="radio"
-                      name="intent"
-                      value={item.id}
-                      checked={intent === item.id}
-                      onChange={() => setIntent(item.id)}
-                      required
-                    />
-                    {item.label}
-                  </label>
-                ))}
-              </fieldset>
-              {intentCfg ? (
-                <>
-                  <label>
-                    Nombre
-                    <input name="name" autoComplete="name" required />
-                  </label>
-                  <label>
-                    Empresa
-                    <input name="company" autoComplete="organization" required />
-                  </label>
-                  <label>
-                    Correo corporativo
-                    <input name="email" type="email" autoComplete="email" required />
-                  </label>
-                  <label>
-                    Teléfono <span>(opcional)</span>
-                    <input name="phone" type="tel" autoComplete="tel" />
-                  </label>
-                  <label>
-                    {intentCfg.extra.label}
-                    <select name={intentCfg.extra.name} required defaultValue="">
-                      <option value="" disabled>
-                        Seleccione
-                      </option>
-                      {intentCfg.extra.options.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  {intent === "renovar" ? (
-                    <label>
-                      Usuarios aproximados <span>(opcional)</span>
-                      <input name="usuarios" inputMode="numeric" />
-                    </label>
-                  ) : null}
-                  {intent === "soporte" ? (
-                    <p>
-                      Si ya es cliente, el canal operativo es{" "}
-                      <a href={company.supportUrl}>soporte.justech.do</a>.
-                    </p>
-                  ) : null}
-                  <label>
-                    Descripción breve
-                    <textarea name="note" rows={3} />
-                  </label>
-                  <p className={styles.consent}>
-                    Al enviar acepta ser contactado sobre esta solicitud. Usaremos estos datos solo para responderle.
-                  </p>
-                  <button type="submit" className={styles.cta}>
-                    Enviar
-                  </button>
-                </>
-              ) : null}
-            </form>
-          )}
-        </section>
+          </section>
+        ) : (
+          <QuoteFlow initial={quoteNeed} onDone={() => setSent(true)} />
+        )}
       </main>
 
       {focus ? null : (
@@ -860,51 +701,6 @@ export function ExperienceV8() {
           </div>
         </footer>
       )}
-    </div>
-  );
-}
-
-function LicensePath({
-  beat,
-  onPick,
-  current,
-}: {
-  beat: number;
-  onPick: (n: number) => void;
-  current: (typeof licenseJourney)[number];
-}) {
-  return (
-    <div className={styles.license}>
-      <p className={styles.kicker}>Licenciamiento</p>
-      <ol>
-        {licenseJourney.map((step, i) => (
-          <li key={step.t}>
-            <button type="button" aria-current={i === beat ? "step" : undefined} onClick={() => onPick(i)}>
-              {step.t}
-            </button>
-          </li>
-        ))}
-      </ol>
-      <p>
-        {current.t}: {current.d}
-      </p>
-    </div>
-  );
-}
-
-function LabActions({ current, onPick }: { current: number; onPick: (step: number) => void }) {
-  return (
-    <div className={styles.lab}>
-      {labActions.map((action) => (
-        <button
-          key={action.id}
-          type="button"
-          aria-pressed={current === action.step}
-          onClick={() => onPick(action.step)}
-        >
-          {action.t}
-        </button>
-      ))}
     </div>
   );
 }
