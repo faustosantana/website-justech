@@ -49,10 +49,11 @@ async function interact(page, mobile) {
   }
   await page.getByRole("link", { name: "Explorar capacidades" }).click();
   await page.waitForTimeout(1200);
-  for (const name of ["Construir", "Modernizar", "Operar"]) {
-    await page.getByRole("tab", { name, exact: true }).click();
+  for (const name of ["Abrir o renovar una sede", "Actualizar tecnología y plataformas", "Mantener la operación funcionando"]) {
+    await page.getByRole("tab", { name }).click();
     await page.waitForTimeout(2200);
   }
+  await page.getByRole("tab", { name: "Mantener la operación funcionando" }).click();
   await page.getByRole("button", { name: "Ver la red" }).click();
   await page.waitForTimeout(mobile ? 2500 : 12000);
   await page.getByRole("button", { name: "Fallar enlace" }).click().catch(() => {});
@@ -75,10 +76,14 @@ async function interact(page, mobile) {
   await page.locator("#soporte-demo").scrollIntoViewIfNeeded();
   await page.waitForTimeout(1600);
   await page.locator("#cableado").scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Rutas" }).click().catch(() => {});
-  await page.getByRole("button", { name: "Rack" }).click().catch(() => {});
-  await page.getByRole("button", { name: "Entrega" }).click().catch(() => {});
+  await page.getByRole("button", { name: "Siguiente" }).first().click().catch(() => {});
+  await page.getByRole("button", { name: "Siguiente" }).first().click().catch(() => {});
+  await page.getByRole("button", { name: "Siguiente" }).first().click().catch(() => {});
   await page.waitForTimeout(1000);
+  await page.locator("#seguridad-demo").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(800);
+  await page.locator("#nube-demo").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(800);
   await page.locator("#conversar").scrollIntoViewIfNeeded();
   await page.getByText("Redes", { exact: true }).click().catch(() => {});
   await page.waitForTimeout(800);
@@ -97,72 +102,72 @@ async function stills() {
   const page = await desk.newPage();
   await page.goto(base, { waitUntil: "networkidle" });
   await page.waitForTimeout(1200);
-  await shot(page, "v84-hero-desktop.png");
-  await page.evaluate(() => document.getElementById("capacidades")?.scrollIntoView({ block: "start" }));
+  await shot(page, "v85-hero-desktop.png");
+  await page.evaluate(() => document.getElementById("necesidades")?.scrollIntoView({ block: "start" }));
   await page.waitForTimeout(800);
-  await page.getByRole("tab", { name: "Construir", exact: true }).click();
+  await page.getByRole("tab", { name: "Abrir o renovar una sede" }).click();
   await page.waitForTimeout(1000);
-  await shot(page, "v84-construir-desktop.png");
-  await page.getByRole("tab", { name: "Modernizar", exact: true }).click();
+  await shot(page, "v85-sede-desktop.png");
+  await page.getByRole("tab", { name: "Actualizar tecnología y plataformas" }).click();
   await page.waitForTimeout(1000);
-  await shot(page, "v84-modernizar-desktop.png");
-  await page.getByRole("tab", { name: "Operar", exact: true }).click();
+  await shot(page, "v85-modernizar-desktop.png");
+  await page.getByRole("tab", { name: "Mantener la operación funcionando" }).click();
   await page.waitForTimeout(1000);
-  await shot(page, "v84-operar-desktop.png");
+  await shot(page, "v85-operar-desktop.png");
   await page.getByRole("button", { name: "Ver la red" }).click();
   await page.waitForTimeout(1800);
-  await shot(page, "v84-red-desktop.png");
+  await shot(page, "v85-red-desktop.png");
   await page.getByRole("button", { name: "Fallar enlace" }).click();
   await page.waitForTimeout(600);
-  await shot(page, "v84-red-falla-desktop.png");
+  await shot(page, "v85-red-falla-desktop.png");
   await page.locator("#equipos").scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
-  await shot(page, "v84-equipos-desktop.png");
+  await shot(page, "v85-equipos-desktop.png");
   await page.locator("#licencias").scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
-  await shot(page, "v84-licencias-desktop.png");
+  await shot(page, "v85-licencias-desktop.png");
   await page.locator("#soporte-demo").scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
-  await shot(page, "v84-soporte-desktop.png");
+  await shot(page, "v85-soporte-desktop.png");
   await page.locator("#cableado").scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
-  await shot(page, "v84-cableado-desktop.png");
+  await shot(page, "v85-cableado-desktop.png");
   await page.locator("#conversar").scrollIntoViewIfNeeded();
   await page.waitForTimeout(300);
-  await shot(page, "v84-form-desktop.png");
+  await shot(page, "v85-form-desktop.png");
 
   const tablet = await browser.newContext({ viewport: { width: 768, height: 1024 }, locale: "es-DO" });
   const t = await tablet.newPage();
   await t.goto(base, { waitUntil: "networkidle" });
   await t.waitForTimeout(800);
-  await shot(t, "v84-hero-tablet.png");
+  await shot(t, "v85-hero-tablet.png");
   await t.locator("#red").scrollIntoViewIfNeeded();
   await t.waitForTimeout(400);
-  await shot(t, "v84-red-tablet.png");
+  await shot(t, "v85-red-tablet.png");
 
   const mob = await browser.newContext({ ...devices["Pixel 7"], locale: "es-DO" });
   const m = await mob.newPage();
   await m.goto(base, { waitUntil: "networkidle" });
   await m.waitForTimeout(1000);
-  await shot(m, "v84-hero-mobile.png");
+  await shot(m, "v85-hero-mobile.png");
   await m.getByRole("link", { name: "Explorar capacidades" }).click();
   await m.waitForTimeout(800);
-  await shot(m, "v84-experiencias-mobile.png");
-  await m.getByRole("tab", { name: "Operar", exact: true }).click();
+  await shot(m, "v85-experiencias-mobile.png");
+  await m.getByRole("tab", { name: "Mantener la operación funcionando" }).click();
   await m.getByRole("button", { name: "Ver la red" }).click();
   await m.waitForTimeout(1500);
-  await shot(m, "v84-red-mobile.png");
+  await shot(m, "v85-red-mobile.png");
   await m.locator("#equipos").scrollIntoViewIfNeeded();
   await m.waitForTimeout(400);
-  await shot(m, "v84-equipos-mobile.png");
+  await shot(m, "v85-equipos-mobile.png");
   await m.locator("#conversar").scrollIntoViewIfNeeded();
   await m.waitForTimeout(300);
-  await shot(m, "v84-form-mobile.png");
+  await shot(m, "v85-form-mobile.png");
   await browser.close();
 }
 
 async function demo(name, run) {
-  const videoDir = join(artVids, `v84-${name}-raw`);
+  const videoDir = join(artVids, `v85-${name}-raw`);
   mkdirSync(videoDir, { recursive: true });
   const browser = await chromium.launch({ args: ["--no-sandbox"] });
   const context = await browser.newContext({
@@ -174,13 +179,13 @@ async function demo(name, run) {
   await run(page);
   await context.close();
   await browser.close();
-  await convert(videoDir, `v84-${name}.mp4`);
+  await convert(videoDir, `v85-${name}.mp4`);
 }
 
 async function video(kind) {
   const isMobile = kind === "mobile";
   const viewport = isMobile ? { width: 390, height: 844 } : { width: 1440, height: 900 };
-  const videoDir = join(artVids, `v84-${kind}-raw`);
+  const videoDir = join(artVids, `v85-${kind}-raw`);
   mkdirSync(videoDir, { recursive: true });
   const browser = await chromium.launch({ args: ["--no-sandbox"] });
   const context = await browser.newContext({
@@ -195,7 +200,7 @@ async function video(kind) {
   await interact(page, isMobile);
   await context.close();
   await browser.close();
-  await convert(videoDir, `v84-experience-${kind}.mp4`);
+  await convert(videoDir, `v85-experience-${kind}.mp4`);
 }
 
 await stills();
@@ -248,5 +253,5 @@ await demo("soporte", async (page) => {
   await page.getByRole("button", { name: "Abrir caso" }).click();
   await page.waitForTimeout(2000);
 });
-writeFileSync(join(artShots, "v84-gate.txt"), "V8.4 captures listos\n");
-console.log("V8.4 gate capture listo.");
+writeFileSync(join(artShots, "v85-gate.txt"), "V8.5 captures listos\n");
+console.log("V8.5 gate capture listo.");

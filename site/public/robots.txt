@@ -1,2 +1,5 @@
 User-agent: *
 Disallow: /
+
+# Staging. Noindex. No enviar este host a Search Console.
+# Sitemap: /sitemap.xml (bloqueado por Disallow hasta el corte a producción).

@@ -1,18 +1,21 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { CableDemo } from "@/components/v8/CableDemo";
 import { company } from "@/content/site";
+import { HIRE_STEPS, QUOTE_NEEDS, V85_BASE } from "@/content/v85";
 import {
-  cableLayers,
-  devicePipeline,
   deviceProfiles,
   licenseApps,
   licenseDepts,
   licenseKinds,
-  quoteNeeds,
 } from "@/content/v84";
 import { withBase } from "@/lib/paths";
+import { track } from "@/lib/events";
 import styles from "./studios.module.css";
+
+export { CableDemo };
 
 type Layer = "general" | "red" | "seguridad" | "sucursales";
 type NodeState = "live" | "dead" | "wait";
@@ -79,8 +82,11 @@ export function NetworkDemo({
         <div className={styles.labHead}>
           <div>
             <p className={styles.kicker}>Acto técnico</p>
-            <h2 id="red-title">La red que sostiene la sede.</h2>
-            <p className={styles.note}>Demostración conceptual de arquitectura</p>
+            <h2 id="red-title">Una sede con enlace principal y respaldo.</h2>
+            <p className={styles.note}>Demostración conceptual de arquitectura · ISP, borde, firewall, core, acceso, Wi-Fi, servidores, sucursal y nube.</p>
+            <p>
+              <Link href={`${V85_BASE}/redes-empresariales/`}>Ver redes empresariales</Link>
+            </p>
             <p className={styles.liveLine} aria-live="polite">
               {netStages[Math.min(beat, netStages.length - 1)]}
             </p>
@@ -436,14 +442,16 @@ function Monitor({ x, y, label, state }: { x: number; y: number; label: string; 
   );
 }
 
-export function DeviceDemo() {
+export function DeviceDemo({ compact = false }: { compact?: boolean }) {
   const [profile, setProfile] = useState(0);
   const [step, setStep] = useState(0);
   const item = deviceProfiles[profile];
+  const pipeline = compact ? HIRE_STEPS.filter((_, i) => i % 2 === 0) : HIRE_STEPS;
+  const stage = pipeline[Math.min(step, pipeline.length - 1)];
   return (
     <section className={styles.studio} id="equipos" aria-labelledby="eq-title">
       <p className={styles.kickerLight}>Suministro</p>
-      <h2 id="eq-title">Un puesto, de la selección a la garantía.</h2>
+      <h2 id="eq-title">Incorporación de un nuevo colaborador.</h2>
       <div className={styles.profiles} role="tablist" aria-label="Perfiles de puesto">
         {deviceProfiles.map((p, i) => (
           <button key={p.id} type="button" role="tab" aria-selected={profile === i} onClick={() => { setProfile(i); setStep(0); }}>
@@ -458,19 +466,19 @@ export function DeviceDemo() {
             <img src={withBase(`/visual/v8/${item.photo}.jpg`)} alt={`Puesto ${item.t}`} width={1400} height={788} />
           </picture>
           <figcaption>
-            {item.t} · {devicePipeline[step]}
+            {item.t} · {stage}
           </figcaption>
         </figure>
         <div className={styles.meta}>
-          <div className={styles.pipe} aria-label="Proceso de suministro">
-            {devicePipeline.map((s, i) => (
+          <div className={styles.pipe} aria-label="Proceso de incorporación">
+            {pipeline.map((s, i) => (
               <button key={s} type="button" aria-current={i === step ? "step" : undefined} onClick={() => setStep(i)}>
                 {s}
               </button>
             ))}
           </div>
           <p>
-            {item.context} En esta etapa: {devicePipeline[step].toLowerCase()}.
+            {item.context} En esta etapa: {stage.toLowerCase()}.
           </p>
           <dl className={styles.dl}>
             <div>
@@ -490,7 +498,12 @@ export function DeviceDemo() {
               <dd>{item.extras}</dd>
             </div>
           </dl>
-          <p className={styles.noteLight}>Recomendación conceptual. Sin modelos ni precios.</p>
+          <p className={styles.noteLight}>Recomendación conceptual. Sin modelos ni precios. Cotizamos; no hay «comprar ahora».</p>
+          {compact ? (
+            <p>
+              <Link href={`${V85_BASE}/equipos-empresariales/`}>Ver equipos empresariales</Link>
+            </p>
+          ) : null}
         </div>
       </div>
     </section>
@@ -509,9 +522,9 @@ const licenseSteps = [
   "Renovación",
 ];
 
-export function LicenseDemo() {
+export function LicenseDemo({ compact = false }: { compact?: boolean }) {
   const [dept, setDept] = useState(0);
-  const [users, setUsers] = useState(6);
+  const [users, setUsers] = useState(10);
   const [kind, setKind] = useState(0);
   const [apps, setApps] = useState<string[]>(["Correo"]);
   const [policy, setPolicy] = useState(false);
@@ -520,7 +533,7 @@ export function LicenseDemo() {
   return (
     <section className={styles.studio} id="licencias" aria-labelledby="lic-title">
       <p className={styles.kickerLight}>Demostración del proceso</p>
-      <h2 id="lic-title">Licenciamiento que se puede gobernar.</h2>
+      <h2 id="lic-title">Incorporar diez usuarios a un departamento.</h2>
       <ol className={styles.stepper} aria-label="Etapas">
         {licenseSteps.map((s, i) => (
           <li key={s} data-on={i <= phase ? "1" : "0"}>
@@ -561,7 +574,7 @@ export function LicenseDemo() {
             <button
               type="button"
               onClick={() => {
-                setUsers((n) => Math.min(12, n + 1));
+                setUsers((n) => Math.min(16, n + 1));
                 setPhase(1);
               }}
               aria-label="Añadir usuario"
@@ -626,12 +639,13 @@ export function LicenseDemo() {
           <div className={styles.meter} aria-hidden="true">
             <span style={{ width: `${(assigned / users) * 100}%` }} />
           </div>
-          <p>
-            Utilización en esta demostración: {Math.round((assigned / users) * 100)}%.
-          </p>
-          <p className={styles.noteLight}>
-            Renovación: próximo ciclo de revisión. Sin marcas, precios ni datos reales.
-          </p>
+          <p>Revisión de utilización en esta demostración: {Math.round((assigned / users) * 100)}%.</p>
+          <p className={styles.noteLight}>Renovación: próximo ciclo de revisión. Sin precios ni sello de partner.</p>
+          {compact ? (
+            <p>
+              <Link href={`${V85_BASE}/licenciamiento/`}>Ver licenciamiento</Link>
+            </p>
+          ) : null}
         </div>
       </div>
     </section>
@@ -655,18 +669,32 @@ export function SupportDemo({ beat, onWatchNet }: { beat: number; onWatchNet: ()
   const status = idx >= 9 ? "Cerrado" : idx >= 2 ? "En curso" : "Detectado";
   const activity =
     idx >= 9
-      ? "Caso documentado y cerrado."
+      ? "Caso documentado y cerrado. La sucursal opera por el enlace de respaldo o el principal restablecido."
       : idx >= 7
-        ? "Corrección aplicada. Pendiente de validación."
+        ? "Corrección aplicada. Pendiente de validación con el usuario de la sucursal."
         : idx >= 5
-          ? "Especialista de redes en diagnóstico."
+          ? "Especialista de redes en diagnóstico. Cruza topología, ISP y último cambio."
           : idx >= 2
             ? "Incidente registrado. Continuidad por ISP de respaldo."
             : "Enlace principal fuera de servicio.";
+  const log = [
+    "Evento de conectividad en sucursal Norte.",
+    "Tráfico conmutado al ISP secundario.",
+    "Ticket JT-1042 abierto desde la red.",
+    "Prioridad: operación de sucursal.",
+    "Asignado a especialista de redes.",
+    "Diagnóstico: enlace primario inalcanzable.",
+    "Coordinación con ISP / validación de borde.",
+    "Usuario confirma acceso a sistemas.",
+    "Cierre con nota y topología adjunta.",
+  ];
   return (
     <section className={styles.studio} id="soporte-demo" aria-labelledby="sup-title">
       <p className={styles.kickerLight}>Caso de demostración</p>
       <h2 id="sup-title">Sucursal sin conectividad.</h2>
+      <p className={styles.noteLight}>
+        El ticket nace del evento de red. No es un chat suelto: hay responsable, diagnóstico, validación y cierre.
+      </p>
       <article className={styles.ticket}>
         <header>
           <div>
@@ -679,6 +707,9 @@ export function SupportDemo({ beat, onWatchNet }: { beat: number; onWatchNet: ()
             Ver en la red
           </button>
         </header>
+        <p className={styles.netLink} data-on={beat >= 6 ? "1" : "0"}>
+          Origen: laboratorio de red · ISP principal {beat >= 6 && beat < 9 ? "fuera de servicio" : "en observación"}
+        </p>
         <dl className={styles.ticketMeta}>
           <div>
             <dt>Sede</dt>
@@ -707,119 +738,15 @@ export function SupportDemo({ beat, onWatchNet }: { beat: number; onWatchNet: ()
             </li>
           ))}
         </ol>
+        <ul className={styles.activityLog} aria-label="Actividad">
+          {log.slice(0, Math.min(idx + 1, log.length)).map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+        <p>
+          <Link href={`${V85_BASE}/soporte-tecnico-empresarial/`}>Ver soporte técnico empresarial</Link>
+        </p>
       </article>
-    </section>
-  );
-}
-
-export function CableDemo() {
-  const [step, setStep] = useState(0);
-  const layer = cableLayers[step];
-  const on = (n: number) => step >= n;
-  return (
-    <section className={styles.studio} id="cableado" aria-labelledby="cab-title">
-      <p className={styles.kickerLight}>Infraestructura física</p>
-      <h2 id="cab-title">Cableado que se puede mantener.</h2>
-      <div className={styles.split}>
-        <div className={styles.plan}>
-          <svg viewBox="0 0 720 460" role="img" aria-label="Composición isométrica de cableado">
-            <defs>
-              <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#eef3ef" />
-                <stop offset="1" stopColor="#d5ddd6" />
-              </linearGradient>
-            </defs>
-            <polygon fill="url(#floor)" points="360,40 700,210 360,380 20,210" />
-            <polygon fill="#c9d4cc" points="20,210 360,380 360,420 20,250" />
-            <polygon fill="#b7c4bb" points="360,380 700,210 700,250 360,420" />
-            <polygon fill="#9aa89e" points="20,120 360,40 360,80 20,160" />
-            <polygon fill="#dfe6e1" points="160,200 240,160 280,180 200,220" />
-            <polygon fill="#dfe6e1" points="300,250 380,210 420,230 340,270" />
-            <polygon fill="#dfe6e1" points="440,200 520,160 560,180 480,220" />
-            <polygon fill="#c5d0c8" points="240,300 300,270 330,285 270,315" />
-            {on(1) ? (
-              <>
-                <path d="M80 180 L360 70 L640 180" fill="none" stroke="#0a5c56" strokeWidth="8" opacity="0.55" />
-                <path d="M140 210 L360 110 L580 210" fill="none" stroke="#12b3ad" strokeWidth="5" />
-              </>
-            ) : null}
-            {on(3) ? (
-              <>
-                <path d="M220 160 L220 250" stroke="#0a5c56" strokeWidth="4" />
-                <path d="M360 110 L360 260" stroke="#0a5c56" strokeWidth="4" />
-                <path d="M500 160 L500 250" stroke="#0a5c56" strokeWidth="4" />
-              </>
-            ) : null}
-            {on(2)
-              ? [
-                  [220, 250],
-                  [300, 255],
-                  [360, 260],
-                  [440, 255],
-                  [500, 250],
-                  [280, 290],
-                  [400, 290],
-                ].map(([cx, cy]) => (
-                  <g key={`${cx}-${cy}`}>
-                    <ellipse cx={cx} cy={cy} rx="10" ry="6" fill={on(6) ? "#0a5c56" : "#fff"} stroke="#0a5c56" />
-                    {on(6) ? (
-                      <text x={cx} y={cy + 18} fontSize="9" textAnchor="middle" fill="#0a5c56">
-                        ID
-                      </text>
-                    ) : null}
-                  </g>
-                ))
-              : null}
-            <g transform="translate(86 200)">
-              <polygon fill={on(4) ? "#161c22" : "#7d8880"} points="0,40 52,18 52,88 0,110" />
-              <polygon fill={on(4) ? "#0e141a" : "#6e7871"} points="52,18 96,40 96,110 52,88" />
-              <polygon fill={on(4) ? "#1d262e" : "#8b968e"} points="0,40 52,18 96,40 52,62" />
-              {on(5) ? <rect x="18" y="48" width="28" height="8" fill="#12b3ad" /> : null}
-              {on(5) ? <rect x="18" y="60" width="28" height="8" fill="#0a5c56" /> : null}
-              {on(4) ? (
-                <text x="48" y="8" fontSize="11" fill="#0b1018">
-                  Rack
-                </text>
-              ) : null}
-            </g>
-            {on(7) ? (
-              <g>
-                <polygon fill="#fff" stroke="#0a5c56" points="540,300 620,260 640,270 560,310" />
-                <text x="566" y="292" fontSize="11" fill="#0a5c56">
-                  Certificado
-                </text>
-              </g>
-            ) : null}
-            {on(8) ? (
-              <text x="430" y="340" fontSize="13" fill="#0b1018">
-                Documentación de planta
-              </text>
-            ) : null}
-            {on(9) ? (
-              <text x="250" y="430" fontSize="16" fill="#0a5c56">
-                Entrega
-              </text>
-            ) : null}
-            {!on(1) ? (
-              <text x="360" y="220" fontSize="14" textAnchor="middle" fill="#3a4550">
-                Plano de planta
-              </text>
-            ) : null}
-          </svg>
-        </div>
-        <div>
-          <div className={styles.pipe}>
-            {cableLayers.map((s, i) => (
-              <button key={s.t} type="button" aria-current={i === step ? "step" : undefined} onClick={() => setStep(i)}>
-                {s.t}
-              </button>
-            ))}
-          </div>
-          <p>
-            {layer.t}: {layer.d}
-          </p>
-        </div>
-      </div>
     </section>
   );
 }
@@ -832,7 +759,7 @@ export function QuoteFlow({ initial, onDone }: { initial?: string; onDone: () =>
   const [email, setEmail] = useState("");
   const [extra, setExtra] = useState("");
   const [err, setErr] = useState("");
-  const cfg = quoteNeeds.find((n) => n.id === need);
+  const cfg = QUOTE_NEEDS.find((n) => n.id === need);
   const labels = ["Necesidad", "Datos", "Confirmar"];
 
   useEffect(() => {
@@ -853,8 +780,12 @@ export function QuoteFlow({ initial, onDone }: { initial?: string; onDone: () =>
       return;
     }
     setErr("");
+    if (step === 0) track("quote_start", { need });
     if (step < 2) setStep(step + 1);
-    else onDone();
+    else {
+      track("quote_submit", { need });
+      onDone();
+    }
   }
 
   const summary = useMemo(
@@ -878,7 +809,7 @@ export function QuoteFlow({ initial, onDone }: { initial?: string; onDone: () =>
       <form onSubmit={next} data-step={step} noValidate>
         {step === 0 ? (
           <div className={styles.needs} role="radiogroup" aria-label="Necesidad">
-            {quoteNeeds.map((n) => (
+            {QUOTE_NEEDS.map((n) => (
               <label key={n.id} data-on={need === n.id ? "1" : "0"}>
                 <input
                   type="radio"

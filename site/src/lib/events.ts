@@ -9,6 +9,17 @@ export type ConversionEvent =
   | "cta_specialist"
   | "support_portal"
   | "quote_request"
+  | "quote_start"
+  | "quote_submit"
+  | "assessment_start"
+  | "assessment_submit"
+  | "support_portal_click"
+  | "phone_click"
+  | "email_click"
+  | "whatsapp_click"
+  | "resource_download"
+  | "service_view"
+  | "product_quote_start"
   | "site_survey"
   | "diagnosis_request";
 

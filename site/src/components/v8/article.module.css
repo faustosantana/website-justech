@@ -1,0 +1,77 @@
+.article {
+  width: min(820px, calc(100% - 40px));
+  margin: 32px auto 64px;
+  scroll-margin-top: 96px;
+}
+.article h1 {
+  margin: 0 0 16px;
+  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+  line-height: 1.12;
+  max-width: 18ch;
+  letter-spacing: -0.038em;
+}
+.article h2 {
+  margin: 32px 0 10px;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+}
+.article h3 {
+  margin: 18px 0 6px;
+  font-size: 1.05rem;
+}
+.kicker {
+  margin: 0 0 10px;
+  color: #0a5c56;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 650;
+}
+.lead,
+.article p,
+.article li {
+  color: #3a4550;
+  line-height: 1.62;
+  font-size: 1.05rem;
+}
+.lead {
+  font-size: 1.12rem;
+  max-width: 58ch;
+}
+.article ul,
+.article ol {
+  padding-left: 1.2rem;
+}
+.next {
+  margin-top: 36px;
+}
+.next a {
+  color: #0a5c56;
+  font-weight: 650;
+}
+.crumbs {
+  width: min(1180px, calc(100% - 40px));
+  margin: 20px auto 0;
+  font-size: 0.86rem;
+}
+.crumbs ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  margin: 0;
+  padding: 0;
+  color: #3a4550;
+}
+.crumbs a {
+  color: #06111f;
+}
+.demoSlot {
+  width: min(1180px, calc(100% - 24px));
+  margin: 24px auto;
+}
+.article :global(.studio),
+.article :global(.lab),
+.article :global(.story) {
+  width: 100%;
+}

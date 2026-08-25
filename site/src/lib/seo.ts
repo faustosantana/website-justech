@@ -20,6 +20,7 @@ export function pageMeta(
       locale: "es_DO",
       type: "website",
       siteName: company.legalName,
+      url: path,
     },
     twitter: {
       card: "summary_large_image",

@@ -5,7 +5,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta(
   "Integramos la tecnología que mantiene operando su empresa",
-  "Infraestructura, conectividad, puestos, nube, seguridad y soporte, con un responsable. Justech SRL, Santo Domingo.",
+  "Infraestructura, redes, equipos, licenciamiento, nube, seguridad y soporte, coordinados por un solo equipo. Justech SRL, Santo Domingo, desde 2018.",
   "/concepto-v8/",
 );
 
